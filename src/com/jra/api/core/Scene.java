@@ -36,10 +36,14 @@ public class Scene {
             loadScene.act();
     }
 
-    public void render(Graphics g) {
-        goManager.render(g);
+    public void drawUI(Graphics g) {
         if (uiLayer != null)
             uiLayer.draw(g);
+    }
+
+    public void render(Graphics g) {
+        goManager.render(g);
+
     }
 
     public void dispose() {

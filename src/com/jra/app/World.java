@@ -1,6 +1,7 @@
 package com.jra.app;
 
 import com.jra.api.core.GameObject;
+import com.jra.api.input.Keyboard;
 import com.jra.api.util.Util;
 
 import java.awt.*;
@@ -28,11 +29,12 @@ public class World extends GameObject {
     @Override
     public void tick() {
 
+
+        if (Keyboard.E)
+            gen();
     }
 
-    @Override
-    public void onReady() {
-        System.out.println("r");
+    private void gen() {
         PerlinNoise p = new PerlinNoise(Util.RandomRange(0, 1000));
         p.SetFractalType(PerlinNoise.FractalType.FBm);
         p.SetFrequency(0.004f);
@@ -49,6 +51,12 @@ public class World extends GameObject {
 
             }
         }
+    }
+
+    @Override
+    public void onReady() {
+        gen();
+
     }
 
     Color biome(float e) {

@@ -32,6 +32,7 @@ public class Window extends Canvas implements Runnable {
     private Color backgroundColor = Color.black;
     private long startTime;
     public Scene currentScene;
+    private int lastFps;
     public Action eachFrame = null;
     public Action onClose = null;
     private JFrame frame;
@@ -105,6 +106,10 @@ public class Window extends Canvas implements Runnable {
         frame.setTitle(title);
     }
 
+    public int getLastFPS() {
+        return lastFps;
+    }
+
     public void changeScene(Scene s) {
         currentScene = s;
         currentScene.load();
@@ -139,7 +144,7 @@ public class Window extends Canvas implements Runnable {
 
             if (deltaU >= 1) {
                 currentScene.update();
-                ;
+
 
                 ticks++;
                 deltaU--;
@@ -157,6 +162,8 @@ public class Window extends Canvas implements Runnable {
             }
 
             if (System.currentTimeMillis() - timer > 1000) {
+
+                lastFps = frames;
                 if (displayFPS)
                     System.out.println(String.format("UPS: %s, FPS: %s", ticks, frames));
                 frames = 0;
@@ -193,7 +200,7 @@ public class Window extends Canvas implements Runnable {
         g2d.translate(-camX, -camY);
         currentScene.render(g);
         g2d.translate(camX, camY);
-
+        currentScene.drawUI(g);
         bs.show();
         g.dispose();
     }

@@ -18,11 +18,19 @@ public class Camera extends GameObject {
 
     }
 
+    private int camSpeed = 10;
+
     @Override
     public void tick() {
         if (Keyboard.W)
-            window.camX++;
+            window.camY -= 10;
+        else if (Keyboard.S)
+            window.camY += 10;
 
+        else if (Keyboard.A)
+            window.camX += 10;
+        else if (Keyboard.D)
+            window.camX -= 10;
 
     }
 

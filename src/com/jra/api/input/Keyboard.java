@@ -7,7 +7,11 @@ public class Keyboard extends KeyAdapter {
 
 
     public static boolean W = false;
+    public static boolean A = false;
+
     public static boolean S = false;
+    public static boolean D = false;
+
     public static boolean UP = false;
     public static boolean DOWN = false;
     public static boolean E = false;
@@ -35,8 +39,13 @@ public class Keyboard extends KeyAdapter {
         } else if (keyEvent.getKeyCode() == keyEvent.VK_E) {
             E = true;
 
-        }
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_D) {
+            D = true;
 
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_A) {
+            A = true;
+
+        }
 
     }
 
@@ -58,6 +67,12 @@ public class Keyboard extends KeyAdapter {
 
         } else if (keyEvent.getKeyCode() == keyEvent.VK_ENTER) {
             ENTER = false;
+
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_D) {
+            D = false;
+
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_A) {
+            A = false;
 
         }
 
