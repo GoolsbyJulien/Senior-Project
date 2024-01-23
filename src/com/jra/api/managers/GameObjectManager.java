@@ -13,7 +13,6 @@ public class GameObjectManager {
     public void add(GameObject e) {
 
 
-
         gameObjects.add(e);
     }
 
@@ -31,7 +30,7 @@ public class GameObjectManager {
     }
 
     public void dispose() {
-        for (GameObject e :   gameObjects) {
+        for (GameObject e : gameObjects) {
             gameObjects.remove(e);
         }
     }

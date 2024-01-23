@@ -8,11 +8,11 @@ public class Util {
 
         max += 1;
 
-        return (int) ((Math.random() * (max  - min)) + min);
+        return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public static Color RandomColor(){
-        return new Color(RandomRange(0,255),RandomRange(0,255),RandomRange(0,255));
+    public static Color RandomColor() {
+        return new Color(RandomRange(0, 255), RandomRange(0, 255), RandomRange(0, 255));
     }
 
     public static long secondsFromNow(int seconds) {

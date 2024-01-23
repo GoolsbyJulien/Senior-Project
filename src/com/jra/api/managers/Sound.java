@@ -15,7 +15,7 @@ public class Sound {
     public static final Sound WALL_SOUND = new Sound("assets/wall.wav");
     public static final Sound HIT_SOUND = new Sound("assets/hit.wav");
 
-    public Sound (String path){
+    public Sound(String path) {
         AudioInputStream ais = null;
         try {
             ais = AudioSystem.getAudioInputStream(new File(path));

@@ -1,7 +1,7 @@
 package com.jra.api.render;
 
-import com.jra.api.input.Keyboard;
 import com.jra.api.core.Scene;
+import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
 
@@ -33,53 +33,54 @@ public class Window extends Canvas implements Runnable {
     private long startTime;
     public Scene currentScene;
     public Action eachFrame = null;
-    public Action onClose =null;
+    public Action onClose = null;
     private JFrame frame;
+
     public Window(String title, Scene scene) {
         currentScene = scene;
-frame        = new JFrame(title);
+        frame = new JFrame(title);
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    frame.addWindowListener(new WindowListener() {
-        @Override
-        public void windowOpened(WindowEvent e) {
+        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
 
-        }
+            }
 
-        @Override
-        public void windowClosing(WindowEvent e) {
-    if(onClose !=null)
-            onClose.act();
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (onClose != null)
+                    onClose.act();
 
-            isRunning = false;
-        }
+                isRunning = false;
+            }
 
-        @Override
-        public void windowClosed(WindowEvent e) {
+            @Override
+            public void windowClosed(WindowEvent e) {
 
 
-        }
+            }
 
-        @Override
-        public void windowIconified(WindowEvent e) {
+            @Override
+            public void windowIconified(WindowEvent e) {
 
-        }
+            }
 
-        @Override
-        public void windowDeiconified(WindowEvent e) {
+            @Override
+            public void windowDeiconified(WindowEvent e) {
 
-        }
+            }
 
-        @Override
-        public void windowActivated(WindowEvent e) {
+            @Override
+            public void windowActivated(WindowEvent e) {
 
-        }
+            }
 
-        @Override
-        public void windowDeactivated(WindowEvent e) {
+            @Override
+            public void windowDeactivated(WindowEvent e) {
 
-        }
-    });
+            }
+        });
 
         frame.add(this);
 
@@ -100,9 +101,10 @@ frame        = new JFrame(title);
 
     }
 
-public void setTitle(String title){
+    public void setTitle(String title) {
         frame.setTitle(title);
-}
+    }
+
     public void changeScene(Scene s) {
         currentScene = s;
         currentScene.load();
@@ -116,6 +118,7 @@ public void setTitle(String title){
     public void setBackgroundColor(Color color) {
         this.backgroundColor = color;
     }
+
     @Override
     public void run() {
 
@@ -147,7 +150,7 @@ public void setTitle(String title){
 
                 render();
 
-                if(eachFrame!=null)
+                if (eachFrame != null)
                     eachFrame.act();
                 frames++;
                 deltaF--;
@@ -164,6 +167,13 @@ public void setTitle(String title){
         System.exit(0);
     }
 
+    public void setSize(int width, int height) {
+        frame.setSize(width, height);
+
+    }
+
+    public int camX = 0;
+    public int camY = 0;
 
     private void render() {
         bs = getBufferStrategy();
@@ -175,8 +185,14 @@ public void setTitle(String title){
         g.clearRect(0, 0, getWidth(), getHeight());
 
         g.setColor(backgroundColor);
-        g.fillRect(0,0,getWidth(),getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        Graphics2D g2d = (Graphics2D) g;
+
+
+        g2d.translate(-camX, -camY);
         currentScene.render(g);
+        g2d.translate(camX, camY);
 
         bs.show();
         g.dispose();

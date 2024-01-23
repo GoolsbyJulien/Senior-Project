@@ -11,13 +11,16 @@ public class Scene {
     public UILayer uiLayer;
     public Action loadScene;
 
-    public Scene (){
+    public Scene() {
         goManager = new GameObjectManager();
     }
 
     public void addGameobject(GameObject e) {
+
         goManager.add(e);
+        e.onReady();
     }
+
     public void removeGameObject(GameObject e) {
         goManager.remove(e);
     }
@@ -29,16 +32,17 @@ public class Scene {
 
     public void load() {
         goManager.load();
-        if(loadScene!=null)
-        loadScene.act();
-    }
-    public void render(Graphics g) {
-        goManager.render(g);
-        if(uiLayer!=null)
-        uiLayer.draw(g);
+        if (loadScene != null)
+            loadScene.act();
     }
 
-    public void dispose(){
+    public void render(Graphics g) {
+        goManager.render(g);
+        if (uiLayer != null)
+            uiLayer.draw(g);
+    }
+
+    public void dispose() {
         goManager.dispose();
     }
 

@@ -2,23 +2,25 @@ package com.jra.api.util;
 
 public class Vector {
 
-    public int x,y;
+    public int x, y;
 
 
-    public Vector(int x,int y) {
+    public Vector(int x, int y) {
         this.x = x;
-        this.y =y;
+        this.y = y;
     }
 
     public void zero() {
 
-        x = y =0;
+        x = y = 0;
     }
+
     public Vector() {
-zero();
+        zero();
     }
+
     @Override
     public String toString() {
-        return "("+ x +","+ y+")";
+        return "(" + x + "," + y + ")";
     }
 }
