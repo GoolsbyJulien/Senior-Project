@@ -26,6 +26,8 @@ public class Main {
         };
 
         helloWorld.addGameobject(new World());
+
+        //I'm a comment
     }
 
 
