@@ -2,17 +2,16 @@ package com.jra.api.input;
 
 import com.jra.api.util.Vector;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
-public class Mouse implements MouseListener, MouseMotionListener {
+public class Mouse implements MouseWheelListener, MouseListener, MouseMotionListener {
 
     public static boolean LEFT_CLICK = false;
     public static boolean RIGHT_CLICK = false;
 
     public static Vector lastClick = new Vector();
     public static Vector mousePos = new Vector();
+    public static double wheel = 1;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -29,6 +28,19 @@ public class Mouse implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
 
     }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getPreciseWheelRotation() < 0) {
+            wheel -= 0.1;
+        } else {
+            wheel += 0.1;
+        }
+        if (wheel < 0.01) {
+            wheel = 0.01;
+        }
+    }
+
 
     @Override
     public void mouseReleased(MouseEvent e) {

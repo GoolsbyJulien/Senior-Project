@@ -3,6 +3,16 @@ package com.jra.api.util;
 import java.awt.*;
 
 public class Util {
+
+
+    public static float clamp(float min, float max, float value) {
+        if (value > max)
+            value = max;
+        if (value < min)
+            value = min;
+        return value;
+    }
+
     public static int RandomRange(int min, int max) {
 
 

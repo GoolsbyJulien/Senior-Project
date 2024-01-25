@@ -2,6 +2,7 @@ package com.jra.app;
 
 import com.jra.api.core.GameObject;
 import com.jra.api.input.Keyboard;
+import com.jra.api.input.Mouse;
 import com.jra.api.render.Window;
 
 import java.awt.*;
@@ -31,7 +32,6 @@ public class Camera extends GameObject {
             window.camX += 10;
         else if (Keyboard.D)
             window.camX -= 10;
-
     }
 
     @Override

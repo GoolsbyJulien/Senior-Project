@@ -64,6 +64,26 @@ public class PerlinNoise {
 
     ;
 
+
+    public static float[][] fallOff(float noiseMap[][]) {
+
+
+        float dropOff = 0.0001f;
+
+        float value = 1;
+        for (int x = 0; x < noiseMap.length; x++) {
+            for (int y = 0; y < noiseMap[0].length; y++) {
+                noiseMap[x][y] -= value;
+                value -= dropOff;
+
+                if (value < 0.24f)
+                    break;
+            }
+        }
+
+        return noiseMap;
+    }
+
     public enum RotationType3D {
         None,
         ImproveXYPlanes,

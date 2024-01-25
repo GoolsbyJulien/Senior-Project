@@ -35,7 +35,7 @@ public class Window extends Canvas implements Runnable {
     private int lastFps;
     public Action eachFrame = null;
     public Action onClose = null;
-    private JFrame frame;
+    public JFrame frame;
 
     public Window(String title, Scene scene) {
         currentScene = scene;
@@ -93,6 +93,7 @@ public class Window extends Canvas implements Runnable {
         Mouse mouse = new Mouse();
         frame.addMouseMotionListener(mouse);
         frame.addMouseListener(mouse);
+        frame.addMouseWheelListener(mouse);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
         frame.setResizable(false);
@@ -181,6 +182,7 @@ public class Window extends Canvas implements Runnable {
 
     public int camX = 0;
     public int camY = 0;
+    public double zoom = 1;
 
     private void render() {
         bs = getBufferStrategy();
@@ -197,6 +199,7 @@ public class Window extends Canvas implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
 
+        g2d.scale(zoom, zoom);
         g2d.translate(-camX, -camY);
         currentScene.render(g);
         g2d.translate(camX, camY);

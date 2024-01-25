@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class Main {
 
+    public static Window window;
 
     public Main() {
 
@@ -14,7 +15,7 @@ public class Main {
         Scene helloWorld = new Scene();
 
 
-        Window window = new Window("Hello World", helloWorld);
+        window = new Window("Hello World", helloWorld);
         window.setSize(800, 800);
         window.setBackgroundColor(Color.blue);
         helloWorld.addGameobject(new Camera(window));
