@@ -18,7 +18,6 @@ public class Scene {
     public void addGameobject(GameObject e) {
 
         goManager.add(e);
-        e.onReady();
     }
 
     public void removeGameObject(GameObject e) {

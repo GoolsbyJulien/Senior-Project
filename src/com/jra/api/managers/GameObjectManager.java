@@ -12,7 +12,7 @@ public class GameObjectManager {
 
     public void add(GameObject e) {
 
-
+        e.onReady();
         gameObjects.add(e);
     }
 
@@ -23,7 +23,6 @@ public class GameObjectManager {
 
     public void render(Graphics g) {
         for (GameObject e : gameObjects) {
-
             e.render(g);
 
         }
@@ -47,8 +46,6 @@ public class GameObjectManager {
     }
 
     public void load() {
-        for (GameObject e : gameObjects) {
-            e.onReady();
-        }
+
     }
 }

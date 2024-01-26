@@ -1,6 +1,7 @@
 package com.jra.app;
 
 import com.jra.api.core.Scene;
+import com.jra.api.input.Keyboard;
 import com.jra.api.render.Window;
 
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.awt.*;
 public class Main {
 
     public static Window window;
+    private boolean showFPS = false;
 
     public Main() {
 
@@ -20,13 +22,17 @@ public class Main {
         window.setBackgroundColor(Color.blue);
         helloWorld.addGameobject(new Camera(window));
         helloWorld.uiLayer = g -> {
+            if (Keyboard.F3)
+                showFPS = !showFPS;
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana", 0, 50));
-
-            g.drawString("FPS: " + window.getLastFPS(), 250, 650);
+            if (showFPS)
+                g.drawString("FPS: " + window.getLastFPS(), 250, 650);
         };
 
         helloWorld.addGameobject(new World());
+
+        
     }
 
 

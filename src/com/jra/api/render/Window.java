@@ -9,13 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 
 public class Window extends Canvas implements Runnable {
 
 
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 700;
 
     public boolean isDisplayFPS() {
         return displayFPS;
@@ -38,6 +39,9 @@ public class Window extends Canvas implements Runnable {
     public JFrame frame;
 
     public Window(String title, Scene scene) {
+
+
+        //setSize(10, 10);
         currentScene = scene;
         frame = new JFrame(title);
         frame.setSize(WIDTH, HEIGHT);
@@ -83,6 +87,7 @@ public class Window extends Canvas implements Runnable {
             }
         });
 
+
         frame.add(this);
 
         frame.setLocationRelativeTo(null);
@@ -101,6 +106,10 @@ public class Window extends Canvas implements Runnable {
         Thread t = new Thread(this);
         t.start();
 
+        Button b = new Button("test");
+        //b.setSize(100, 100);
+        //b.setLocation(900, 900);
+        //frame.add(new Button("Test"));
     }
 
     public void setTitle(String title) {
@@ -180,8 +189,8 @@ public class Window extends Canvas implements Runnable {
 
     }
 
-    public int camX = 0;
-    public int camY = 0;
+    public float camX = 0;
+    public float camY = 0;
     public double zoom = 1;
 
     private void render() {
@@ -198,13 +207,15 @@ public class Window extends Canvas implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
-
         g2d.scale(zoom, zoom);
         g2d.translate(-camX, -camY);
+
         currentScene.render(g);
         g2d.translate(camX, camY);
+        g2d.setTransform(new AffineTransform());
         currentScene.drawUI(g);
         bs.show();
         g.dispose();
+
     }
 }

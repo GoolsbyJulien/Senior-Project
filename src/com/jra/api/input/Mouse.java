@@ -39,6 +39,7 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
         if (wheel < 0.01) {
             wheel = 0.01;
         }
+
     }
 
 

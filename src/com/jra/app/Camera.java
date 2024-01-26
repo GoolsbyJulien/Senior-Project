@@ -19,19 +19,23 @@ public class Camera extends GameObject {
 
     }
 
-    private int camSpeed = 10;
+    private float camSpeed = 10;
 
     @Override
     public void tick() {
+        camSpeed = (float) (10 / window.zoom);
         if (Keyboard.W)
-            window.camY -= 10;
+            window.camY -= camSpeed;
         else if (Keyboard.S)
-            window.camY += 10;
+            window.camY += camSpeed;
 
-        else if (Keyboard.A)
-            window.camX += 10;
         else if (Keyboard.D)
-            window.camX -= 10;
+            window.camX += camSpeed;
+        else if (Keyboard.A)
+            window.camX -= camSpeed;
+
+
+        window.zoom = Mouse.wheel;
     }
 
     @Override
