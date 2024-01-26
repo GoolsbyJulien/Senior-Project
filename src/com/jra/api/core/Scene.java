@@ -1,26 +1,26 @@
 package com.jra.api.core;
 
-import com.jra.api.managers.GameObjectManager;
+import com.jra.api.managers.MapObjectManager;
 import com.jra.api.util.Action;
 
 import java.awt.*;
 
 public class Scene {
-    public GameObjectManager goManager;
+    public MapObjectManager goManager;
 
     public UILayer uiLayer;
     public Action loadScene;
 
     public Scene() {
-        goManager = new GameObjectManager();
+        goManager = new MapObjectManager();
     }
 
-    public void addGameobject(GameObject e) {
+    public void addGameobject(MapObject e) {
 
         goManager.add(e);
     }
 
-    public void removeGameObject(GameObject e) {
+    public void removeGameObject(MapObject e) {
         goManager.remove(e);
     }
 

@@ -7,12 +7,10 @@ import com.jra.api.util.Action;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 
-public class Window extends Canvas implements Runnable {
+public class MapRenderer extends Canvas implements Runnable {
 
 
     private static final int WIDTH = 1280;
@@ -36,82 +34,26 @@ public class Window extends Canvas implements Runnable {
     private int lastFps;
     public Action eachFrame = null;
     public Action onClose = null;
-    public JFrame frame;
     private Mouse mouse = new Mouse();
 
-    public Window(String title, Scene scene) {
+    public MapRenderer(JFrame frame, Scene scene) {
 
         setBackground(Color.black);
-        setSize(500, 500);
         setLocation((1280 - 500) / 2, 0);
         currentScene = scene;
-        frame = new JFrame(title);
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                if (onClose != null)
-                    onClose.act();
-
-                isRunning = false;
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
-        });
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setLayout(null);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
         addKeyListener(new Keyboard());
-        frame.addMouseMotionListener(mouse);
-        frame.addMouseListener(mouse);
-        frame.addMouseWheelListener(mouse);
+        addMouseMotionListener(mouse);
+        addMouseListener(mouse);
+        addMouseWheelListener(mouse);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
-        frame.setResizable(false);
 
+        frame.add(this);
         Thread t = new Thread(this);
         t.start();
-        frame.add(this);
 
-        Button b = new Button("test");
-        b.setSize(100, 100);
-        b.setLocation(0, 0);
-        frame.getContentPane().setBackground(new Color(43, 43, 43));
     }
 
-    public void setTitle(String title) {
-        frame.setTitle(title);
-    }
 
     public int getLastFPS() {
         return lastFps;
@@ -181,10 +123,6 @@ public class Window extends Canvas implements Runnable {
         System.exit(0);
     }
 
-    public void setFrameSize(int width, int height) {
-        frame.setSize(width, height);
-
-    }
 
     public float camX = 0;
     public float camY = 0;

@@ -1,16 +1,16 @@
 package com.jra.app;
 
-import com.jra.api.core.GameObject;
+import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
-import com.jra.api.render.Window;
+import com.jra.api.render.MapRenderer;
 
 import java.awt.*;
 
-public class Camera extends GameObject {
-    private Window window;
+public class Camera extends MapObject {
+    private MapRenderer window;
 
-    public Camera(Window w) {
+    public Camera(MapRenderer w) {
         window = w;
     }
 
