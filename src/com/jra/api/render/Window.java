@@ -37,14 +37,15 @@ public class Window extends Canvas implements Runnable {
     public Action eachFrame = null;
     public Action onClose = null;
     public JFrame frame;
+    private Mouse mouse = new Mouse();
 
     public Window(String title, Scene scene) {
 
-
-        //setSize(10, 10);
+        setBackground(Color.black);
+        setSize(500, 500);
+        setLocation((1280 - 500) / 2, 0);
         currentScene = scene;
         frame = new JFrame(title);
-        frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowListener() {
             @Override
@@ -86,16 +87,11 @@ public class Window extends Canvas implements Runnable {
 
             }
         });
-
-
-        frame.add(this);
-
+        frame.setSize(WIDTH, HEIGHT);
+        frame.setLayout(null);
         frame.setLocationRelativeTo(null);
-        setBackground(Color.black);
         frame.setVisible(true);
-
         addKeyListener(new Keyboard());
-        Mouse mouse = new Mouse();
         frame.addMouseMotionListener(mouse);
         frame.addMouseListener(mouse);
         frame.addMouseWheelListener(mouse);
@@ -105,11 +101,12 @@ public class Window extends Canvas implements Runnable {
 
         Thread t = new Thread(this);
         t.start();
+        frame.add(this);
 
         Button b = new Button("test");
-        //b.setSize(100, 100);
-        //b.setLocation(900, 900);
-        //frame.add(new Button("Test"));
+        b.setSize(100, 100);
+        b.setLocation(0, 0);
+        frame.getContentPane().setBackground(new Color(43, 43, 43));
     }
 
     public void setTitle(String title) {
@@ -184,7 +181,7 @@ public class Window extends Canvas implements Runnable {
         System.exit(0);
     }
 
-    public void setSize(int width, int height) {
+    public void setFrameSize(int width, int height) {
         frame.setSize(width, height);
 
     }

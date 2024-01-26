@@ -18,7 +18,7 @@ public class Main {
 
 
         window = new Window("Hello World", helloWorld);
-        window.setSize(800, 800);
+        window.setFrameSize(1280, 700);
         window.setBackgroundColor(Color.blue);
         helloWorld.addGameobject(new Camera(window));
         helloWorld.uiLayer = g -> {
@@ -32,7 +32,7 @@ public class Main {
 
         helloWorld.addGameobject(new World());
 
-        
+
     }
 
 
