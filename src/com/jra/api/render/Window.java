@@ -4,6 +4,7 @@ import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
+import com.jra.app.UI.TopMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +48,7 @@ public class Window extends Canvas implements Runnable {
         currentScene = scene;
         frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setJMenuBar(new TopMenu().getMenu());
         frame.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
