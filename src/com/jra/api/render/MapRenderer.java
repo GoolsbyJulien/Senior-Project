@@ -48,7 +48,7 @@ public class MapRenderer extends Canvas implements Runnable {
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
 
-        frame.add(this);
+        frame.add(this, BorderLayout.CENTER);
         Thread t = new Thread(this);
         t.start();
 
