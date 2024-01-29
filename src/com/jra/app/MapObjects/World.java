@@ -1,7 +1,8 @@
-package com.jra.app;
+package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
+import com.jra.api.util.PerlinNoise;
 import com.jra.api.util.Util;
 
 import java.awt.*;

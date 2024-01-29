@@ -1,4 +1,4 @@
-package com.jra.app;// MIT License
+package com.jra.api.util;// MIT License
 //
 // Copyright(c) 2023 Jordan Peck (jordan.me2@gmail.com)
 // Copyright(c) 2023 Contributors
