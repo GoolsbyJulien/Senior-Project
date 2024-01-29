@@ -4,7 +4,7 @@ import com.jra.api.util.Vector;
 
 import java.awt.*;
 
-public abstract class GameObject {
+public abstract class MapObject {
     public Vector pos = new Vector();
 
     public abstract void render(Graphics g);

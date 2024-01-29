@@ -1,13 +1,13 @@
 package com.jra.app;
 
-import com.jra.api.core.GameObject;
+import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
 import com.jra.api.util.Util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class World extends GameObject {
+public class World extends MapObject {
 
     int worldSize = 800;
 
@@ -101,7 +101,7 @@ public class World extends GameObject {
         p.SetNoiseType(PerlinNoise.NoiseType.Perlin);
 
         refreshNoiseMap();
-            
+
 
 //        for (int x = 0; x < worldSize; x++) {
 //            for (int y = 0; y < worldSize; y++) {

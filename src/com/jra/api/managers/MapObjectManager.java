@@ -1,16 +1,16 @@
 package com.jra.api.managers;
 
-import com.jra.api.core.GameObject;
+import com.jra.api.core.MapObject;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class GameObjectManager {
-    private CopyOnWriteArrayList<GameObject> gameObjects = new CopyOnWriteArrayList<>();
-    private ArrayList<GameObject> gameObjectsToBeRemoved = new ArrayList<>();
+public class MapObjectManager {
+    private CopyOnWriteArrayList<MapObject> gameObjects = new CopyOnWriteArrayList<>();
+    private ArrayList<MapObject> gameObjectsToBeRemoved = new ArrayList<>();
 
-    public void add(GameObject e) {
+    public void add(MapObject e) {
 
         e.onReady();
         gameObjects.add(e);
@@ -22,24 +22,24 @@ public class GameObjectManager {
     }
 
     public void render(Graphics g) {
-        for (GameObject e : gameObjects) {
+        for (MapObject e : gameObjects) {
             e.render(g);
 
         }
     }
 
     public void dispose() {
-        for (GameObject e : gameObjects) {
+        for (MapObject e : gameObjects) {
             gameObjects.remove(e);
         }
     }
 
-    public void remove(GameObject e) {
+    public void remove(MapObject e) {
         gameObjects.remove(e);
     }
 
     public void tick() {
-        for (GameObject e : gameObjects) {
+        for (MapObject e : gameObjects) {
             e.tick();
         }
 
