@@ -8,7 +8,7 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     public static boolean LEFT_CLICK = false;
     public static boolean RIGHT_CLICK = false;
-
+    public static boolean mouseInFrame = false;
     public static Vector lastClick = new Vector();
     public static Vector mousePos = new Vector();
     public static double wheel = 1;
@@ -53,12 +53,12 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        mouseInFrame = true;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        mouseInFrame = false;
     }
 
     @Override

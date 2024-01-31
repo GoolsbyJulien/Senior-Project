@@ -5,6 +5,8 @@ import com.jra.api.util.Vector;
 import java.awt.*;
 
 public abstract class MapObject {
+
+    public String name = "Map Object";
     public Vector pos = new Vector();
 
     public abstract void render(Graphics g);
@@ -19,5 +21,12 @@ public abstract class MapObject {
 
     public void setPos(int x, int y) {
         this.pos = new Vector(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return name + " {" +
+                "pos=" + pos +
+                '}';
     }
 }

@@ -125,7 +125,7 @@ public class World extends MapObject {
 
     @Override
     public void onReady() {
-
+        name = "World";
         gen();
 
     }

@@ -12,7 +12,7 @@ public class TopMenu extends JMenuBar {
     private JMenuItem temp = new JMenuItem("Temp");
 
     public TopMenu() {
-
+    
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);

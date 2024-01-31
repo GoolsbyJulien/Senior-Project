@@ -23,23 +23,25 @@ public class Camera extends MapObject {
 
     @Override
     public void tick() {
-        camSpeed = (float) (10 / window.zoom);
+
+        camSpeed = (float) (10 / window.cameraZoom);
         if (Keyboard.W)
-            window.camY -= camSpeed;
+            pos.y -= camSpeed;
         else if (Keyboard.S)
-            window.camY += camSpeed;
+            pos.y += camSpeed;
 
         else if (Keyboard.D)
-            window.camX += camSpeed;
+            pos.x += camSpeed;
         else if (Keyboard.A)
-            window.camX -= camSpeed;
+            pos.x -= camSpeed;
 
 
-        window.zoom = Mouse.wheel;
+        window.cameraZoom = Mouse.wheel;
+        window.cameraPosition = pos;
     }
 
     @Override
     public void onReady() {
-
+        name = "Camera";
     }
 }

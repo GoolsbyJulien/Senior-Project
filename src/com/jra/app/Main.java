@@ -3,6 +3,7 @@ package com.jra.app;
 import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.render.MapRenderer;
+import com.jra.api.util.Action;
 import com.jra.app.MapObjects.Camera;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
@@ -16,6 +17,10 @@ import java.awt.*;
 public class Main {
 
     public static MapRenderer mapRenderer;
+    public static RightPanel rightPanel;
+    public static LeftPanel leftPanel;
+    public static BottomPanel bottomPanel;
+
     public JFrame frame;
     private boolean showFPS = false;
 
@@ -36,7 +41,14 @@ public class Main {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana", 0, 50));
             if (showFPS)
-                g.drawString("FPS: " + mapRenderer.getLastFPS(), 250, 650);
+                g.drawString("FPS: " + mapRenderer.getLastFPS(), 250, 40);
+        };
+
+        mapRenderer.eachFrame = new Action() {
+            @Override
+            public void act() {
+                updateComponents(helloWorld);
+            }
         };
 
 
@@ -46,24 +58,32 @@ public class Main {
     }
 
 
+    public void updateComponents(Scene curretScene) {
+
+        leftPanel.hierarchy.generateHierarchy(curretScene.goManager.gameObjects);
+    }
+
     public void createWindow() {
 
 
         frame = new JFrame();
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         TopMenu menu = new TopMenu();
-
+        System.setProperty("awt.useSystemAAFontSettings", "off");
+        System.setProperty("swing.aatext", "false");
         frame.setJMenuBar(menu);
         frame.setSize(1280, 720);
+
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
 
-        frame.add(new LeftPanel(), BorderLayout.WEST);
-        frame.add(new RightPanel(), BorderLayout.EAST);
-        frame.add(new BottomPanel(), BorderLayout.SOUTH);
+        frame.add(leftPanel = new LeftPanel(), BorderLayout.WEST);
+        frame.add(rightPanel = new RightPanel(), BorderLayout.EAST);
+        frame.add(bottomPanel = new BottomPanel(), BorderLayout.SOUTH);
 
-        frame.setResizable(false);
+//        frame.setResizable(false);
         frame.setTitle("JRA Map Maker");
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);

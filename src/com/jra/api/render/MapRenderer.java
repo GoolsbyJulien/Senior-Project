@@ -4,6 +4,7 @@ import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
+import com.jra.api.util.Vector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,10 @@ public class MapRenderer extends Canvas implements Runnable {
     public Action eachFrame = null;
     public Action onClose = null;
     private Mouse mouse = new Mouse();
+
+
+    public Vector cameraPosition = new Vector(0, 0);
+    public double cameraZoom = 1;
 
     public MapRenderer(JFrame frame, Scene scene) {
 
@@ -72,6 +77,7 @@ public class MapRenderer extends Canvas implements Runnable {
     public void setBackgroundColor(Color color) {
         this.backgroundColor = color;
     }
+
 
     @Override
     public void run() {
@@ -124,10 +130,6 @@ public class MapRenderer extends Canvas implements Runnable {
     }
 
 
-    public float camX = 0;
-    public float camY = 0;
-    public double zoom = 1;
-
     private void render() {
         bs = getBufferStrategy();
         if (bs == null) {
@@ -142,11 +144,11 @@ public class MapRenderer extends Canvas implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.scale(zoom, zoom);
-        g2d.translate(-camX, -camY);
+        g2d.scale(cameraZoom, cameraZoom);
+        g2d.translate(-cameraPosition.x, -cameraPosition.y);
 
         currentScene.render(g);
-        g2d.translate(camX, camY);
+        g2d.translate(cameraPosition.x, cameraPosition.y);
         g2d.setTransform(new AffineTransform());
         currentScene.drawUI(g);
         bs.show();
