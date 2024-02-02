@@ -30,9 +30,8 @@ public class TopMenu extends JMenuBar {
 
         setBorderPainted(false);
         setOpaque(true);
-        this.add(menuView);
         this.add(menuFile);
-
+        this.add(menuView);
     }
 
     public void newProject(){
