@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.app.Main;
 import com.jra.app.Project;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,7 +17,7 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
     private JMenu menuView = new JMenu("View");
     private JMenuItem temp = new JMenuItem("Temp");
-    public Project currentProject = new Project();
+    public Project currentProject = Main.currentProject;
 
     public TopMenu() {
     
