@@ -23,14 +23,17 @@ public class Main {
 
     public JFrame frame;
     private boolean showFPS = false;
+    public static Project currentProject;
 
     public Main() {
 
 
         Scene helloWorld = new Scene();
+        currentProject = new Project();
+
         createWindow();
 
-
+        //       currentProject.setProjectName("D");
         mapRenderer = new MapRenderer(frame, helloWorld);
         mapRenderer.setSize(500, 500);
         mapRenderer.setBackgroundColor(Color.blue);
@@ -84,7 +87,7 @@ public class Main {
         frame.add(bottomPanel = new BottomPanel(), BorderLayout.SOUTH);
 
 //        frame.setResizable(false);
-        frame.setTitle("JRA Map Maker");
+        frame.setTitle("JRA Map Maker - " + currentProject.getProjectName());
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);
     }

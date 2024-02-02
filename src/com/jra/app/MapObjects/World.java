@@ -4,6 +4,7 @@ import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
 import com.jra.api.util.PerlinNoise;
 import com.jra.api.util.Util;
+import com.jra.app.Main;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -93,6 +94,7 @@ public class World extends MapObject {
         int seed = Util.RandomRange(0, 1999000);
 
         System.out.println("New World with seed " + seed);
+        Main.currentProject.setPerlinSeed(seed);
         p = new PerlinNoise(seed);
         p.SetFractalType(PerlinNoise.FractalType.FBm);
         p.SetFrequency(0.004f);
