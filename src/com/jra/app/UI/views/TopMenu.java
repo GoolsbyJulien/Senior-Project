@@ -1,11 +1,14 @@
 package com.jra.app.UI.views;
 
+import com.jra.app.Main;
 import com.jra.app.Project;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
@@ -17,10 +20,10 @@ public class TopMenu extends JMenuBar {
     private JMenuItem temp = new JMenuItem("Temp");
     private String savePath = System.getProperty("user.dir");
     public Desktop desktop = Desktop.getDesktop();
-    public Project currentProject = new Project();
+    public Project currentProject;
 
     public TopMenu() {
-    
+
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
@@ -32,10 +35,10 @@ public class TopMenu extends JMenuBar {
         setOpaque(true);
         this.add(menuView);
         this.add(menuFile);
-
+        currentProject = Main.currentProject;
     }
 
-    public void newProject(){
+    public void newProject() {
 
     }
 
@@ -48,10 +51,9 @@ public class TopMenu extends JMenuBar {
         //Save file
         File saveFile = new File(savePath + "\\test.txt");
 
-        if(saveFile.createNewFile()){
+        if (saveFile.createNewFile()) {
             System.out.println("File created");
-        }
-        else {
+        } else {
             saveFile.delete();
             saveFile.createNewFile();
             System.out.println("File override");
@@ -67,20 +69,21 @@ public class TopMenu extends JMenuBar {
     }
 
     //Opens map save location and displays the map contained in selected file
-    public void loadMap() throws IOException{
+    public void loadMap() throws IOException {
 
     }
 
     //Opens explorer to save file location
-    public void openExplorer(){
+    public void openExplorer() {
 
     }
 }
 
-class SaveMapAction extends AbstractAction{
+class SaveMapAction extends AbstractAction {
     public SaveMapAction() {
         super("Save Map");
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
