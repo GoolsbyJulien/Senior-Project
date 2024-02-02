@@ -1,11 +1,12 @@
 package com.jra.app.UI.views;
 
 import com.jra.app.Project;
-
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
@@ -15,8 +16,6 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
     private JMenu menuView = new JMenu("View");
     private JMenuItem temp = new JMenuItem("Temp");
-    private String savePath = System.getProperty("user.dir");
-    public Desktop desktop = Desktop.getDesktop();
     public Project currentProject = new Project();
 
     public TopMenu() {
@@ -45,25 +44,28 @@ public class TopMenu extends JMenuBar {
 
     //Saves map to json file
     public void saveMap() throws IOException {
-        //Save file
-        File saveFile = new File(savePath + "\\test.txt");
+        //Create save folder if not already present
+        Files.createDirectories(Paths.get("Saves"));
+        JFileChooser chooser = new JFileChooser("Saves");
 
-        if(saveFile.createNewFile()){
-            System.out.println("File created");
+        //Add an extension filter
+        chooser.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
+        chooser.addChoosableFileFilter(filter);
+
+        //Open save explorer
+        int r = chooser.showSaveDialog(null);
+
+        //Create Save file
+        if(r == JFileChooser.APPROVE_OPTION){
+            File saveFile = new File(chooser.getSelectedFile().toURI());
+
+            //Write information into file
+            FileWriter fw = new FileWriter(saveFile);
+            fw.write(currentProject.getPerlinSeed() + "\n");
+            fw.write(currentProject.getProjectName());
+            fw.close();
         }
-        else {
-            saveFile.delete();
-            saveFile.createNewFile();
-            System.out.println("File override");
-        }
-
-        //desktop.print(saveFile);
-
-        //Write information into file
-        FileWriter fw = new FileWriter(saveFile);
-        fw.write(currentProject.getPerlinSeed() + "\n");
-        fw.write(currentProject.getProjectName());
-        fw.close();
     }
 
     //Opens map save location and displays the map contained in selected file
