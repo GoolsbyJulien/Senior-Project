@@ -16,30 +16,33 @@ import java.awt.*;
 
 public class Main {
 
-    public static MapRenderer mapRenderer;
-    public static RightPanel rightPanel;
-    public static LeftPanel leftPanel;
-    public static BottomPanel bottomPanel;
+    public MapRenderer mapRenderer;
+    public RightPanel rightPanel;
+    public LeftPanel leftPanel;
+    public BottomPanel bottomPanel;
 
     public JFrame frame;
     private boolean showFPS = false;
-    public static Project currentProject;
-    public static World world = new World();
+    public Project currentProject;
+    public World world = new World();
+
+
+    public static Main instance;
 
     public Main() {
 
-
-        Scene helloWorld = new Scene();
+        instance = this;
+        Scene mapScene = new Scene();
         currentProject = new Project();
 
         createWindow();
 
         //       currentProject.setProjectName("D");
-        mapRenderer = new MapRenderer(frame, helloWorld);
+        mapRenderer = new MapRenderer(frame, mapScene);
         mapRenderer.setSize(500, 500);
         mapRenderer.setBackgroundColor(Color.blue);
-        helloWorld.addGameobject(new Camera(mapRenderer));
-        helloWorld.uiLayer = g -> {
+        mapScene.addGameobject(new Camera(mapRenderer));
+        mapScene.uiLayer = g -> {
             if (Keyboard.F3)
                 showFPS = !showFPS;
             g.setColor(Color.WHITE);
@@ -51,20 +54,19 @@ public class Main {
         mapRenderer.eachFrame = new Action() {
             @Override
             public void act() {
-                updateComponents(helloWorld);
+                updateComponents(mapScene);
             }
         };
 
 
-        helloWorld.addGameobject(world);
-        //helloWorld.addGameobject(new Moutain());
+        mapScene.addGameobject(world);
 
     }
 
 
-    public void updateComponents(Scene curretScene) {
+    public void updateComponents(Scene currentScene) {
 
-        leftPanel.hierarchy.generateHierarchy(curretScene.goManager.gameObjects);
+        leftPanel.hierarchy.generateHierarchy(currentScene.goManager.gameObjects);
     }
 
     public void createWindow() {
@@ -78,7 +80,7 @@ public class Main {
         System.setProperty("swing.aatext", "false");
         frame.setJMenuBar(menu);
         frame.setSize(1280, 720);
-
+        updateTitle();
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
@@ -88,9 +90,14 @@ public class Main {
         frame.add(bottomPanel = new BottomPanel(), BorderLayout.SOUTH);
 
 //        frame.setResizable(false);
-        frame.setTitle("JRA Map Maker - " + currentProject.getProjectName());
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);
+    }
+
+
+    public void updateTitle() {
+        frame.setTitle("JRA Map Maker - " + currentProject.getProjectName());
+
     }
 
     public static void main(String[] args) {

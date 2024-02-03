@@ -28,4 +28,17 @@ public class Util {
     public static long secondsFromNow(int seconds) {
         return System.currentTimeMillis() + seconds * 1000;
     }
+
+    public static int lerp(int a, int b, double percent) {
+        return (int) ((1 - percent) * a + percent * b);
+    }
+
+    public static Color lerp(Color a, Color b, double percent) {
+        int red = lerp(a.getRed(), b.getRed(), percent);
+        int blue = lerp(a.getBlue(), b.getBlue(), percent);
+        int green = lerp(a.getGreen(), b.getGreen(), percent);
+        int alpha = lerp(a.getAlpha(), b.getAlpha(), percent);
+        return new Color(red, green, blue, alpha);
+    }
+
 }

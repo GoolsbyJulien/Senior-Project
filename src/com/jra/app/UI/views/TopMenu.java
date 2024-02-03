@@ -2,10 +2,13 @@ package com.jra.app.UI.views;
 
 import com.jra.app.Main;
 import com.jra.app.Project;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -18,10 +21,10 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
     private JMenu menuView = new JMenu("View");
     private JMenuItem temp = new JMenuItem("Temp");
-    public Project currentProject = Main.currentProject;
+    public Project currentProject;
 
     public TopMenu() {
-    
+
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
@@ -31,12 +34,15 @@ public class TopMenu extends JMenuBar {
 
         setBorderPainted(false);
         setOpaque(true);
+
         this.add(menuFile);
         this.add(menuView);
+
+        currentProject = Main.instance.currentProject;
     }
 
-    public void newProject(){
-        Main.world.gen();
+    public void newProject() {
+        Main.instance.world.generateMap();
     }
 
     public void saveImage() {
@@ -53,24 +59,24 @@ public class TopMenu extends JMenuBar {
         chooser.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
         chooser.addChoosableFileFilter(filter);
-
         //Open save explorer
         int r = chooser.showSaveDialog(null);
 
         //Create Save file
-        if(r == JFileChooser.APPROVE_OPTION){
+        if (r == JFileChooser.APPROVE_OPTION) {
             File saveFile;
 
-            if(!chooser.getSelectedFile().toString().contains(".txt")){
+            if (!chooser.getSelectedFile().toString().contains(".txt")) {
                 saveFile = new File((chooser.getSelectedFile() + ".txt"));
-            }
-            else
-            {
+            } else {
                 saveFile = new File(chooser.getSelectedFile().toURI());
             }
 
+
             //Write information into file
             FileWriter fw = new FileWriter(saveFile);
+            currentProject.setProjectName(saveFile.getName().split(".txt")[0]);
+
             fw.write("P:" + currentProject.getPerlinSeed() + "\n");
             fw.write("N:" + currentProject.getProjectName());
             fw.close();
@@ -78,7 +84,7 @@ public class TopMenu extends JMenuBar {
     }
 
     //Opens map save location and displays the map contained in selected file
-    public void loadMap() throws IOException{
+    public void loadMap() throws IOException {
         //Create save folder if not already present
         Files.createDirectories(Paths.get("Saves"));
         JFileChooser chooser = new JFileChooser("Saves");
@@ -92,18 +98,18 @@ public class TopMenu extends JMenuBar {
         int r = chooser.showOpenDialog(null);
 
         //Load Save file
-        if(r == JFileChooser.APPROVE_OPTION){
+        if (r == JFileChooser.APPROVE_OPTION) {
             Scanner scanner = new Scanner(chooser.getSelectedFile());
 
-            while(scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 String currentLine = scanner.nextLine();
 
-                if(currentLine.contains("P:")){
-                    String newSeed = currentLine.replace("P:","");
-                    Main.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
+                if (currentLine.contains("P:")) {
+                    String newSeed = currentLine.replace("P:", "");
+                    Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
                 } else if (currentLine.contains("N:")) {
-                    String newName = currentLine.replace("N:","");
-                    Main.currentProject.setProjectName(newName);
+                    String newName = currentLine.replace("N:", "");
+                    Main.instance.currentProject.setProjectName(newName);
                 }
             }
             scanner.close();
@@ -111,10 +117,11 @@ public class TopMenu extends JMenuBar {
     }
 }
 
-class SaveMapAction extends AbstractAction{
+class SaveMapAction extends AbstractAction {
     public SaveMapAction() {
         super("Save Map");
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
@@ -125,11 +132,12 @@ class SaveMapAction extends AbstractAction{
     }
 }
 
-class LoadMapAction extends AbstractAction{
+class LoadMapAction extends AbstractAction {
 
     public LoadMapAction() {
         super("Open Project");
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
@@ -140,8 +148,8 @@ class LoadMapAction extends AbstractAction{
     }
 }
 
-class NewProjectAction extends AbstractAction{
-    public NewProjectAction(){
+class NewProjectAction extends AbstractAction {
+    public NewProjectAction() {
         super("New Project");
     }
 
