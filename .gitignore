@@ -2,3 +2,4 @@ BudgetApp/src/main/resources/application.properties
 ./out
 /out/
 /Saves/
+/.idea/
