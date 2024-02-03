@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
-    private JMenuItem fileNew = new JMenuItem("New Project");
+    private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
     private JMenuItem fileSave = new JMenuItem(new SaveMapAction());
     private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
@@ -36,7 +36,7 @@ public class TopMenu extends JMenuBar {
     }
 
     public void newProject(){
-
+        Main.world.gen();
     }
 
     public void saveImage() {
@@ -100,7 +100,7 @@ public class TopMenu extends JMenuBar {
 
                 if(currentLine.contains("P:")){
                     String newSeed = currentLine.replace("P:","");
-                    Main.currentProject.setPerlinSeed(Integer.parseInt(newSeed));
+                    Main.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
                 } else if (currentLine.contains("N:")) {
                     String newName = currentLine.replace("N:","");
                     Main.currentProject.setProjectName(newName);
@@ -137,5 +137,16 @@ class LoadMapAction extends AbstractAction{
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+}
+
+class NewProjectAction extends AbstractAction{
+    public NewProjectAction(){
+        super("New Project");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        new TopMenu().newProject();
     }
 }

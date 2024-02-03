@@ -24,6 +24,7 @@ public class Main {
     public JFrame frame;
     private boolean showFPS = false;
     public static Project currentProject;
+    public static World world = new World();
 
     public Main() {
 
@@ -55,7 +56,7 @@ public class Main {
         };
 
 
-        helloWorld.addGameobject(new World());
+        helloWorld.addGameobject(world);
         //helloWorld.addGameobject(new Moutain());
 
     }
@@ -96,5 +97,4 @@ public class Main {
 
         new Main();
     }
-
 }

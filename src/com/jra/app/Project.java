@@ -1,15 +1,24 @@
 package com.jra.app;
 
+import com.jra.app.MapObjects.World;
+
 public class Project {
-    private int perlinSeed;
+    private int perlinSeed = 0;
     private String projectName;
 
     public Project(){
-        perlinSeed = 11;
-        projectName = "Test";
+        projectName = "Untitled";
     }
 
     public void setPerlinSeed(int perlinSeed){
+        this.perlinSeed = perlinSeed;
+    }
+    public void setPerlinSeedLoad(int perlinSeed){
+        //Check if seeds are different
+        if(perlinSeed != this.perlinSeed){
+            Main.world.gen(perlinSeed);
+        }
+
         this.perlinSeed = perlinSeed;
     }
     public int getPerlinSeed(){

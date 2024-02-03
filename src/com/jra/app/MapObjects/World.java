@@ -17,7 +17,6 @@ public class World extends MapObject {
     float[][] noise = new float[worldSize][worldSize];
     BufferedImage bi;
 
-
     @Override
     public void render(Graphics g) {
         if (bi == null)
@@ -88,7 +87,7 @@ public class World extends MapObject {
 
     PerlinNoise p;
 
-    private void gen() {
+    public void gen() {
 
         bi = new BufferedImage(worldSize, worldSize, BufferedImage.TYPE_INT_ARGB);
         int seed = Util.RandomRange(0, 1999000);
@@ -125,6 +124,22 @@ public class World extends MapObject {
 //        noise = PerlinNoise.fallOff(noise);
     }
 
+    public void gen(int seed){
+        bi = new BufferedImage(worldSize, worldSize, BufferedImage.TYPE_INT_ARGB);
+
+        System.out.println("New World with seed " + seed);
+        p = new PerlinNoise(seed);
+        p.SetFractalType(PerlinNoise.FractalType.FBm);
+        p.SetFrequency(0.004f);
+        p.SetDomainWarpAmp(2);
+        p.SetFractalOctaves(5);
+        p.SetFractalLacunarity(2);
+        p.SetNoiseType(PerlinNoise.NoiseType.Perlin);
+
+        refreshNoiseMap();
+    }
+
+
     @Override
     public void onReady() {
         name = "World";
@@ -145,7 +160,5 @@ public class World extends MapObject {
 
         return Color.white;
     }
-
-
 }
 
