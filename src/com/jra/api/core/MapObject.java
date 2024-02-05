@@ -29,4 +29,7 @@ public abstract class MapObject {
                 "pos=" + pos +
                 '}';
     }
+
+    public int layer = 0;
+
 }
