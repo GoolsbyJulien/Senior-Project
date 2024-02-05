@@ -27,6 +27,7 @@ public class Main {
         };
 
         helloWorld.addGameobject(new World());
+        helloWorld.addGameobject(new NewLayers());
     }
 
 

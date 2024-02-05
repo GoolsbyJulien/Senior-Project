@@ -20,4 +20,7 @@ public abstract class GameObject {
     public void setPos(int x, int y) {
         this.pos = new Vector(x, y);
     }
+
+    public int layer = 0;
+
 }

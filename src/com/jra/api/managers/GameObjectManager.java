@@ -4,6 +4,7 @@ import com.jra.api.core.GameObject;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameObjectManager {
@@ -14,6 +15,13 @@ public class GameObjectManager {
 
 
         gameObjects.add(e);
+
+        sortLayer();
+    }
+
+    public void sortLayer() {
+
+        gameObjects.sort(Comparator.comparingInt(o -> o.layer));
     }
 
 

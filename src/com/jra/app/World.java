@@ -77,7 +77,7 @@ public class World extends GameObject {
     @Override
     public void onReady() {
         gen();
-
+        layer = 1;
     }
 
     Color biome(float e) {
