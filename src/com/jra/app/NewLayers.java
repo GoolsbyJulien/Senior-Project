@@ -1,10 +1,10 @@
 package com.jra.app;
 
-import com.jra.api.core.GameObject;
+import com.jra.api.core.MapObject;
 
 import java.awt.*;
 
-public class NewLayers extends GameObject {
+public class NewLayers extends MapObject {
 
     @Override
     public void render(Graphics g) {

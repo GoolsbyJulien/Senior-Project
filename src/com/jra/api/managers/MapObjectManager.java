@@ -3,6 +3,7 @@ package com.jra.api.managers;
 import com.jra.api.core.MapObject;
 
 import java.awt.*;
+import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MapObjectManager {
@@ -12,6 +13,7 @@ public class MapObjectManager {
 
         e.onReady();
         gameObjects.add(e);
+        sortLayer();
     }
 
 
@@ -26,6 +28,10 @@ public class MapObjectManager {
 
     }
 
+    public void sortLayer() {
+
+        gameObjects.sort(Comparator.comparingInt(o -> o.layer));
+    }
 
     public void dispose() {
         for (MapObject e : gameObjects) {
