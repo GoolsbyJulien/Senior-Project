@@ -11,13 +11,13 @@ import java.awt.image.BufferedImage;
 
 public class World extends MapObject {
 
-    private final int WORLD_SIZE = 800;
+    private final int WORLD_SIZE = 1600;
     private int mapView = 0;
     float[][] noise = new float[WORLD_SIZE][WORLD_SIZE];
 
     private PerlinNoise p;
 
-    float scale = 0.5f;
+    float scale = 1;
     private BufferedImage bi;
 
     @Override
@@ -27,7 +27,6 @@ public class World extends MapObject {
 
 
         g.drawImage(bi, 0, 0, null);
-        g.dispose();
 
 
     }
@@ -36,22 +35,26 @@ public class World extends MapObject {
     @Override
     public void tick() {
 
-        if (Keyboard.F) {
-            mapView++;
-            refreshNoiseMap();
-        }
+
         if (Keyboard.E)
             generateMap();
     }
 
 
+    public void setMapView(int mapView) {
+        this.mapView = mapView;
+        refreshNoiseMap();
+    }
+
     public void refreshNoiseMap() {
+        noise = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
+
         for (int x = 0; x < WORLD_SIZE; x++) {
             for (int y = 0; y < WORLD_SIZE; y++) {
-                noise[x][y] = Util.clamp(0, 1, p.GetNoise(x, y));
+                noise[x][y] += p.GetNoise(x, y);
                 Color color;
                 if (mapView == 0) // color map
-                    color = biome(Util.clamp(0, 1, noise[x][y]));
+                    color = biome(noise[x][y]);
 
                 else { // noise map
                     mapView = -1;
@@ -75,9 +78,8 @@ public class World extends MapObject {
         p = new PerlinNoise(seed);
         p.SetFractalType(PerlinNoise.FractalType.FBm);
         p.SetFrequency(0.004f);
-        p.SetDomainWarpAmp(2);
-        p.SetFractalOctaves(5);
-        p.SetFractalLacunarity(2);
+        p.SetDomainWarpAmp(20);
+        p.SetFractalOctaves(7);
         p.SetNoiseType(PerlinNoise.NoiseType.Perlin);
         Main.instance.currentProject.setPerlinSeed(seed);
         refreshNoiseMap();
@@ -88,19 +90,20 @@ public class World extends MapObject {
     public void onReady() {
         name = "World";
         generateMap();
-
     }
 
     Color biome(float e) {
         // these thresholds will need tuning to match your generator
-        if (e < 0.2 / 1000) return Color.blue;
-        else if (e < 0.4 / 4) return new Color(94, 167, 255);
-        else if (e < 0.45 / 2) return new Color(246, 222, 127);
-        else if (e < 0.55 / 2) return new Color(123, 255, 123);
-        else if (e < 0.6 / 2) return new Color(0, 190, 0);
+        if (e < 0.1) return Util.lerp(new Color(7, 0, 161), Color.blue, e * 3);
 
-        else if (e < 0.7 / 2) return new Color(56, 50, 29);
-        else if (e < 0.8 / 2) return new Color(61, 46, 23);
+        else if (e < 0.13) return Util.lerp(Color.blue, new Color(94, 167, 255), e);
+
+        else if (e < 0.17) return Util.lerp(new Color(94, 167, 255), new Color(255, 229, 114), e);
+
+        else if (e < 0.4) return new Color(50, 127, 53);
+
+        else if (e < 0.45) return new Color(40, 86, 40);
+
 
         return Color.white;
     }

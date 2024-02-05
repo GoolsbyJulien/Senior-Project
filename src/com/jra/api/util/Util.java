@@ -30,6 +30,8 @@ public class Util {
     }
 
     public static int lerp(int a, int b, double percent) {
+        if (percent < 0)
+            percent = 0;
         return (int) ((1 - percent) * a + percent * b);
     }
 
@@ -38,6 +40,11 @@ public class Util {
         int blue = lerp(a.getBlue(), b.getBlue(), percent);
         int green = lerp(a.getGreen(), b.getGreen(), percent);
         int alpha = lerp(a.getAlpha(), b.getAlpha(), percent);
+
+        red = (int) clamp(0, 255, red);
+        blue = (int) clamp(0, 255, blue);
+        green = (int) clamp(0, 255, green);
+
         return new Color(red, green, blue, alpha);
     }
 

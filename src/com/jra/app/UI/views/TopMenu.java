@@ -20,7 +20,7 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSave = new JMenuItem(new SaveMapAction());
     private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
     private JMenu menuView = new JMenu("View");
-    private JMenuItem temp = new JMenuItem("Temp");
+    private JMenu viewMapView = new JMenu("Map View");
     public Project currentProject;
 
     public TopMenu() {
@@ -30,14 +30,26 @@ public class TopMenu extends JMenuBar {
         menuFile.add(fileSave);
         menuFile.add(fileSaveImage);
 
-        menuView.add(temp);
 
-        setBorderPainted(false);
-        setOpaque(true);
+        JMenuItem viewMapColorMap = new JMenuItem("Color Map");
+        viewMapColorMap.addActionListener((a) -> {
+            Main.instance.world.setMapView(0);
+        });
+
+        JMenuItem viewMapNoiseMap = new JMenuItem("Noise Map");
+        viewMapNoiseMap.addActionListener((a) -> {
+            Main.instance.world.setMapView(1);
+        });
+        viewMapView.add(viewMapColorMap);
+        viewMapView.add(viewMapNoiseMap);
+        menuView.add(viewMapView);
+
 
         this.add(menuFile);
         this.add(menuView);
 
+        setBorderPainted(false);
+        setOpaque(true);
         currentProject = Main.instance.currentProject;
     }
 

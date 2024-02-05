@@ -39,16 +39,17 @@ public class Main {
 
         //       currentProject.setProjectName("D");
         mapRenderer = new MapRenderer(frame, mapScene);
-        mapRenderer.setSize(500, 500);
-        mapRenderer.setBackgroundColor(Color.blue);
+        mapRenderer.setBackgroundColor(new Color(7, 0, 161));
         mapScene.addGameobject(new Camera(mapRenderer));
         mapScene.uiLayer = g -> {
+
             if (Keyboard.F3)
                 showFPS = !showFPS;
+            if (!showFPS)
+                return;
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana", 0, 50));
-            if (showFPS)
-                g.drawString("FPS: " + mapRenderer.getLastFPS(), 250, 40);
+            g.drawString("FPS: " + mapRenderer.getLastFPS(), 250, 40);
         };
 
         mapRenderer.eachFrame = new Action() {
@@ -84,6 +85,10 @@ public class Main {
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
+        ImageIcon img = new ImageIcon("./assets/Icon.png");
+
+
+        frame.setIconImage(img.getImage());
 
         frame.add(leftPanel = new LeftPanel(), BorderLayout.WEST);
         frame.add(rightPanel = new RightPanel(), BorderLayout.EAST);

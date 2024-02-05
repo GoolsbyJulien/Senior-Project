@@ -41,22 +41,20 @@ public class PerlinNoise {
     ;
 
 
-    public static float[][] fallOff(float noiseMap[][]) {
+    public static float[][] fallOff(int width, int height) {
 
-        int width = noiseMap.length;
-        int height = noiseMap[0].length;
 
         float d, maxd, dx, dy;
         maxd = (float) Math.sqrt(width * width * 0.25 + height + height * 0.25);
 
+        float[][] noiseMap = new float[width][height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
 
                 dx = width * 0.5f - x;
                 dy = height * 0.5f - y;
-                d = (float) Math.sqrt(dx * dx + (0.4f) * dy * dy);
-                noiseMap[x][y] = -(3 * d / 10000);
-
+                d = (float) Math.sqrt(dx * dx + (0.4) * (dy * dy) + 0.06);
+                noiseMap[x][y] = 0.5f * (0.5f - ((((d / 15) * (d / 30)) *(d /400)/ maxd)));
             }
         }
         return noiseMap;

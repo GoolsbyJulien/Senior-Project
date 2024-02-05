@@ -40,6 +40,16 @@ public class Camera extends MapObject {
         window.cameraPosition = pos;
     }
 
+
+    @Override
+    public String toString() {
+        return "Camera{" +
+                "Zoom='" + Math.round(window.cameraZoom * 100.0) / 100.0 + '\'' +
+                "pos=" + pos +
+
+                '}';
+    }
+
     @Override
     public void onReady() {
         name = "Camera";
