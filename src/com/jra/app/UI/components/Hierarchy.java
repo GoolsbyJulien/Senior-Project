@@ -17,8 +17,8 @@ public class Hierarchy extends JPanel {
         setBackground(new Color(0, 0, 0));
 
         add(jLabel);
-    }
-    
+    }//
+
     public void generateHierarchy(CopyOnWriteArrayList<MapObject> mapObjects) {
 
         String output = "";
