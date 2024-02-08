@@ -16,7 +16,7 @@ public class World extends MapObject {
     float[][] noise = new float[WORLD_SIZE][WORLD_SIZE];
 
     private PerlinNoise p;
-
+    private boolean fallOff = true;
     float scale = 1;
     private BufferedImage bi;
 
@@ -47,8 +47,10 @@ public class World extends MapObject {
     }
 
     public void refreshNoiseMap() {
-        noise = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
-
+        if (fallOff == false)
+            noise = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
+        else
+            noise = new float[WORLD_SIZE][WORLD_SIZE];
         for (int x = 0; x < WORLD_SIZE; x++) {
             for (int y = 0; y < WORLD_SIZE; y++) {
                 noise[x][y] += p.GetNoise(x, y);
@@ -77,7 +79,7 @@ public class World extends MapObject {
         System.out.println("New World with seed " + seed);
         p = new PerlinNoise(seed);
         p.SetFractalType(PerlinNoise.FractalType.FBm);
-        p.SetFrequency(0.004f);
+        p.SetFrequency(0.002f);
         p.SetDomainWarpAmp(20);
         p.SetFractalOctaves(7);
         p.SetNoiseType(PerlinNoise.NoiseType.Perlin);
@@ -106,6 +108,11 @@ public class World extends MapObject {
 
 
         return Color.white;
+    }
+
+    public void toggleFallOffMap() {
+        fallOff = !fallOff;
+        refreshNoiseMap();
     }
 }
 

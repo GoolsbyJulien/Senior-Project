@@ -20,6 +20,6 @@ public class NewLayers extends MapObject {
 
     @Override
     public void onReady() {
-        layer = 6;
+        layer = -6;
     }
 }

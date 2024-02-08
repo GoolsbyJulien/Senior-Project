@@ -40,10 +40,15 @@ public class TopMenu extends JMenuBar {
         viewMapNoiseMap.addActionListener((a) -> {
             Main.instance.world.setMapView(1);
         });
+
+        JMenuItem viewMaFalloffMap = new JMenuItem("Falloff Map");
+        viewMaFalloffMap.addActionListener((a) -> {
+            Main.instance.world.toggleFallOffMap();
+        });
         viewMapView.add(viewMapColorMap);
         viewMapView.add(viewMapNoiseMap);
         menuView.add(viewMapView);
-
+        menuView.add(viewMaFalloffMap);
 
         this.add(menuFile);
         this.add(menuView);
