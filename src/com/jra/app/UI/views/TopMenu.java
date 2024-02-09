@@ -183,7 +183,7 @@ public class TopMenu extends JMenuBar{
     //Opens settings menu
     public void openSettings(){
         //Create new project window
-        JFrame frame = new JFrame("Create new project");
+        JFrame frame = new JFrame("Settings");
         frame.setLayout(new GridBagLayout());
         frame.setSize(750,750);
 
