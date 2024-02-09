@@ -5,7 +5,9 @@ import com.jra.app.Project;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,12 +15,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class TopMenu extends JMenuBar {
+public class TopMenu extends JMenuBar{
     private JMenu menuFile = new JMenu("File");
     private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
     private JMenuItem fileSave = new JMenuItem(new SaveMapAction());
-    private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
+    private JMenuItem fileSaveImage = new JMenuItem(new SaveImageAction());
+    private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
     private JMenu viewMapView = new JMenu("Map View");
     public Project currentProject;
@@ -29,6 +32,7 @@ public class TopMenu extends JMenuBar {
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
         menuFile.add(fileSaveImage);
+        menuFile.add(fileSettings);
 
 
         JMenuItem viewMapColorMap = new JMenuItem("Color Map");
@@ -54,6 +58,67 @@ public class TopMenu extends JMenuBar {
     }
 
     public void newProject() {
+        EventQueue.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                //Create new project window
+                JFrame frame = new JFrame("Create new project");
+                frame.setLayout(new GridBagLayout());
+                frame.setSize(750,750);
+
+                //Grid bag constraints
+                GridBagConstraints c = new GridBagConstraints();
+                c.insets = new Insets(2, 2, 2, 2);
+                c.gridx = 0;
+                c.gridy = 0;
+                c.ipadx = 15;
+                c.ipady = 50;
+
+
+                //Components
+                Label titleLabel = new Label("Project Title");
+                TextField titleField = new TextField();
+
+                Label descriptionLabel = new Label("Project Description");
+                TextArea descriptionArea = new TextArea();
+                Label label = new Label("Choose a base image from the options below:");
+                Button perlinButton = new Button("Perlin Noise");
+                Button imageButton = new Button("Image");
+
+                //Add components to frame
+                frame.add(titleLabel,c);
+                c.gridx = 1; c.ipadx = 200; c.ipady = 10;frame.add(titleField,c);
+                c.gridx = 0; c.gridy = 1; frame.add(descriptionLabel,c);
+                c.gridx = 1; c.gridy = 1; c.ipadx = 15; frame.add(descriptionArea,c);
+                c.gridx = 0; c.gridy = 2; frame.add(label,c);
+                c.gridx = 0; c.gridy = 3; frame.add(perlinButton,c);
+                c.gridx = 1; c.gridy = 3; frame.add(imageButton,c);
+
+                frame.setVisible(true);
+
+                perlinButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Expand area below
+                        Main.instance.currentProject.setProjectName(titleField.getText());
+                        loadNewPerlinScene();
+                        frame.setVisible(false);
+                    }
+                });
+
+                imageButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Expand area below
+                    }
+                });
+            }
+        });
+    }
+
+    public void loadNewPerlinScene(){
         Main.instance.world.generateMap();
     }
 
@@ -87,7 +152,6 @@ public class TopMenu extends JMenuBar {
 
             //Write information into file
             FileWriter fw = new FileWriter(saveFile);
-            currentProject.setProjectName(saveFile.getName().split(".txt")[0]);
 
             fw.write("P:" + currentProject.getPerlinSeed() + "\n");
             fw.write("N:" + currentProject.getProjectName());
@@ -126,6 +190,41 @@ public class TopMenu extends JMenuBar {
             }
             scanner.close();
         }
+    }
+
+    //Opens settings menu
+    public void openSettings(){
+        //Create new project window
+        JFrame frame = new JFrame("Settings");
+        frame.setLayout(new GridBagLayout());
+        frame.setSize(750,750);
+
+        //Grid bag constraints
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(2, 2, 2, 2);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 15;
+        c.ipady = 50;
+
+        //Components
+        Label titleLabel = new Label("Project Title:");
+        TextField titleField = new TextField(Main.instance.currentProject.getProjectName());
+        Button setTitleButton = new Button("Set New Title");
+
+        //Add components to frame
+        frame.add(titleLabel,c);
+        c.gridx = 1; c.ipadx = 200; c.ipady = 10; frame.add(titleField,c);
+        c.gridx = 2; frame.add(setTitleButton,c);
+
+        frame.setVisible(true);
+
+        setTitleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.instance.currentProject.setProjectName(titleField.getText());
+            }
+        });
     }
 }
 
@@ -168,5 +267,23 @@ class NewProjectAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         new TopMenu().newProject();
+    }
+}
+
+class SaveImageAction extends AbstractAction{
+    public SaveImageAction() {
+        super("Save current view as Image");
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        new TopMenu().saveImage();
+    }
+}
+
+class OpenSettingsAction extends AbstractAction{
+    public OpenSettingsAction(){ super("Settings");}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        new TopMenu().openSettings();
     }
 }
