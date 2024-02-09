@@ -25,14 +25,14 @@ public class Camera extends MapObject {
     public void tick() {
 
         camSpeed = (float) (10 / window.cameraZoom);
-        if (Keyboard.W)
+        if (Keyboard.W || Keyboard.UP)
             pos.y -= camSpeed;
-        else if (Keyboard.S)
+        else if (Keyboard.S || Keyboard.DOWN)
             pos.y += camSpeed;
 
-        else if (Keyboard.D)
+        else if (Keyboard.D || Keyboard.RIGHT)
             pos.x += camSpeed;
-        else if (Keyboard.A)
+        else if (Keyboard.A || Keyboard.LEFT)
             pos.x -= camSpeed;
 
 

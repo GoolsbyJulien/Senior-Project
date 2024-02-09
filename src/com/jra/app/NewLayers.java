@@ -1,6 +1,7 @@
 package com.jra.app;
 
 import com.jra.api.core.MapObject;
+import com.jra.api.input.Mouse;
 
 import java.awt.*;
 
@@ -15,6 +16,12 @@ public class NewLayers extends MapObject {
 
     @Override
     public void tick() {
+
+        int mouseX = (int)((Mouse.mousePos.x +Main.instance.mapRenderer.cameraPosition.x) / Main.instance.mapRenderer.cameraZoom);
+        int mouseY = (int)((Mouse.mousePos.y +Main.instance.mapRenderer.cameraPosition.y) / Main.instance.mapRenderer.cameraZoom);
+
+                pos.x = mouseX;
+                pos.y = mouseY;
 
     }
 
