@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class TopMenu extends JMenuBar {
+public class TopMenu extends JMenuBar{
     private JMenu menuFile = new JMenu("File");
     private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
@@ -50,12 +51,22 @@ public class TopMenu extends JMenuBar {
             {
                 //Create new project window
                 JFrame frame = new JFrame("Create new project");
-                frame.setLayout(new GridLayout());
-                frame.setSize(500,500);
+                frame.setLayout(new GridBagLayout());
+                frame.setSize(750,750);
+
+                //Grid bag constraints
+                GridBagConstraints c = new GridBagConstraints();
+                c.insets = new Insets(2, 2, 2, 2);
+                c.gridx = 0;
+                c.gridy = 0;
+                c.ipadx = 15;
+                c.ipady = 50;
+
 
                 //Components
                 Label titleLabel = new Label("Project Title");
                 TextField titleField = new TextField();
+
                 Label descriptionLabel = new Label("Project Description");
                 TextArea descriptionArea = new TextArea();
                 Label label = new Label("Choose a base image from the options below:");
@@ -63,15 +74,32 @@ public class TopMenu extends JMenuBar {
                 Button imageButton = new Button("Image");
 
                 //Add components to frame
-                frame.add(titleLabel,0);
-                frame.add(titleField,0);
-                frame.add(descriptionLabel,1);
-                frame.add(descriptionArea,1);
-                frame.add(label,2);
-                frame.add(perlinButton,3);
-                frame.add(imageButton,3);
+                frame.add(titleLabel,c);
+                c.gridx = 1; c.ipadx = 200; c.ipady = 10;frame.add(titleField,c);
+                c.gridx = 0; c.gridy = 1; frame.add(descriptionLabel,c);
+                c.gridx = 1; c.gridy = 1; c.ipadx = 15; frame.add(descriptionArea,c);
+                c.gridx = 0; c.gridy = 2; frame.add(label,c);
+                c.gridx = 0; c.gridy = 3; frame.add(perlinButton,c);
+                c.gridx = 1; c.gridy = 3; frame.add(imageButton,c);
 
                 frame.setVisible(true);
+
+                perlinButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Expand area below
+                        Main.instance.currentProject.setProjectName(titleField.getText());
+                        loadNewPerlinScene();
+                        frame.setVisible(false);
+                    }
+                });
+
+                imageButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Expand area below
+                    }
+                });
             }
         });
     }
@@ -110,7 +138,6 @@ public class TopMenu extends JMenuBar {
 
             //Write information into file
             FileWriter fw = new FileWriter(saveFile);
-            currentProject.setProjectName(saveFile.getName().split(".txt")[0]);
 
             fw.write("P:" + currentProject.getPerlinSeed() + "\n");
             fw.write("N:" + currentProject.getProjectName());
