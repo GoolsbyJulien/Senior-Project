@@ -21,6 +21,7 @@ public class TopMenu extends JMenuBar{
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
     private JMenuItem fileSave = new JMenuItem(new SaveMapAction());
     private JMenuItem fileSaveImage = new JMenuItem(new SaveImageAction());
+    private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
     private JMenu viewMapView = new JMenu("Map View");
     public Project currentProject;
@@ -31,6 +32,7 @@ public class TopMenu extends JMenuBar{
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
         menuFile.add(fileSaveImage);
+        menuFile.add(fileSettings);
 
 
         JMenuItem viewMapColorMap = new JMenuItem("Color Map");
@@ -189,6 +191,41 @@ public class TopMenu extends JMenuBar{
             scanner.close();
         }
     }
+
+    //Opens settings menu
+    public void openSettings(){
+        //Create new project window
+        JFrame frame = new JFrame("Create new project");
+        frame.setLayout(new GridBagLayout());
+        frame.setSize(750,750);
+
+        //Grid bag constraints
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(2, 2, 2, 2);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 15;
+        c.ipady = 50;
+
+        //Components
+        Label titleLabel = new Label("Project Title:");
+        TextField titleField = new TextField(Main.instance.currentProject.getProjectName());
+        Button setTitleButton = new Button("Set New Title");
+
+        //Add components to frame
+        frame.add(titleLabel,c);
+        c.gridx = 1; c.ipadx = 200; c.ipady = 10; frame.add(titleField,c);
+        c.gridx = 2; frame.add(setTitleButton,c);
+
+        frame.setVisible(true);
+
+        setTitleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.instance.currentProject.setProjectName(titleField.getText());
+            }
+        });
+    }
 }
 
 class SaveMapAction extends AbstractAction {
@@ -240,5 +277,13 @@ class SaveImageAction extends AbstractAction{
     @Override
     public void actionPerformed(ActionEvent e) {
         new TopMenu().saveImage();
+    }
+}
+
+class OpenSettingsAction extends AbstractAction{
+    public OpenSettingsAction(){ super("Settings");}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        new TopMenu().openSettings();
     }
 }
