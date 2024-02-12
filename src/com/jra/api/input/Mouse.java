@@ -8,6 +8,8 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     public static boolean LEFT_CLICK = false;
     public static boolean RIGHT_CLICK = false;
+    public static boolean MIDDLE_CLICK = false;
+
     public static boolean mouseInFrame = false;
     public static Vector lastClick = new Vector();
     public static Vector mousePos = new Vector();
@@ -22,10 +24,13 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     public void mousePressed(MouseEvent e) {
         lastClick.x = e.getX();
         lastClick.y = e.getY();
-        if (e.getButton() == 0)
-            RIGHT_CLICK = true;
-        else
+        if (e.getButton() == 1)
             LEFT_CLICK = true;
+        else if (e.getButton() == 2)
+            MIDDLE_CLICK = true;
+        else if (e.getButton() == 3)
+            RIGHT_CLICK = true;
+
     }
 
     @Override
@@ -45,10 +50,12 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     @Override
     public void mouseReleased(MouseEvent e) {
 
-        if (e.getButton() == 0)
-            RIGHT_CLICK = false;
-        else
+        if (e.getButton() == 1)
             LEFT_CLICK = false;
+        else if (e.getButton() == 2)
+            MIDDLE_CLICK = false;
+        else if (e.getButton() == 3)
+            RIGHT_CLICK = false;
     }
 
     @Override
