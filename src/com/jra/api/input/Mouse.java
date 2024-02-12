@@ -16,17 +16,16 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        lastClick.x = e.getX();
-        lastClick.y = e.getY();
-        if (e.getButton() == 1)
-            RIGHT_CLICK = true;
-        else
-            LEFT_CLICK = true;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        lastClick.x = e.getX();
+        lastClick.y = e.getY();
+        if (e.getButton() == 0)
+            RIGHT_CLICK = true;
+        else
+            LEFT_CLICK = true;
     }
 
     @Override
@@ -45,6 +44,7 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
         if (e.getButton() == 0)
             RIGHT_CLICK = false;
         else
@@ -63,7 +63,7 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        mouseMoved(e);
     }
 
     @Override
