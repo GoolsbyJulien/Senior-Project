@@ -16,14 +16,16 @@ public class NewLayers extends MapObject {
 
     @Override
     public void tick() {
+            int mouseX = (int)((Mouse.mousePos.x +Main.instance.mapRenderer.cameraPosition.x) / Main.instance.mapRenderer.cameraZoom);
+            int mouseY = (int)((Mouse.mousePos.y +Main.instance.mapRenderer.cameraPosition.y) / Main.instance.mapRenderer.cameraZoom);
 
-        int mouseX = (int)((Mouse.mousePos.x +Main.instance.mapRenderer.cameraPosition.x) / Main.instance.mapRenderer.cameraZoom);
-        int mouseY = (int)((Mouse.mousePos.y +Main.instance.mapRenderer.cameraPosition.y) / Main.instance.mapRenderer.cameraZoom);
 
+            if (Mouse.LEFT_CLICK) {
                 pos.x = mouseX;
                 pos.y = mouseY;
-
+            }
     }
+
 
     @Override
     public void onReady() {

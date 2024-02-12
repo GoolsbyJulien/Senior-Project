@@ -61,8 +61,8 @@ public class Main {
 
 
         mapScene.addGameobject(world);
-        for(int i =0; i < 1000;i++)
         mapScene.addGameobject(new NewLayers());
+
 
     }
 
