@@ -58,6 +58,20 @@ public class MapRenderer extends Canvas implements Runnable {
         t.start();
 
     }
+    public MapRenderer(JPanel panel,Scene scene){
+        setBackground(Color.black);
+        currentScene = scene;
+        addKeyListener(new Keyboard());
+        addMouseMotionListener(mouse);
+        addMouseListener(mouse);
+        addMouseWheelListener(mouse);
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
+
+        panel.add(this);
+        Thread t = new Thread(this);
+        t.start();
+    }
 
 
     public int getLastFPS() {

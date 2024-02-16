@@ -1,6 +1,10 @@
 package com.jra.app.UI.views;
 
+import com.jra.api.core.Scene;
+import com.jra.api.render.MapRenderer;
 import com.jra.app.Main;
+import com.jra.app.MapObjects.Camera;
+import com.jra.app.MapObjects.World;
 import com.jra.app.Project;
 
 import javax.swing.*;
@@ -96,15 +100,37 @@ public class TopMenu extends JMenuBar{
                 c.gridx = 0; c.gridy = 3; frame.add(perlinButton,c);
                 c.gridx = 1; c.gridy = 3; frame.add(imageButton,c);
 
+                //Lower panel
+                JScrollPane panel = new JScrollPane();
+                panel.setSize(750,300);
+                c.gridx = 0; c.gridy = 4; frame.add(panel,c);
+
+                JPanel mapPanel = new JPanel();
+                mapPanel.setSize(500,250);
+                Label seedLabel = new Label("Seed");
+                TextField seedField = new TextField();
+                Button createButton = new Button("Create Project");
+                panel.add(mapPanel);
+
+                //Map preview
+                Scene mapScene = new Scene();
+                final MapRenderer[] mapRenderer = new MapRenderer[1];
+                World world = new World();
+
                 frame.setVisible(true);
 
                 perlinButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //Expand area below
-                        Main.instance.currentProject.setProjectName(titleField.getText());
-                        loadNewPerlinScene();
-                        frame.setVisible(false);
+                        //Create preview of map with an option to change the seed
+                        panel.add(mapRenderer[0] = new MapRenderer(mapPanel,mapScene));
+                        mapRenderer[0].setBackgroundColor(new Color(7, 0, 161));
+                        mapScene.addGameobject(new Camera(mapRenderer[0]));
+                        mapScene.addGameobject(world);
+
+                        //Main.instance.currentProject.setProjectName(titleField.getText());
+                        //loadNewPerlinScene();
+                        //frame.setVisible(false);
                     }
                 });
 
