@@ -3,7 +3,6 @@ package com.jra.app.UI.views;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
 import com.jra.app.Main;
-import com.jra.app.MapObjects.Camera;
 import com.jra.app.MapObjects.World;
 import com.jra.app.Project;
 
@@ -19,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class TopMenu extends JMenuBar{
+public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
     private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
@@ -62,15 +61,13 @@ public class TopMenu extends JMenuBar{
     }
 
     public void newProject() {
-        EventQueue.invokeLater(new Runnable()
-        {
+        EventQueue.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 //Create new project window
                 JFrame frame = new JFrame("Create new project");
                 frame.setLayout(new GridBagLayout());
-                frame.setSize(750,750);
+                frame.setSize(750, 750);
 
                 //Grid bag constraints
                 GridBagConstraints c = new GridBagConstraints();
@@ -92,41 +89,68 @@ public class TopMenu extends JMenuBar{
                 Button imageButton = new Button("Image");
 
                 //Add components to frame
-                frame.add(titleLabel,c);
-                c.gridx = 1; c.ipadx = 200; c.ipady = 10;frame.add(titleField,c);
-                c.gridx = 0; c.gridy = 1; frame.add(descriptionLabel,c);
-                c.gridx = 1; c.gridy = 1; c.ipadx = 15; frame.add(descriptionArea,c);
-                c.gridx = 0; c.gridy = 2; frame.add(label,c);
-                c.gridx = 0; c.gridy = 3; frame.add(perlinButton,c);
-                c.gridx = 1; c.gridy = 3; frame.add(imageButton,c);
+                frame.add(titleLabel, c);
+                c.gridx = 1;
+                c.ipadx = 200;
+                c.ipady = 10;
+                frame.add(titleField, c);
+                c.gridx = 0;
+                c.gridy = 1;
+                frame.add(descriptionLabel, c);
+                c.gridx = 1;
+                c.gridy = 1;
+                c.ipadx = 15;
+                frame.add(descriptionArea, c);
+                c.gridx = 0;
+                c.gridy = 2;
+                frame.add(label, c);
+                c.gridx = 0;
+                c.gridy = 3;
+                frame.add(perlinButton, c);
+                c.gridx = 1;
+                c.gridy = 3;
+                frame.add(imageButton, c);
 
                 //Lower panel
-                JScrollPane panel = new JScrollPane();
-                panel.setSize(750,300);
-                c.gridx = 0; c.gridy = 4; frame.add(panel,c);
+                JPanel panel = new JPanel();
+                panel.setSize(750, 300);
+                c.gridx = 0;
+                c.gridy = 4;
+                frame.add(panel, c);
 
                 JPanel mapPanel = new JPanel();
-                mapPanel.setSize(500,250);
+                mapPanel.setSize(500, 250);
                 Label seedLabel = new Label("Seed");
                 TextField seedField = new TextField();
                 Button createButton = new Button("Create Project");
+                Scene mapScene = new Scene();
+                final MapRenderer mapRenderer = new MapRenderer(mapScene);
+                mapRenderer.setBackgroundColor(Color.red);
+                mapRenderer.setSize(80, 80);
+                mapRenderer.cameraZoom = 0.1f;
+                mapRenderer.disposeOnRender = false;
+                World world = new World();
+
+                mapScene.addGameobject(world);
+                mapPanel.add(mapRenderer.getPanel());
+                mapRenderer.changeScene(mapScene);
+
                 panel.add(mapPanel);
 
                 //Map preview
-                Scene mapScene = new Scene();
-                final MapRenderer[] mapRenderer = new MapRenderer[1];
-                World world = new World();
 
                 frame.setVisible(true);
+                mapRenderer.startUpdateThread();
+
 
                 perlinButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Create preview of map with an option to change the seed
-                        panel.add(mapRenderer[0] = new MapRenderer(mapPanel,mapScene));
-                        mapRenderer[0].setBackgroundColor(new Color(7, 0, 161));
-                        mapScene.addGameobject(new Camera(mapRenderer[0]));
-                        mapScene.addGameobject(world);
+//                        panel.add(mapRenderer[0] = new MapRenderer(mapPanel,mapScene));
+//                        mapRenderer[0].setBackgroundColor(new Color(7, 0, 161));
+//                        mapScene.addGameobject(new Camera(mapRenderer[0]));
+//                        mapScene.addGameobject(world);
 
                         //Main.instance.currentProject.setProjectName(titleField.getText());
                         //loadNewPerlinScene();
@@ -144,7 +168,7 @@ public class TopMenu extends JMenuBar{
         });
     }
 
-    public void loadNewPerlinScene(){
+    public void loadNewPerlinScene() {
         Main.instance.world.generateMap();
     }
 
@@ -219,11 +243,11 @@ public class TopMenu extends JMenuBar{
     }
 
     //Opens settings menu
-    public void openSettings(){
+    public void openSettings() {
         //Create new project window
         JFrame frame = new JFrame("Settings");
         frame.setLayout(new GridBagLayout());
-        frame.setSize(750,750);
+        frame.setSize(750, 750);
 
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
@@ -239,9 +263,13 @@ public class TopMenu extends JMenuBar{
         Button setTitleButton = new Button("Set New Title");
 
         //Add components to frame
-        frame.add(titleLabel,c);
-        c.gridx = 1; c.ipadx = 200; c.ipady = 10; frame.add(titleField,c);
-        c.gridx = 2; frame.add(setTitleButton,c);
+        frame.add(titleLabel, c);
+        c.gridx = 1;
+        c.ipadx = 200;
+        c.ipady = 10;
+        frame.add(titleField, c);
+        c.gridx = 2;
+        frame.add(setTitleButton, c);
 
         frame.setVisible(true);
 
@@ -296,18 +324,22 @@ class NewProjectAction extends AbstractAction {
     }
 }
 
-class SaveImageAction extends AbstractAction{
+class SaveImageAction extends AbstractAction {
     public SaveImageAction() {
         super("Save current view as Image");
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         new TopMenu().saveImage();
     }
 }
 
-class OpenSettingsAction extends AbstractAction{
-    public OpenSettingsAction(){ super("Settings");}
+class OpenSettingsAction extends AbstractAction {
+    public OpenSettingsAction() {
+        super("Settings");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         new TopMenu().openSettings();

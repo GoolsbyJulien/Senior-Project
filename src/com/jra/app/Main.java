@@ -34,11 +34,11 @@ public class Main {
         instance = this;
         Scene mapScene = new Scene();
         currentProject = new Project();
+        mapRenderer = new MapRenderer(mapScene);
 
         createWindow();
 
         //       currentProject.setProjectName("D");
-        mapRenderer = new MapRenderer(frame, mapScene);
         mapRenderer.setBackgroundColor(new Color(7, 0, 161));
         mapScene.addGameobject(new Camera(mapRenderer));
         mapScene.uiLayer = g -> {
@@ -84,6 +84,7 @@ public class Main {
         updateTitle();
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
+        frame.add(mapRenderer.getPanel(), BorderLayout.CENTER);
 
         ImageIcon img = new ImageIcon("./assets/Icon.png");
 
@@ -97,6 +98,7 @@ public class Main {
 //        frame.setResizable(false);
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);
+        mapRenderer.startUpdateThread();
     }
 
 

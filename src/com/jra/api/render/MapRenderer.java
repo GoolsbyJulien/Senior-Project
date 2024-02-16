@@ -13,7 +13,7 @@ import java.awt.image.BufferStrategy;
 
 public class MapRenderer extends Canvas implements Runnable {
 
-
+    public boolean disposeOnRender = true;
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 700;
 
@@ -41,7 +41,7 @@ public class MapRenderer extends Canvas implements Runnable {
     public Vector cameraPosition = new Vector(0, 0);
     public double cameraZoom = 1;
 
-    public MapRenderer(JFrame frame, Scene scene) {
+    public MapRenderer(Scene scene) {
 
         setBackground(Color.black);
         setLocation((1280 - 500) / 2, 0);
@@ -53,24 +53,13 @@ public class MapRenderer extends Canvas implements Runnable {
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
 
-        frame.add(this, BorderLayout.CENTER);
-        Thread t = new Thread(this);
-        t.start();
 
     }
-    public MapRenderer(JPanel panel,Scene scene){
-        setBackground(Color.black);
-        currentScene = scene;
-        addKeyListener(new Keyboard());
-        addMouseMotionListener(mouse);
-        addMouseListener(mouse);
-        addMouseWheelListener(mouse);
-        addMouseListener(mouse);
-        addMouseMotionListener(mouse);
 
-        panel.add(this);
+    public void startUpdateThread() {
         Thread t = new Thread(this);
         t.start();
+
     }
 
 
@@ -144,7 +133,14 @@ public class MapRenderer extends Canvas implements Runnable {
     }
 
 
-    private void render() {
+    public JPanel getPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this);
+        return panel;
+    }
+
+    public void render() {
         bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
@@ -166,7 +162,8 @@ public class MapRenderer extends Canvas implements Runnable {
         g2d.setTransform(new AffineTransform());
         currentScene.drawUI(g);
         bs.show();
-        g.dispose();
+        //if (disposeOnRender)
+        // g.dispose();
 
     }
 }
