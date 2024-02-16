@@ -15,6 +15,7 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     public static Vector mousePos = new Vector();
     public static double wheel = 1;
 
+
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -70,12 +71,21 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mouseMoved(e);
+        if (mouseInFrame)
+            mouseMoved(e);
+
+
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         mousePos.x = e.getX();
         mousePos.y = e.getY();
+    }
+
+
+    public static boolean wasDragged() {
+
+        return !(lastClick.x == mousePos.x && lastClick.y == mousePos.y);
     }
 }
