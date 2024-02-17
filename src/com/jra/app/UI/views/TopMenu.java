@@ -2,6 +2,8 @@ package com.jra.app.UI.views;
 
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
+import com.jra.api.util.Util;
+import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.World;
 import com.jra.app.Project;
@@ -128,11 +130,12 @@ public class TopMenu extends JMenuBar {
                 mapRenderer.setBackgroundColor(Color.red);
                 mapRenderer.setSize(80, 80);
                 mapRenderer.cameraZoom = 0.1f;
+                mapRenderer.cameraPosition = new Vector(300, 600);
                 mapRenderer.disposeOnRender = false;
                 World world = new World();
-
+                world.generateMap(0);
                 mapScene.addGameobject(world);
-                mapPanel.add(mapRenderer.getPanel());
+                mapPanel.add(mapRenderer);
                 mapRenderer.changeScene(mapScene);
 
                 panel.add(mapPanel);
@@ -146,14 +149,22 @@ public class TopMenu extends JMenuBar {
                 perlinButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+
+
+                        int seed = Util.RandomRange(0, 100000);
+                        world.generateMap(seed);
+
+
                         //Create preview of map with an option to change the seed
 //                        panel.add(mapRenderer[0] = new MapRenderer(mapPanel,mapScene));
 //                        mapRenderer[0].setBackgroundColor(new Color(7, 0, 161));
 //                        mapScene.addGameobject(new Camera(mapRenderer[0]));
 //                        mapScene.addGameobject(world);
+                        Main.instance.currentProject.setProjectName(titleField.getText());
 
-                        //Main.instance.currentProject.setProjectName(titleField.getText());
-                        //loadNewPerlinScene();
+                        loadNewPerlinScene();
+
+
                         //frame.setVisible(false);
                     }
                 });

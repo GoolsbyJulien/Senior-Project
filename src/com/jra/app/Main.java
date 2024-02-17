@@ -84,7 +84,7 @@ public class Main {
         updateTitle();
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
-        frame.add(mapRenderer.getPanel(), BorderLayout.CENTER);
+        frame.add(mapRenderer, BorderLayout.CENTER);
 
         ImageIcon img = new ImageIcon("./assets/Icon.png");
 
