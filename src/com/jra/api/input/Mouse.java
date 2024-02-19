@@ -10,6 +10,8 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     public static boolean RIGHT_CLICK = false;
     public static boolean MIDDLE_CLICK = false;
 
+    public static boolean followMouse = false;
+
     public static boolean mouseInFrame = false;
     public static Vector lastClick = new Vector();
     public static Vector mousePos = new Vector();

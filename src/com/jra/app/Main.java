@@ -4,6 +4,7 @@ import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Action;
+import com.jra.api.util.Vector;
 import com.jra.app.MapObjects.Camera;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
@@ -61,7 +62,10 @@ public class Main {
 
 
         mapScene.addGameobject(world);
-        mapScene.addGameobject(new NewLayers());
+        mapScene.addGameobject(new NewLayers(new Vector(
+                0,3
+        )));
+        mapScene.addGameobject(new NewLayers(new Vector( 50, 53 )));
 
 
     }
