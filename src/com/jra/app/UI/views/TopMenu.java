@@ -68,17 +68,25 @@ public class TopMenu extends JMenuBar {
             public void run() {
                 //Create new project window
                 JFrame frame = new JFrame("Create new project");
-                frame.setLayout(new GridBagLayout());
                 frame.setSize(750, 750);
+
+                //Content panes
+                ScrollPane scrollPane = new ScrollPane();
+                JPanel panel = new JPanel();
+                panel.setLayout(new GridBagLayout());
+                scrollPane.add(panel);
+                frame.add(scrollPane);
 
                 //Grid bag constraints
                 GridBagConstraints c = new GridBagConstraints();
+                c.fill=GridBagConstraints.BOTH;
+                c.anchor=GridBagConstraints.CENTER;
                 c.insets = new Insets(2, 2, 2, 2);
                 c.gridx = 0;
                 c.gridy = 0;
                 c.ipadx = 15;
                 c.ipady = 50;
-
+                c.weightx=1;
 
                 //Components
                 Label titleLabel = new Label("Project Title");
@@ -91,81 +99,78 @@ public class TopMenu extends JMenuBar {
                 Button imageButton = new Button("Image");
 
                 //Add components to frame
-                frame.add(titleLabel, c);
+                panel.add(titleLabel, c);
                 c.gridx = 1;
                 c.ipadx = 200;
                 c.ipady = 10;
-                frame.add(titleField, c);
+                panel.add(titleField, c);
                 c.gridx = 0;
                 c.gridy = 1;
-                frame.add(descriptionLabel, c);
+                panel.add(descriptionLabel, c);
                 c.gridx = 1;
                 c.gridy = 1;
                 c.ipadx = 15;
-                frame.add(descriptionArea, c);
+                panel.add(descriptionArea, c);
                 c.gridx = 0;
                 c.gridy = 2;
-                frame.add(label, c);
+                panel.add(label, c);
                 c.gridx = 0;
                 c.gridy = 3;
-                frame.add(perlinButton, c);
+                panel.add(perlinButton, c);
                 c.gridx = 1;
                 c.gridy = 3;
-                frame.add(imageButton, c);
-
-                //Lower panel
-                JPanel panel = new JPanel();
-                panel.setSize(750, 300);
-                c.gridx = 0;
-                c.gridy = 4;
-                frame.add(panel, c);
+                panel.add(imageButton, c);
 
                 JPanel mapPanel = new JPanel();
                 mapPanel.setSize(500, 250);
                 Label seedLabel = new Label("Seed");
+                seedLabel.setAlignment(Label.RIGHT);
                 TextField seedField = new TextField();
                 Button createButton = new Button("Create Project");
-                Scene mapScene = new Scene();
-                final MapRenderer mapRenderer = new MapRenderer(mapScene);
-                mapRenderer.setBackgroundColor(Color.red);
-                mapRenderer.setSize(80, 80);
-                mapRenderer.cameraZoom = 0.1f;
-                mapRenderer.cameraPosition = new Vector(300, 600);
-                mapRenderer.disposeOnRender = false;
-                World world = new World();
-                world.generateMap(0);
-                mapScene.addGameobject(world);
-                mapPanel.add(mapRenderer);
-                mapRenderer.changeScene(mapScene);
-
-                panel.add(mapPanel);
+                c.gridx = 1;
+                c.gridy = 6;
+                panel.add(createButton,c);
 
                 //Map preview
-
+                Scene mapScene = new Scene();
+                final MapRenderer mapRenderer = new MapRenderer(mapScene);
                 frame.setVisible(true);
-                mapRenderer.startUpdateThread();
-
 
                 perlinButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        //Add Seed field
+                        c.gridx = 0;
+                        c.gridy = 5;
+                        c.ipadx = 5;
+                        panel.add(seedLabel, c);
+                        c.gridx = 1;
+                        c.gridy = 5;
+                        panel.add(seedField, c);
 
+                        //Add map preview
+                        mapRenderer.setBackgroundColor(Color.red);
+                        mapRenderer.setSize(100, 100);
+                        mapRenderer.cameraZoom = 0.1f;
+                        mapRenderer.cameraPosition = new Vector(300, 600);
+                        mapRenderer.disposeOnRender = false;
+                        World world = new World();
+                        mapScene.addGameobject(world);
+                        mapPanel.add(mapRenderer);
+                        mapRenderer.changeScene(mapScene);
+
+                        c.gridx = 0;
+                        c.gridy = 6;
+                        panel.add(mapPanel,c);
+                        mapRenderer.startUpdateThread();
 
                         int seed = Util.RandomRange(0, 100000);
+                        seedField.setText(String.valueOf(seed));
                         world.generateMap(seed);
 
-
-                        //Create preview of map with an option to change the seed
-//                        panel.add(mapRenderer[0] = new MapRenderer(mapPanel,mapScene));
-//                        mapRenderer[0].setBackgroundColor(new Color(7, 0, 161));
-//                        mapScene.addGameobject(new Camera(mapRenderer[0]));
-//                        mapScene.addGameobject(world);
-                        Main.instance.currentProject.setProjectName(titleField.getText());
-
-                        loadNewPerlinScene();
-
-
-                        //frame.setVisible(false);
+                        //Resize window to fit contents
+                        frame.setSize(751, 751);
+                        frame.setSize(750, 750);
                     }
                 });
 
@@ -175,12 +180,17 @@ public class TopMenu extends JMenuBar {
                         //Expand area below
                     }
                 });
+
+                createButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Main.instance.currentProject.setProjectName(titleField.getText());
+                        frame.setVisible(false);
+                        Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
+                    }
+                });
             }
         });
-    }
-
-    public void loadNewPerlinScene() {
-        Main.instance.world.generateMap();
     }
 
     public void saveImage() {
