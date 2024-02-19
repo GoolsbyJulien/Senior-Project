@@ -59,7 +59,6 @@ public class MapRenderer extends Canvas implements Runnable {
     public void startUpdateThread() {
         Thread t = new Thread(this);
         t.start();
-
     }
 
 
@@ -129,7 +128,7 @@ public class MapRenderer extends Canvas implements Runnable {
                 timer += 1000;
             }
         }
-        System.exit(0);
+        //System.exit(0);
     }
 
 
@@ -165,5 +164,9 @@ public class MapRenderer extends Canvas implements Runnable {
         //if (disposeOnRender)
         // g.dispose();
 
+    }
+
+    public void setRunning(boolean run){
+        isRunning = run;
     }
 }

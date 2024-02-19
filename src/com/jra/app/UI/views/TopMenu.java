@@ -139,6 +139,9 @@ public class TopMenu extends JMenuBar {
                 perlinButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        //Reset threads
+                        mapRenderer.setRunning(false);
+
                         //Add Seed field
                         c.gridx = 0;
                         c.gridy = 5;
@@ -187,6 +190,7 @@ public class TopMenu extends JMenuBar {
                         Main.instance.currentProject.setProjectName(titleField.getText());
                         frame.setVisible(false);
                         Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
+                        mapRenderer.setRunning(false);
                     }
                 });
             }
