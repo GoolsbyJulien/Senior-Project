@@ -8,11 +8,13 @@ import com.jra.app.Main;
 import com.jra.app.MapObjects.World;
 import com.jra.app.Project;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -239,11 +241,20 @@ public class TopMenu extends JMenuBar {
                             try {
                                 scanner = new Scanner(chooser.getSelectedFile());
 
+                                BufferedImage img = ImageIO.read(chooser.getSelectedFile());
+                                JLabel imageLabel = new JLabel(new ImageIcon(img.getScaledInstance(-1, 50, Image.SCALE_SMOOTH)));
+                                imagePanel.add(imageLabel);
 
                                 scanner.close();
                             } catch (FileNotFoundException ex) {
                                 throw new RuntimeException(ex);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
                             }
+
+                            //Resize window to fit contents
+                            frame.setSize(751, 751);
+                            frame.setSize(750, 750);
                         }
                     }
                 });
