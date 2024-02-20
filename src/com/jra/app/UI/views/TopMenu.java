@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -62,7 +63,7 @@ public class TopMenu extends JMenuBar {
         currentProject = Main.instance.currentProject;
     }
 
-    public void newProject() {
+    public void newProject(){
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -121,6 +122,7 @@ public class TopMenu extends JMenuBar {
                 c.gridy = 3;
                 panel.add(imageButton, c);
 
+                //Perlin
                 JPanel mapPanel = new JPanel();
                 mapPanel.setSize(500, 250);
                 Label seedLabel = new Label("Seed");
@@ -130,6 +132,10 @@ public class TopMenu extends JMenuBar {
                 c.gridx = 1;
                 c.gridy = 6;
                 panel.add(createButton,c);
+
+                //Custom image
+                Button chooseImage = new Button("Choose Image");
+                JPanel imagePanel = new JPanel();
 
                 //Map preview
                 Scene mapScene = new Scene();
@@ -141,6 +147,10 @@ public class TopMenu extends JMenuBar {
                     public void actionPerformed(ActionEvent e) {
                         //Reset threads
                         mapRenderer.setRunning(false);
+
+                        //Remove components from Image section
+                        panel.remove(chooseImage);
+                        panel.remove(imagePanel);
 
                         //Add Seed field
                         c.gridx = 0;
@@ -180,7 +190,22 @@ public class TopMenu extends JMenuBar {
                 imageButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //Expand area below
+                        //Remove components from the perlin section
+                        panel.remove(seedLabel);
+                        panel.remove(seedField);
+                        panel.remove(mapPanel);
+
+                        //Add components
+                        c.gridx = 0;
+                        c.gridy = 5;
+                        panel.add(chooseImage,c);
+                        c.gridx = 0;
+                        c.gridy = 6;
+                        panel.add(imagePanel,c);
+
+                        //Resize window to fit contents
+                        frame.setSize(751, 751);
+                        frame.setSize(750, 750);
                     }
                 });
 
@@ -191,6 +216,35 @@ public class TopMenu extends JMenuBar {
                         frame.setVisible(false);
                         Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
                         mapRenderer.setRunning(false);
+                    }
+                });
+
+                chooseImage.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JFileChooser chooser = new JFileChooser();
+
+                        //Add extension filters
+                        chooser.setAcceptAllFileFilterUsed(false);
+                        FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter("JPEG", "jpg","jpeg");
+                        FileNameExtensionFilter pngFilter = new FileNameExtensionFilter("PNG", "png");
+                        chooser.addChoosableFileFilter(jpgFilter);
+                        chooser.addChoosableFileFilter(pngFilter);
+
+                        //Open load explorer
+                        int r = chooser.showOpenDialog(null);
+
+                        if (r == JFileChooser.APPROVE_OPTION) {
+                            Scanner scanner = null;
+                            try {
+                                scanner = new Scanner(chooser.getSelectedFile());
+
+
+                                scanner.close();
+                            } catch (FileNotFoundException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
                     }
                 });
             }
