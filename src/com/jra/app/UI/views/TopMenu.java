@@ -258,6 +258,38 @@ public class TopMenu extends JMenuBar {
                         }
                     }
                 });
+
+                seedField.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if(seedField.getText() != null){
+                            //Reset threads
+                            mapRenderer.setRunning(false);
+
+                            //Add map preview
+                            mapRenderer.setBackgroundColor(Color.red);
+                            mapRenderer.setSize(100, 100);
+                            mapRenderer.cameraZoom = 0.1f;
+                            mapRenderer.cameraPosition = new Vector(300, 600);
+                            mapRenderer.disposeOnRender = false;
+                            World world = new World();
+                            mapScene.addGameobject(world);
+                            mapPanel.add(mapRenderer);
+                            mapRenderer.changeScene(mapScene);
+
+                            c.gridx = 0;
+                            c.gridy = 6;
+                            panel.add(mapPanel,c);
+                            mapRenderer.startUpdateThread();
+
+                            world.generateMap(Integer.parseInt(seedField.getText()));
+
+                            //Resize window to fit contents
+                            frame.setSize(751, 751);
+                            frame.setSize(750, 750);
+                        }
+                    }
+                });
             }
         });
     }
