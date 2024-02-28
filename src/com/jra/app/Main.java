@@ -67,6 +67,8 @@ public class Main {
         SelectableObject layer2;
         SelectableObject layer3;
 
+
+
         mapScene.addGameobject(world);
         mapScene.addGameobject(layer1 = new SelectableObject(new Vector(0, 0)));
         mapScene.addGameobject(layer2 = new SelectableObject(new Vector(100, 0)));
@@ -75,7 +77,9 @@ public class Main {
         mapScene.addGameobject(new Road(layer1, layer3));
         mapScene.addGameobject(new Road(layer2, layer3));
 
-
+        layer1.setLabel("Mountains");
+        layer2.setLabel("Forests");
+        layer3.setLabel("Desert");
     }
 
 
