@@ -6,6 +6,7 @@ import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
 import com.jra.app.MapObjects.Camera;
+import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
@@ -68,14 +69,13 @@ public class Main {
         SelectableObject layer3;
 
 
-
         mapScene.addGameobject(world);
         mapScene.addGameobject(layer1 = new SelectableObject(new Vector(0, 0)));
-//        mapScene.addGameobject(layer2 = new SelectableObject(new Vector(100, 0)));
-//        mapScene.addGameobject(layer3 = new SelectableObject(new Vector(50, 0)));
-//
-//        mapScene.addGameobject(new Road(layer1, layer3));
-//        mapScene.addGameobject(new Road(layer2, layer3));
+        mapScene.addGameobject(layer2 = new SelectableObject(new Vector(100, 0)));
+        mapScene.addGameobject(layer3 = new SelectableObject(new Vector(50, 0)));
+
+        mapScene.addGameobject(new Road(layer1, layer3));
+        mapScene.addGameobject(new Road(layer2, layer3));
 
         layer1.setLabel("Mountains");
         layer2.setLabel("Forests");
