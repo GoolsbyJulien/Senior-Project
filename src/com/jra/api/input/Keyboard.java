@@ -17,6 +17,11 @@ public class Keyboard extends KeyAdapter {
     public static boolean ENTER = false;
     public static boolean F = false;
 
+    public static boolean RIGHT = false;
+
+    public static boolean LEFT = false;
+
+
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
@@ -46,6 +51,10 @@ public class Keyboard extends KeyAdapter {
 
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_F3)
             F3 = true;
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT)
+            RIGHT = true;
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT)
+            LEFT = true;
 
     }
 
