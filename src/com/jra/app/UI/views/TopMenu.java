@@ -1,10 +1,12 @@
 package com.jra.app.UI.views;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
+import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
 import com.jra.app.Project;
 
@@ -21,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class TopMenu extends JMenuBar {
@@ -35,7 +38,6 @@ public class TopMenu extends JMenuBar {
     public Project currentProject;
 
     public TopMenu() {
-
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
@@ -144,6 +146,7 @@ public class TopMenu extends JMenuBar {
                 final MapRenderer mapRenderer = new MapRenderer(mapScene);
                 frame.setVisible(true);
 
+
                 perlinButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -183,6 +186,8 @@ public class TopMenu extends JMenuBar {
                         seedField.setText(String.valueOf(seed));
                         world.generateMap(seed);
 
+                        Main.instance.currentProject.setNewProjectType(0);
+
                         //Resize window to fit contents
                         frame.setSize(751, 751);
                         frame.setSize(750, 750);
@@ -216,7 +221,30 @@ public class TopMenu extends JMenuBar {
                     public void actionPerformed(ActionEvent e) {
                         Main.instance.currentProject.setProjectName(titleField.getText());
                         frame.setVisible(false);
-                        Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
+
+                        //Create image project only if user has an image selected
+                        if(Main.instance.currentProject.getNewProjectType() == 1){
+                            Main.instance.mapScene.removeGameObject(Main.instance.world);
+
+                            Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
+                                if(n.getClass() == ImageWorld.class){
+                                    Main.instance.mapScene.removeGameObject(n);
+                                }
+                            });
+
+                            Main.instance.addComponent(new ImageWorld());
+                        }
+                        else {
+                            Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
+                                if(n.getClass() == ImageWorld.class){
+                                    Main.instance.mapScene.removeGameObject(n);
+                                }
+                            });
+
+                            Main.instance.mapScene.addGameobject(Main.instance.world);
+                            Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
+                        }
+
                         mapRenderer.setRunning(false);
                     }
                 });
@@ -244,6 +272,10 @@ public class TopMenu extends JMenuBar {
                                 BufferedImage img = ImageIO.read(chooser.getSelectedFile());
                                 JLabel imageLabel = new JLabel(new ImageIcon(img.getScaledInstance(-1, 50, Image.SCALE_SMOOTH)));
                                 imagePanel.add(imageLabel);
+
+                                //Temp, set background as image instead of perlin
+                                Main.instance.currentProject.setNewProjectType(1);
+                                Main.instance.currentProject.setImage(ImageIO.read(chooser.getSelectedFile()));
 
                                 scanner.close();
                             } catch (FileNotFoundException ex) {

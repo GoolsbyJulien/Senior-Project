@@ -1,10 +1,12 @@
 package com.jra.app;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Action;
 import com.jra.app.MapObjects.Camera;
+import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
 import com.jra.app.UI.views.LeftPanel;
@@ -25,6 +27,7 @@ public class Main {
     private boolean showFPS = false;
     public Project currentProject;
     public World world = new World();
+    public Scene mapScene;
 
 
     public static Main instance;
@@ -32,7 +35,7 @@ public class Main {
     public Main() {
 
         instance = this;
-        Scene mapScene = new Scene();
+        mapScene = new Scene();
         currentProject = new Project();
         mapRenderer = new MapRenderer(mapScene);
 
@@ -61,9 +64,11 @@ public class Main {
 
 
         mapScene.addGameobject(world);
-
     }
 
+    public void addComponent(MapObject mapObject){
+        mapScene.addGameobject(mapObject);
+    }
 
     public void updateComponents(Scene currentScene) {
 
