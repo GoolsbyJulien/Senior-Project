@@ -6,7 +6,6 @@ import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
 import com.jra.app.MapObjects.Camera;
-import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
@@ -29,7 +28,7 @@ public class Main {
     public Project currentProject;
     public World world = new World();
 
-
+    public Camera cam;
     public static Main instance;
 
     public Main() {
@@ -43,7 +42,7 @@ public class Main {
         //       currentProject.setProjectName("D");
         mapRenderer = new MapRenderer(frame, mapScene);
         mapRenderer.setBackgroundColor(new Color(7, 0, 161));
-        mapScene.addGameobject(new Camera(mapRenderer));
+        mapScene.addGameobject(cam = new Camera(mapRenderer));
         mapScene.uiLayer = g -> {
 
             if (Keyboard.F3)
@@ -58,6 +57,7 @@ public class Main {
         mapRenderer.eachFrame = new Action() {
             @Override
             public void act() {
+
                 updateComponents(mapScene);
             }
         };
@@ -71,11 +71,11 @@ public class Main {
 
         mapScene.addGameobject(world);
         mapScene.addGameobject(layer1 = new SelectableObject(new Vector(0, 0)));
-        mapScene.addGameobject(layer2 = new SelectableObject(new Vector(100, 0)));
-        mapScene.addGameobject(layer3 = new SelectableObject(new Vector(50, 0)));
-
-        mapScene.addGameobject(new Road(layer1, layer3));
-        mapScene.addGameobject(new Road(layer2, layer3));
+//        mapScene.addGameobject(layer2 = new SelectableObject(new Vector(100, 0)));
+//        mapScene.addGameobject(layer3 = new SelectableObject(new Vector(50, 0)));
+//
+//        mapScene.addGameobject(new Road(layer1, layer3));
+//        mapScene.addGameobject(new Road(layer2, layer3));
 
         layer1.setLabel("Mountains");
         layer2.setLabel("Forests");
@@ -89,14 +89,13 @@ public class Main {
     }
 
     public void createWindow() {
-
-
+        System.setProperty("awt.useSystemAAFontSettings", "true");
+        System.setProperty("swing.aatext", "true");
         frame = new JFrame();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         TopMenu menu = new TopMenu();
-        System.setProperty("awt.useSystemAAFontSettings", "off");
-        System.setProperty("swing.aatext", "false");
+
         frame.setJMenuBar(menu);
         frame.setSize(1280, 720);
         updateTitle();
