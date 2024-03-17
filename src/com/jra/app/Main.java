@@ -1,11 +1,14 @@
 package com.jra.app;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
 import com.jra.app.MapObjects.Camera;
+
+import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
@@ -28,6 +31,7 @@ public class Main {
     private boolean showFPS = false;
     public Project currentProject;
     public World world = new World();
+    public Scene mapScene;
 
     public Camera cam;
     public static Main instance;
@@ -35,13 +39,13 @@ public class Main {
     public Main() {
 
         instance = this;
-        Scene mapScene = new Scene();
+        mapScene = new Scene();
         currentProject = new Project();
+        mapRenderer = new MapRenderer(mapScene);
 
         createWindow();
 
         //       currentProject.setProjectName("D");
-        mapRenderer = new MapRenderer(frame, mapScene);
         mapRenderer.setBackgroundColor(new Color(7, 0, 161));
         mapScene.addGameobject(cam = new Camera(mapRenderer));
         mapScene.uiLayer = g -> {
@@ -70,6 +74,7 @@ public class Main {
 
 
         mapScene.addGameobject(world);
+
         mapScene.addGameobject(layer1 = new SelectableObject(new Vector(0, 0)));
         mapScene.addGameobject(layer2 = new SelectableObject(new Vector(100, 0)));
         mapScene.addGameobject(layer3 = new SelectableObject(new Vector(50, 0)));
@@ -82,6 +87,9 @@ public class Main {
         layer3.setLabel("Desert");
     }
 
+    public void addComponent(MapObject mapObject){
+        mapScene.addGameobject(mapObject);
+    }
 
     public void updateComponents(Scene currentScene) {
 
@@ -101,6 +109,7 @@ public class Main {
         updateTitle();
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
+        frame.add(mapRenderer, BorderLayout.CENTER);
 
         ImageIcon img = new ImageIcon("./assets/Icon.png");
 
@@ -114,6 +123,7 @@ public class Main {
 //        frame.setResizable(false);
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);
+        mapRenderer.startUpdateThread();
     }
 
 
