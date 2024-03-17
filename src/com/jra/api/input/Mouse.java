@@ -8,24 +8,31 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     public static boolean LEFT_CLICK = false;
     public static boolean RIGHT_CLICK = false;
+    public static boolean MIDDLE_CLICK = false;
+
+    public static boolean followMouse = false;
+
     public static boolean mouseInFrame = false;
     public static Vector lastClick = new Vector();
     public static Vector mousePos = new Vector();
     public static double wheel = 1;
 
+
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        lastClick.x = e.getX();
-        lastClick.y = e.getY();
-        if (e.getButton() == 1)
-            RIGHT_CLICK = true;
-        else
-            LEFT_CLICK = true;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        lastClick.x = e.getX();
+        lastClick.y = e.getY();
+        if (e.getButton() == 1)
+            LEFT_CLICK = true;
+        else if (e.getButton() == 2)
+            MIDDLE_CLICK = true;
+        else if (e.getButton() == 3)
+            RIGHT_CLICK = true;
 
     }
 
@@ -45,10 +52,13 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == 0)
-            RIGHT_CLICK = false;
-        else
+
+        if (e.getButton() == 1)
             LEFT_CLICK = false;
+        else if (e.getButton() == 2)
+            MIDDLE_CLICK = false;
+        else if (e.getButton() == 3)
+            RIGHT_CLICK = false;
     }
 
     @Override
@@ -63,6 +73,9 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (mouseInFrame)
+            mouseMoved(e);
+
 
     }
 
@@ -70,5 +83,11 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     public void mouseMoved(MouseEvent e) {
         mousePos.x = e.getX();
         mousePos.y = e.getY();
+    }
+
+
+    public static boolean wasDragged() {
+
+        return !(lastClick.x == mousePos.x && lastClick.y == mousePos.y);
     }
 }
