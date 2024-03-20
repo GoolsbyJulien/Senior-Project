@@ -9,11 +9,11 @@ public class PanelButton extends JButton {
 
     public PanelButton(String text) {
         super(text);
-        setBackground(new Color(60, 59, 64));
+        setBackground(StyleGlobals.ACCENT);
         setForeground(Color.white);
         setBorderPainted(false);
 
-       
+
         setFont(StyleGlobals.getFont(15));
         setFocusPainted(false);
     }

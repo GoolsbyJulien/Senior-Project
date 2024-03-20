@@ -12,9 +12,9 @@ public class Hierarchy extends JPanel {
 
     public Hierarchy() {
         jLabel.setForeground(Color.white);
-        jLabel.setFont(StyleGlobals.getFont(20));
+        jLabel.setFont(StyleGlobals.getFont(16));
         jLabel.setText("Seed: ");
-        setBackground(new Color(0, 0, 0));
+        setBackground(StyleGlobals.BACKGROUND);
 
         add(jLabel);
     }//

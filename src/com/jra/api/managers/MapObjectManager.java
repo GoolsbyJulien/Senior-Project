@@ -1,6 +1,7 @@
 package com.jra.api.managers;
 
 import com.jra.api.core.MapObject;
+import com.jra.api.util.Profiler;
 
 import java.awt.*;
 import java.util.Comparator;
@@ -8,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MapObjectManager {
     public CopyOnWriteArrayList<MapObject> gameObjects = new CopyOnWriteArrayList<>();
+    Profiler p = new Profiler();
 
     public void add(MapObject e) {
 
@@ -22,6 +24,7 @@ public class MapObjectManager {
     }
 
     public void render(Graphics g) {
+
         for (MapObject e : gameObjects) {
             e.render(g);
         }

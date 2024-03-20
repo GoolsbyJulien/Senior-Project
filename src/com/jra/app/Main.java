@@ -32,6 +32,7 @@ public class Main {
     public Camera cam;
     public static Main instance;
 
+
     public Main() {
 
         instance = this;
