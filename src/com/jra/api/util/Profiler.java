@@ -13,12 +13,12 @@ public class Profiler {
     boolean allFilled = false;
 
     public void start() {
-        startTime = System.nanoTime();
+        startTime = System.currentTimeMillis();
 
     }
 
     public void end() {
-        endTime = System.nanoTime() - startTime;
+        endTime = System.currentTimeMillis() - startTime;
         times[nextTime] = endTime;
 
         nextTime++;

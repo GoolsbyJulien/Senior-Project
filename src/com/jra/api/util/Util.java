@@ -32,14 +32,20 @@ public class Util {
     public static int lerp(int a, int b, double percent) {
         if (percent < 0)
             percent = 0;
+        return (int) ((1 - percent) * a + percent * b);
+    }
 
-        int value = (int) ((1 - percent) * a + percent * b);
+
+    public static int clampedLerp(int a, int b, double percent) {
+
+        int value = lerp(a, b, percent);
 
         if (value < a)
             value = 0;
         if (value > b)
             value = b;
         return value;
+
     }
 
     public static Color lerp(Color a, Color b, double percent) {

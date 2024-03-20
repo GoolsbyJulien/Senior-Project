@@ -38,6 +38,7 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+
         if (e.getPreciseWheelRotation() < 0) {
             wheel -= 0.1;
         } else {
