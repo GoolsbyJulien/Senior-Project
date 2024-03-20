@@ -1,6 +1,5 @@
 package com.jra.app.UI.views;
 
-import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.Util;
@@ -23,7 +22,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class TopMenu extends JMenuBar {
@@ -67,7 +65,7 @@ public class TopMenu extends JMenuBar {
         currentProject = Main.instance.currentProject;
     }
 
-    public void newProject(){
+    public void newProject() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -75,6 +73,7 @@ public class TopMenu extends JMenuBar {
                 JFrame frame = new JFrame("Create new project");
                 frame.setSize(750, 750);
 
+                frame.setLocationRelativeTo(null);
                 //Content panes
                 ScrollPane scrollPane = new ScrollPane();
                 JPanel panel = new JPanel();
@@ -84,14 +83,14 @@ public class TopMenu extends JMenuBar {
 
                 //Grid bag constraints
                 GridBagConstraints c = new GridBagConstraints();
-                c.fill=GridBagConstraints.BOTH;
-                c.anchor=GridBagConstraints.CENTER;
+                c.fill = GridBagConstraints.BOTH;
+                c.anchor = GridBagConstraints.CENTER;
                 c.insets = new Insets(2, 2, 2, 2);
                 c.gridx = 0;
                 c.gridy = 0;
                 c.ipadx = 15;
                 c.ipady = 50;
-                c.weightx=1;
+                c.weightx = 1;
 
                 //Components
                 Label titleLabel = new Label("Project Title");
@@ -135,7 +134,7 @@ public class TopMenu extends JMenuBar {
                 Button createButton = new Button("Create Project");
                 c.gridx = 1;
                 c.gridy = 6;
-                panel.add(createButton,c);
+                panel.add(createButton, c);
 
                 //Custom image
                 Button chooseImage = new Button("Choose Image");
@@ -179,7 +178,7 @@ public class TopMenu extends JMenuBar {
 
                         c.gridx = 0;
                         c.gridy = 6;
-                        panel.add(mapPanel,c);
+                        panel.add(mapPanel, c);
                         mapRenderer.startUpdateThread();
 
                         int seed = Util.RandomRange(0, 100000);
@@ -205,10 +204,10 @@ public class TopMenu extends JMenuBar {
                         //Add components
                         c.gridx = 0;
                         c.gridy = 5;
-                        panel.add(chooseImage,c);
+                        panel.add(chooseImage, c);
                         c.gridx = 0;
                         c.gridy = 6;
-                        panel.add(imagePanel,c);
+                        panel.add(imagePanel, c);
 
                         //Resize window to fit contents
                         frame.setSize(751, 751);
@@ -220,23 +219,22 @@ public class TopMenu extends JMenuBar {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Main.instance.currentProject.setProjectName(titleField.getText());
-                        frame.setVisible(false);
 
+                        frame.dispose();
                         //Create image project only if user has an image selected
-                        if(Main.instance.currentProject.getNewProjectType() == 1){
+                        if (Main.instance.currentProject.getNewProjectType() == 1) {
                             Main.instance.mapScene.removeGameObject(Main.instance.world);
 
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
-                                if(n.getClass() == ImageWorld.class){
+                                if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
 
                             Main.instance.addComponent(new ImageWorld());
-                        }
-                        else {
+                        } else {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
-                                if(n.getClass() == ImageWorld.class){
+                                if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -256,7 +254,7 @@ public class TopMenu extends JMenuBar {
 
                         //Add extension filters
                         chooser.setAcceptAllFileFilterUsed(false);
-                        FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter("JPEG", "jpg","jpeg");
+                        FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter("JPEG", "jpg", "jpeg");
                         FileNameExtensionFilter pngFilter = new FileNameExtensionFilter("PNG", "png");
                         chooser.addChoosableFileFilter(jpgFilter);
                         chooser.addChoosableFileFilter(pngFilter);
@@ -294,7 +292,7 @@ public class TopMenu extends JMenuBar {
                 seedField.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if(seedField.getText() != null){
+                        if (seedField.getText() != null) {
                             //Reset threads
                             mapRenderer.setRunning(false);
 
@@ -311,7 +309,7 @@ public class TopMenu extends JMenuBar {
 
                             c.gridx = 0;
                             c.gridy = 6;
-                            panel.add(mapPanel,c);
+                            panel.add(mapPanel, c);
                             mapRenderer.startUpdateThread();
 
                             world.generateMap(Integer.parseInt(seedField.getText()));
