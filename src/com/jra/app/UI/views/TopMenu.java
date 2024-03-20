@@ -336,7 +336,7 @@ public class TopMenu extends JMenuBar {
 
         //Add an extension filter
         chooser.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".jra", "jra");
         chooser.addChoosableFileFilter(filter);
         //Open save explorer
         int r = chooser.showSaveDialog(null);
@@ -345,8 +345,8 @@ public class TopMenu extends JMenuBar {
         if (r == JFileChooser.APPROVE_OPTION) {
             File saveFile;
 
-            if (!chooser.getSelectedFile().toString().contains(".txt")) {
-                saveFile = new File((chooser.getSelectedFile() + ".txt"));
+            if (!chooser.getSelectedFile().toString().contains(".jra")) {
+                saveFile = new File((chooser.getSelectedFile() + ".jra"));
             } else {
                 saveFile = new File(chooser.getSelectedFile().toURI());
             }
@@ -369,7 +369,7 @@ public class TopMenu extends JMenuBar {
 
         //Add an extension filter
         chooser.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".jra", "jra");
         chooser.addChoosableFileFilter(filter);
 
         //Open load explorer
