@@ -1,5 +1,7 @@
 package com.jra.app;
 
+import com.jra.app.MapObjects.ImageWorld;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,6 +24,14 @@ public class Project {
     }
 
     public void setPerlinSeedLoad(int perlinSeed) {
+        //Remove Image from scene
+        Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
+            if (n.getClass() == ImageWorld.class) {
+                Main.instance.mapScene.removeGameObject(n);
+                Main.instance.mapScene.addGameobject(Main.instance.world);
+            }
+        });
+
         //Check if seeds are different
         if (perlinSeed != this.perlinSeed) {
             Main.instance.world.generateMap(perlinSeed);

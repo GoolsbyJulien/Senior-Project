@@ -223,10 +223,12 @@ public class TopMenu extends JMenuBar {
                         frame.dispose();
                         //Create image project only if user has an image selected
                         if (Main.instance.currentProject.getNewProjectType() == 1) {
-                            Main.instance.mapScene.removeGameObject(Main.instance.world);
 
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
+                                    Main.instance.mapScene.removeGameObject(n);
+                                }
+                                else if(n.getClass() == World.class){
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -235,6 +237,9 @@ public class TopMenu extends JMenuBar {
                         } else {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
+                                    Main.instance.mapScene.removeGameObject(n);
+                                }
+                                else if(n.getClass() == World.class){
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
