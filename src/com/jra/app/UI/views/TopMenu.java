@@ -214,6 +214,7 @@ public class TopMenu extends JMenuBar {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Main.instance.currentProject.setProjectName(titleField.getText());
+                        Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
 
                         frame.dispose();
                         //Create image project only if user has an image selected
@@ -332,30 +333,42 @@ public class TopMenu extends JMenuBar {
     public void openSettings() {
         //Create new project window
         JFrame frame = new JFrame("Settings");
+        frame.setSize(900, 750);
         frame.setLayout(new GridBagLayout());
-        frame.setSize(750, 750);
 
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(2, 2, 2, 2);
         c.gridx = 0;
         c.gridy = 0;
         c.ipadx = 15;
-        c.ipady = 50;
+        c.ipady = 10;
 
         //Components
         Label titleLabel = new Label("Project Title:");
         TextField titleField = new TextField(Main.instance.currentProject.getProjectName());
         Button setTitleButton = new Button("Set New Title");
+        Label descriptionLabel = new Label("Description:");
+        TextArea descriptionArea = new TextArea(Main.instance.currentProject.getProjectDescription());
+        Button setDescriptionButton = new Button("Set New Description");
 
         //Add components to frame
         frame.add(titleLabel, c);
+        c.ipadx = 75;
+        c.ipady = 8;
         c.gridx = 1;
-        c.ipadx = 200;
-        c.ipady = 10;
         frame.add(titleField, c);
         c.gridx = 2;
         frame.add(setTitleButton, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        frame.add(descriptionLabel, c);
+        c.gridx = 1;
+        frame.add(descriptionArea, c);
+        c.gridx = 2;
+        frame.add(setDescriptionButton, c);
+
 
         frame.setVisible(true);
 
@@ -363,6 +376,13 @@ public class TopMenu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.instance.currentProject.setProjectName(titleField.getText());
+            }
+        });
+
+        setDescriptionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
             }
         });
     }

@@ -13,6 +13,7 @@ public class Project {
     private int projectType;
     private int newProjectType = 0;
     private BufferedImage projectImage;
+    private String projectDescription;
 
 
     public Project() {
@@ -78,5 +79,13 @@ public class Project {
 
     public void setImage(BufferedImage path) throws IOException {
         projectImage = path;
+    }
+
+    public void setProjectDescription(String description){
+        projectDescription = description;
+    }
+
+    public String getProjectDescription(){
+        return projectDescription;
     }
 }

@@ -30,12 +30,19 @@ public class LoadProject {
             while (scanner.hasNextLine()) {
                 String currentLine = scanner.nextLine();
 
+                //Make this more efficient
                 if (currentLine.contains("P:")) {
                     String newSeed = currentLine.replace("P:", "");
                     Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
                 } else if (currentLine.contains("N:")) {
                     String newName = currentLine.replace("N:", "");
                     Main.instance.currentProject.setProjectName(newName);
+                } else if (currentLine.contains("Type:")) {
+                    String newType = currentLine.replace("Type:", "");
+                    Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
+                } else if (currentLine.contains("D:")) {
+                    String newDescription = currentLine.replace("D:", "");
+                    Main.instance.currentProject.setProjectDescription(newDescription);
                 }
             }
             scanner.close();
