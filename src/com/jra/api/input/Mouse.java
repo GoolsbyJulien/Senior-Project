@@ -49,8 +49,6 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
         }
         if(wheel > 4)
             wheel = 4;
-
-
     }
 
 
@@ -93,5 +91,9 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     public static boolean wasDragged() {
 
         return !(lastClick.x == mousePos.x && lastClick.y == mousePos.y);
+    }
+
+    public Vector getMousePos(){
+        return mousePos;
     }
 }
