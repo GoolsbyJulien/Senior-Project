@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.Hierarchy;
 import com.jra.app.UI.components.PanelButton;
 
@@ -19,7 +20,7 @@ public class LeftPanel extends JPanel {
         add(hierarchy, BorderLayout.CENTER);
         setLocation(0, 0);
         setPreferredSize(new Dimension(300, 800));
-        setBackground(new Color(26, 26, 25));
+        setBackground(StyleGlobals.BACKGROUND);
 
     }
 

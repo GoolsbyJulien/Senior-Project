@@ -16,6 +16,7 @@ public class SelectableObject extends MapObject {
     private final Color color = Util.RandomColor();
 
     public String getLabel() {
+        name = label;
         return label;
     }
 
@@ -24,7 +25,6 @@ public class SelectableObject extends MapObject {
     }
 
     private String label = "";
-
 
 
     public SelectableObject(Vector pos) {
@@ -42,8 +42,14 @@ public class SelectableObject extends MapObject {
 
     }
 
+
+    int frame = 0;
+
     @Override
+
+
     public void tick() {
+        
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
