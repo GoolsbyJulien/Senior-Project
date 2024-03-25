@@ -2,13 +2,13 @@ package com.jra.app.UI.views;
 
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
+import com.jra.api.util.LoadProject;
+import com.jra.api.util.SaveProject;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
-import com.jra.app.Project;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,12 +16,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class TopMenu extends JMenuBar {
@@ -33,7 +29,7 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
     private JMenu viewMapView = new JMenu("Map View");
-    public Project currentProject;
+
 
     public TopMenu() {
         menuFile.add(fileNew);
@@ -62,7 +58,6 @@ public class TopMenu extends JMenuBar {
 
         setBorderPainted(false);
         setOpaque(true);
-        currentProject = Main.instance.currentProject;
     }
 
     public void newProject() {
@@ -219,26 +214,34 @@ public class TopMenu extends JMenuBar {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Main.instance.currentProject.setProjectName(titleField.getText());
+                        Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
 
                         frame.dispose();
                         //Create image project only if user has an image selected
                         if (Main.instance.currentProject.getNewProjectType() == 1) {
-                            Main.instance.mapScene.removeGameObject(Main.instance.world);
 
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
+                                else if(n.getClass() == World.class){
+                                    Main.instance.mapScene.removeGameObject(n);
+                                }
                             });
 
+                            Main.instance.currentProject.setProjectType(1);
                             Main.instance.addComponent(new ImageWorld());
                         } else {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
+                                else if(n.getClass() == World.class){
+                                    Main.instance.mapScene.removeGameObject(n);
+                                }
                             });
 
+                            Main.instance.currentProject.setProjectType(0);
                             Main.instance.mapScene.addGameobject(Main.instance.world);
                             Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
                         }
@@ -328,100 +331,46 @@ public class TopMenu extends JMenuBar {
 
     }
 
-    //Saves map to json file
-    public void saveMap() throws IOException {
-        //Create save folder if not already present
-        Files.createDirectories(Paths.get("Saves"));
-        JFileChooser chooser = new JFileChooser("Saves");
-
-        //Add an extension filter
-        chooser.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
-        chooser.addChoosableFileFilter(filter);
-        //Open save explorer
-        int r = chooser.showSaveDialog(null);
-
-        //Create Save file
-        if (r == JFileChooser.APPROVE_OPTION) {
-            File saveFile;
-
-            if (!chooser.getSelectedFile().toString().contains(".txt")) {
-                saveFile = new File((chooser.getSelectedFile() + ".txt"));
-            } else {
-                saveFile = new File(chooser.getSelectedFile().toURI());
-            }
-
-
-            //Write information into file
-            FileWriter fw = new FileWriter(saveFile);
-
-            fw.write("P:" + currentProject.getPerlinSeed() + "\n");
-            fw.write("N:" + currentProject.getProjectName());
-            fw.close();
-        }
-    }
-
-    //Opens map save location and displays the map contained in selected file
-    public void loadMap() throws IOException {
-        //Create save folder if not already present
-        Files.createDirectories(Paths.get("Saves"));
-        JFileChooser chooser = new JFileChooser("Saves");
-
-        //Add an extension filter
-        chooser.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
-        chooser.addChoosableFileFilter(filter);
-
-        //Open load explorer
-        int r = chooser.showOpenDialog(null);
-
-        //Load Save file
-        if (r == JFileChooser.APPROVE_OPTION) {
-            Scanner scanner = new Scanner(chooser.getSelectedFile());
-
-            while (scanner.hasNextLine()) {
-                String currentLine = scanner.nextLine();
-
-                if (currentLine.contains("P:")) {
-                    String newSeed = currentLine.replace("P:", "");
-                    Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
-                } else if (currentLine.contains("N:")) {
-                    String newName = currentLine.replace("N:", "");
-                    Main.instance.currentProject.setProjectName(newName);
-                }
-            }
-            scanner.close();
-        }
-    }
-
     //Opens settings menu
     public void openSettings() {
         //Create new project window
         JFrame frame = new JFrame("Settings");
+        frame.setSize(900, 750);
         frame.setLayout(new GridBagLayout());
-        frame.setSize(750, 750);
 
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(2, 2, 2, 2);
         c.gridx = 0;
         c.gridy = 0;
         c.ipadx = 15;
-        c.ipady = 50;
+        c.ipady = 10;
 
         //Components
         Label titleLabel = new Label("Project Title:");
         TextField titleField = new TextField(Main.instance.currentProject.getProjectName());
         Button setTitleButton = new Button("Set New Title");
+        Label descriptionLabel = new Label("Description:");
+        TextArea descriptionArea = new TextArea(Main.instance.currentProject.getProjectDescription());
+        Button setDescriptionButton = new Button("Set New Description");
 
         //Add components to frame
         frame.add(titleLabel, c);
+        c.ipadx = 75;
+        c.ipady = 8;
         c.gridx = 1;
-        c.ipadx = 200;
-        c.ipady = 10;
         frame.add(titleField, c);
         c.gridx = 2;
         frame.add(setTitleButton, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        frame.add(descriptionLabel, c);
+        c.gridx = 1;
+        frame.add(descriptionArea, c);
+        c.gridx = 2;
+        frame.add(setDescriptionButton, c);
+
 
         frame.setVisible(true);
 
@@ -429,6 +378,13 @@ public class TopMenu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.instance.currentProject.setProjectName(titleField.getText());
+            }
+        });
+
+        setDescriptionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
             }
         });
     }
@@ -442,7 +398,7 @@ class SaveMapAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            new TopMenu().saveMap();
+            new SaveProject();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -458,7 +414,7 @@ class LoadMapAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            new TopMenu().loadMap();
+            new LoadProject();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

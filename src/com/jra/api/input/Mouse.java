@@ -44,10 +44,11 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
         } else {
             wheel += 0.1;
         }
-        if (wheel < 0.01) {
-            wheel = 0.01;
+        if (wheel < 0.2) { //originally 0.01
+            wheel = 0.2;
         }
-
+        if(wheel > 4)
+            wheel = 4;
     }
 
 
@@ -90,5 +91,9 @@ public class Mouse implements MouseWheelListener, MouseListener, MouseMotionList
     public static boolean wasDragged() {
 
         return !(lastClick.x == mousePos.x && lastClick.y == mousePos.y);
+    }
+
+    public Vector getMousePos(){
+        return mousePos;
     }
 }

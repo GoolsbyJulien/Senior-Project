@@ -58,6 +58,21 @@ public class Camera extends MapObject {
             isMovingTowards = false;
         }
 
+        //Calculate Boundaries
+        if(Main.instance.currentProject.getProjectType() == 1) { //Custom image bounds
+
+        }
+        else { //Perlin bounds
+            if(pos.x < -700 * window.cameraZoom)
+                pos.x = (int) (-700 * window.cameraZoom);
+            if(pos.x > 700 * window.cameraZoom)
+                pos.x = (int) (700 * window.cameraZoom);
+            if(pos.y < -1280 * window.cameraZoom)
+                pos.y = (int) (-1280 * window.cameraZoom);
+            if(pos.y > 1280 * window.cameraZoom)
+                pos.y = (int) (1280 * window.cameraZoom);
+        }
+
         window.cameraZoom = Mouse.wheel;
         window.cameraPosition = pos;
     }
