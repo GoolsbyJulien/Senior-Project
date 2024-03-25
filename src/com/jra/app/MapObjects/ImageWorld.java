@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.app.Main;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -22,6 +23,7 @@ public class ImageWorld extends MapObject {
 
     @Override
     public void onReady() {
+        layer = -1;
         name = "World";
     }
 }
