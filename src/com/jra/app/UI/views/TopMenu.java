@@ -43,8 +43,11 @@ public class TopMenu extends JMenuBar {
         viewMapNoiseMap.addActionListener((a) -> {
             Main.instance.world.setMapView(1);
         });
+        JMenuItem viewChangeMapType = new JMenuItem("Change Map Type");
+
         viewMapView.add(viewMapColorMap);
         viewMapView.add(viewMapNoiseMap);
+        viewMapView.add(viewChangeMapType);
         menuView.add(viewMapView);
 
 

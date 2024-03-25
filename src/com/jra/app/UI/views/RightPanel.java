@@ -10,6 +10,7 @@ public class RightPanel extends JPanel {
     public RightPanel() {
         PanelButton button = new PanelButton("Right Panel");
 
+
         setLayout(new BorderLayout());
         add(button, BorderLayout.NORTH);
         setLocation(0, 0);
