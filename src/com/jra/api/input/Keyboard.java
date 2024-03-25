@@ -22,7 +22,6 @@ public class Keyboard extends KeyAdapter {
     public static boolean LEFT = false;
 
 
-
     @Override
     public void keyPressed(KeyEvent keyEvent) {
 
@@ -70,6 +69,11 @@ public class Keyboard extends KeyAdapter {
             UP = false;
         } else if (keyEvent.getKeyCode() == keyEvent.VK_DOWN) {
             DOWN = false;
+
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_LEFT) {
+            LEFT = false;
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_RIGHT) {
+            RIGHT = false;
 
         } else if (keyEvent.getKeyCode() == keyEvent.VK_E) {
             E = false;

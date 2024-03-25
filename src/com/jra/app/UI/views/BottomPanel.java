@@ -21,21 +21,23 @@ public class BottomPanel extends JPanel {
         setPreferredSize(new Dimension(1280, 200));
         setBackground(StyleGlobals.BACKGROUND);
 
-        JButton Object = new JButton("Add Object");
-        add(Object, BorderLayout.EAST);
+        JPanel pButtons = new JPanel(new FlowLayout());
+        pButtons.setBackground(StyleGlobals.BACKGROUND);
 
-        JButton Road = new JButton("Add Road");
-        add(Road, BorderLayout.WEST);
-        Object.addActionListener(new ActionListener() {
+        PanelButton addObjectButton = new PanelButton("Add Object");
+        PanelButton addRoadButton = new PanelButton("Add Road");
+
+        pButtons.add(addObjectButton);
+        pButtons.add(addRoadButton);
+        addObjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
 
 
                 try {
 
                     String name = JOptionPane.showInputDialog("Enter Name");
-                    if(name ==null)
+                    if (name == null)
                         return;
                     SelectableObject temp = new SelectableObject(new Vector(0, 0));
                     temp.setLabel(name);
@@ -44,7 +46,9 @@ public class BottomPanel extends JPanel {
                 } catch (Exception e1) {
 
                 }
-                }
+            }
         });
+
+        add(pButtons, BorderLayout.CENTER);
     }
 }
