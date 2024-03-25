@@ -3,6 +3,7 @@ package com.jra.api.util;
 import com.jra.app.Main;
 import com.jra.app.Project;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
@@ -32,12 +33,21 @@ public class SaveProject {
         if (r == JFileChooser.APPROVE_OPTION) {
             File saveFile;
 
+            Files.createDirectories(Paths.get(chooser.getSelectedFile().toString()));
+
             if (!chooser.getSelectedFile().toString().contains(".jra")) {
-                saveFile = new File((chooser.getSelectedFile() + ".jra"));
+                saveFile = new File(chooser.getSelectedFile() + "\\" + chooser.getSelectedFile().getName() + ".jra");
             } else {
                 saveFile = new File(chooser.getSelectedFile().toURI());
             }
 
+            //Save image if applicable
+            if(currentProject.getProjectType() == 1){
+                System.out.println("Saving Image");
+                File outputImage = new File("Saves\\" + chooser.getSelectedFile().getName() + "\\"
+                        + chooser.getSelectedFile().getName() + ".jpg");
+                ImageIO.write(currentProject.getImage(), "jpg", outputImage);
+            }
 
             //Write information into file
             FileWriter fw = new FileWriter(saveFile);

@@ -229,6 +229,7 @@ public class TopMenu extends JMenuBar {
                                 }
                             });
 
+                            Main.instance.currentProject.setProjectType(1);
                             Main.instance.addComponent(new ImageWorld());
                         } else {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
@@ -240,6 +241,7 @@ public class TopMenu extends JMenuBar {
                                 }
                             });
 
+                            Main.instance.currentProject.setProjectType(0);
                             Main.instance.mapScene.addGameobject(Main.instance.world);
                             Main.instance.world.generateMap(Integer.parseInt(seedField.getText()));
                         }
