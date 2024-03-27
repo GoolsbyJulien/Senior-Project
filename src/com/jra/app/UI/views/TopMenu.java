@@ -9,6 +9,8 @@ import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
+import javafx.scene.image.WritableImage;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,6 +18,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -327,7 +330,7 @@ public class TopMenu extends JMenuBar {
         });
     }
 
-    public void saveImage() {
+    public void saveImage(){
 
     }
 
@@ -354,6 +357,9 @@ public class TopMenu extends JMenuBar {
         Label descriptionLabel = new Label("Description:");
         TextArea descriptionArea = new TextArea(Main.instance.currentProject.getProjectDescription());
         Button setDescriptionButton = new Button("Set New Description");
+        Label savePathLabel = new Label("Save Path:");
+        TextField savePathField = new TextField();
+
 
         //Add components to frame
         frame.add(titleLabel, c);
@@ -378,6 +384,7 @@ public class TopMenu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.instance.currentProject.setProjectName(titleField.getText());
+                JOptionPane.showMessageDialog(null, "Title changed");
             }
         });
 
@@ -385,6 +392,7 @@ public class TopMenu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
+                JOptionPane.showMessageDialog(null, "Description changed");
             }
         });
     }

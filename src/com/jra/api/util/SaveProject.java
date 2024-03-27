@@ -43,8 +43,7 @@ public class SaveProject {
 
             //Save image if applicable
             if(currentProject.getProjectType() == 1){
-                System.out.println("Saving Image");
-                File outputImage = new File("Saves\\" + chooser.getSelectedFile().getName() + "\\"
+                File outputImage = new File(chooser.getSelectedFile() + "\\"
                         + chooser.getSelectedFile().getName() + ".jpg");
                 ImageIO.write(currentProject.getImage(), "jpg", outputImage);
             }

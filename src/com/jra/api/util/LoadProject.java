@@ -4,6 +4,7 @@ import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -65,9 +66,16 @@ public class LoadProject {
                     });
 
                     //Add image
-                    BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
-                    Main.instance.currentProject.setImage(img);
-                    Main.instance.addComponent(new ImageWorld());
+                    try{
+                        BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
+                        Main.instance.currentProject.setImage(img);
+                        Main.instance.addComponent(new ImageWorld());
+                    }catch (IIOException e){
+                        JOptionPane.showMessageDialog(null, "Cannot find project Image!");
+                        Main.instance.currentProject.setProjectType(0);
+                        Main.instance.mapScene.addGameobject(Main.instance.world);
+                        Main.instance.world.generateMap();
+                    }
                 }
             }
             scanner.close();
