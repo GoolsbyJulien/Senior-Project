@@ -52,9 +52,9 @@ public class SaveProject {
             //Write information into file
             FileWriter fw = new FileWriter(saveFile);
 
+            fw.write("Type:" + currentProject.getProjectType() + "\n");
             fw.write("P:" + currentProject.getPerlinSeed() + "\n");
             fw.write("N:" + currentProject.getProjectName() + "\n");
-            fw.write("Type:" + currentProject.getProjectType() + "\n");
             fw.write("D:" + currentProject.getProjectDescription());
             fw.close();
         }
