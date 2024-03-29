@@ -35,7 +35,8 @@ public class World extends MapObject {
     @Override
     public void tick() {
 
-
+if(SelectableObject.currentObject != null)
+        System.out.println(SelectableObject.currentObject.getLabel());
         if (Keyboard.E)
             generateMap();
     }

@@ -12,6 +12,7 @@ import java.awt.*;
 public class SelectableObject extends MapObject {
     private boolean followMouse;
     private static boolean hasSelectedObject = false;
+    public static SelectableObject currentObject;
 
     private final Color color = Util.RandomColor();
 
@@ -34,6 +35,11 @@ public class SelectableObject extends MapObject {
     @Override
     public void render(Graphics g) {
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
+
+        g.setColor(Color.white);
+
+        if(currentObject ==this)
+        g.fillRect(pos.x -3 ,pos.y -3 ,rect.width +6,rect.height +6);
 
         g.setColor(color);
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
@@ -66,7 +72,14 @@ public class SelectableObject extends MapObject {
             followMouse = true;
             hasSelectedObject = true;
 
+            if(currentObject != this) {
+                currentObject = this;
+                Main.instance.rightPanel.update(currentObject);
+
+            }
         }
+
+
 
     }
 
