@@ -16,6 +16,7 @@ public class MapObjectManager {
         e.onReady();
         gameObjects.add(e);
         sortLayer();
+        System.out.println(e.serialize());
     }
 
 

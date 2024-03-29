@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Mouse;
+import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
@@ -42,6 +43,13 @@ public class SelectableObject extends MapObject {
 
     }
 
+    @Override
+    public String serialize() {
+        String[][] fields = {{"X:", Integer.toString(pos.x),}, {"Y:", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}};
+
+        return Serializer.serialize(0, fields);
+    }
+
 
     int frame = 0;
 
@@ -49,7 +57,7 @@ public class SelectableObject extends MapObject {
 
 
     public void tick() {
-        
+
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);

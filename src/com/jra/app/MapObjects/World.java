@@ -3,6 +3,7 @@ package com.jra.app.MapObjects;
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
 import com.jra.api.util.PerlinNoise;
+import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.app.Main;
 
@@ -29,6 +30,14 @@ public class World extends MapObject {
         g.drawImage(bi, 0, 0, null);
 
 
+    }
+
+    @Override
+    public String serialize() {
+
+        String[][] fields = {{"Seed:", "0"}};
+
+        return Serializer.serialize(0, fields);
     }
 
 
@@ -107,5 +116,7 @@ public class World extends MapObject {
 
         return Color.white;
     }
+
+
 }
 
