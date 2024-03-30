@@ -25,6 +25,13 @@ public class Camera extends MapObject {
     boolean isMovingTowards = false;
     Vector moveTowards = new Vector(0, 0);
 
+
+    public Vector screenPointToWorldPoint(Vector point) {
+
+
+        return new Vector((int) ((point.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom), (int) ((point.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom));
+    }
+
     @Override
     public void tick() {
 
@@ -59,17 +66,16 @@ public class Camera extends MapObject {
         }
 
         //Calculate Boundaries
-        if(Main.instance.currentProject.getProjectType() == 1) { //Custom image bounds
+        if (Main.instance.currentProject.getProjectType() == 1) { //Custom image bounds
 
-        }
-        else { //Perlin bounds
-            if(pos.x < -700 * window.cameraZoom)
+        } else { //Perlin bounds
+            if (pos.x < -700 * window.cameraZoom)
                 pos.x = (int) (-700 * window.cameraZoom);
-            if(pos.x > 700 * window.cameraZoom)
+            if (pos.x > 700 * window.cameraZoom)
                 pos.x = (int) (700 * window.cameraZoom);
-            if(pos.y < -1280 * window.cameraZoom)
+            if (pos.y < -1280 * window.cameraZoom)
                 pos.y = (int) (-1280 * window.cameraZoom);
-            if(pos.y > 1280 * window.cameraZoom)
+            if (pos.y > 1280 * window.cameraZoom)
                 pos.y = (int) (1280 * window.cameraZoom);
         }
 
