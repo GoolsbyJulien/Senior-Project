@@ -13,11 +13,13 @@ public class LeftPanel extends JPanel {
 
     public LeftPanel() {
         PanelButton button = new PanelButton("Left Panel");
-
+        ScrollPane scrollPane = new ScrollPane();
 
         setLayout(new BorderLayout());
         add(button, BorderLayout.NORTH);
-        add(hierarchy, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
+
+        scrollPane.add(hierarchy);
         setLocation(0, 0);
         setPreferredSize(new Dimension(300, 800));
         setBackground(StyleGlobals.BACKGROUND);
