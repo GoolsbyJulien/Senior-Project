@@ -39,7 +39,7 @@ public class BottomPanel extends JPanel {
                     String name = JOptionPane.showInputDialog("Enter Name");
                     if (name == null)
                         return;
-                    SelectableObject temp = new SelectableObject(new Vector(0, 0));
+                    SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
                     temp.setLabel(name);
                     Main.instance.mapScene.addGameobject(temp);
 

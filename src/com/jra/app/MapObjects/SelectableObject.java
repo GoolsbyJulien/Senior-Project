@@ -36,11 +36,11 @@ public class SelectableObject extends MapObject {
     public void render(Graphics g) {
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
 
-        g.setColor(Color.white);
+        g.setColor(new Color(255, 255, 255, 200));
 
-        if(currentObject ==this)
-        g.fillRect(pos.x -3 ,pos.y -3 ,rect.width +6,rect.height +6);
-
+        if (currentObject == this)
+            g.fillRect(pos.x - 3, pos.y - 3, rect.width + 6, rect.height + 6);
+        
         g.setColor(color);
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
         g.setFont(StyleGlobals.getFont(20));
@@ -55,7 +55,7 @@ public class SelectableObject extends MapObject {
 
 
     public void tick() {
-        
+
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
@@ -68,17 +68,18 @@ public class SelectableObject extends MapObject {
             }
         }
 
-        if (Mouse.LEFT_CLICK && !hasSelectedObject && rect.contains(mouseX, mouseY) && Mouse.wasDragged()) {
-            followMouse = true;
-            hasSelectedObject = true;
+        if (Mouse.LEFT_CLICK && !hasSelectedObject && rect.contains(mouseX, mouseY)) {
 
-            if(currentObject != this) {
+            if (Mouse.wasDragged()) {
+                followMouse = true;
+                hasSelectedObject = true;
+            }
+            if (currentObject != this) {
                 currentObject = this;
                 Main.instance.rightPanel.update(currentObject);
 
             }
         }
-
 
 
     }
