@@ -25,9 +25,7 @@ public abstract class MapObject {
 
     @Override
     public String toString() {
-        return name + " (" + layer + ")" + " {" +
-                "pos=" + pos +
-                '}';
+        return name + " (Layer: " + layer + ")";
     }
 
     public int layer = 0;

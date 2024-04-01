@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.app.Main;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.PanelButton;
@@ -52,6 +53,7 @@ public class RightPanel extends JPanel {
             @Override
             public void caretUpdate(CaretEvent e) {
                 SelectableObject.currentObject.setLabel(name.getText());
+                Main.instance.updateComponents(Main.instance.mapScene);
             }
         });
         c.gridx = 1;

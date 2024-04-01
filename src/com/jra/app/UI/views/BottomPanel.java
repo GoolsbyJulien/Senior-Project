@@ -42,7 +42,7 @@ public class BottomPanel extends JPanel {
                     SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
                     temp.setLabel(name);
                     Main.instance.mapScene.addGameobject(temp);
-
+                    Main.instance.updateComponents(Main.instance.mapScene);
                 } catch (Exception e1) {
 
                 }
