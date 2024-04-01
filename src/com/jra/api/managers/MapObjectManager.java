@@ -54,6 +54,15 @@ public class MapObjectManager {
 
     }
 
+
+    public void removeObjectOfType(MapObject object) {
+        for (MapObject e : gameObjects) {
+
+
+        }
+
+    }
+
     public void load() {
 
     }

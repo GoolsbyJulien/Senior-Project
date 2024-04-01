@@ -12,14 +12,23 @@ public class Serializer {
         serializedObject.append("{\n");
 
 
-        for (int x = 0; x < fields.length; x++) {
+        for (String[] field : fields) {
 
-            String formattedField = fields[x][0] + ":" + fields[x][1] + ",\n";
+            String formattedField = field[0] + ":" + field[1] + ",\n";
             serializedObject.append(formattedField);
         }
         serializedObject.append("}");
 
         return serializedObject.toString();
+    }
+
+    public String[][] deserialize(String object) {
+        String[] fields = object.split(",");
+
+        for (int i = 0; i < fields.length; i++) {
+
+        }
+
     }
 }
 
