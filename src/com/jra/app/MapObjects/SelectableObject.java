@@ -13,15 +13,18 @@ public class SelectableObject extends MapObject {
     private boolean followMouse;
     private static boolean hasSelectedObject = false;
     public static SelectableObject currentObject;
+    private static final int selectedBorderThickness = 10;
+    private Color color = Util.RandomColor();
 
-    private final Color color = Util.RandomColor();
+    private Color borderColor;
 
     public String getLabel() {
-        name = label;
         return label;
     }
 
     public void setLabel(String label) {
+        name = label;
+
         this.label = label;
     }
 
@@ -36,24 +39,19 @@ public class SelectableObject extends MapObject {
     public void render(Graphics g) {
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
 
-        g.setColor(new Color(255, 255, 255, 200));
+        g.setColor(borderColor);
 
         if (currentObject == this)
-            g.fillRect(pos.x - 3, pos.y - 3, rect.width + 6, rect.height + 6);
-        
+            g.fillRect(pos.x - selectedBorderThickness / 2, pos.y - selectedBorderThickness / 2, rect.width + selectedBorderThickness, rect.height + selectedBorderThickness);
+
         g.setColor(color);
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
         g.setFont(StyleGlobals.getFont(20));
-        g.drawString(label, pos.x, pos.y - 10);
+        g.drawString(label, pos.x - label.length() * 2, pos.y - 10);
 
     }
 
-
-    int frame = 0;
-
     @Override
-
-
     public void tick() {
 
         Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
@@ -85,8 +83,21 @@ public class SelectableObject extends MapObject {
     }
 
 
+    public void setColor(Color c) {
+        this.color = c;
+        updateBorderColor();
+    }
+
+    private void updateBorderColor() {
+        if (!(Util.colorBrightness(color) > 245))
+            borderColor = Color.white;
+        else
+            borderColor = Color.black;
+    }
+
     @Override
     public void onReady() {
+        updateBorderColor();
         layer = 6;
     }
 }
