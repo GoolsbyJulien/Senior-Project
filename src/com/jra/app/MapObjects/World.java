@@ -35,7 +35,7 @@ public class World extends MapObject {
     @Override
     public String serialize() {
 
-        String[][] fields = {{"Seed:", "0"}};
+        String[][] fields = {{"Seed", "0"}};
 
         return Serializer.serialize(0, fields);
     }

@@ -5,6 +5,15 @@ import java.awt.*;
 public class Util {
 
 
+    public static void print2dArray(String[][] arry) {
+
+        for (int x = 0; x < arry.length; x++) {
+            for (int y = 0; y < arry[x].length; y++) {
+                System.out.println(arry[x][y]);
+            }
+        }
+    }
+
     public static float clamp(float min, float max, float value) {
         if (value > max)
             value = max;
