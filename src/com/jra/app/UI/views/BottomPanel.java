@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class BottomPanel extends JPanel {
     public BottomPanel() {
-        PanelButton button = new PanelButton("Bottom Panel");
+        PanelButton button = new PanelButton("Tools");
 
         setLayout(new BorderLayout());
         add(button, BorderLayout.NORTH);

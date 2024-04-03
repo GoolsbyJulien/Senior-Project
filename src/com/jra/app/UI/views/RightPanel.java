@@ -15,7 +15,11 @@ public class RightPanel extends JPanel {
     SelectableObject currentObject = null;
     public JPanel panel = new JPanel(new GridBagLayout());
     JTextField name = new JTextField(10);
-    JTextArea description = new JTextArea(5, 2);
+    JTextArea description = new JTextArea(10, 2);
+
+    JTextField locationX = new JTextField(4);
+    JTextField locationY = new JTextField(4);
+
 
 
     public void update(SelectableObject object) {
@@ -26,8 +30,9 @@ public class RightPanel extends JPanel {
     }
 
     public RightPanel() {
+
         panel.setVisible(false);
-        PanelButton button = new PanelButton("Right Panel");
+        PanelButton button = new PanelButton("Inspector");
         setLayout(new BorderLayout());
 
         add(button, BorderLayout.NORTH);
@@ -62,28 +67,94 @@ public class RightPanel extends JPanel {
         panel.add(name, c);
 
         JLabel descriptionLabel = new JLabel("Description");
-        descriptionLabel.setForeground(Color.WHITE);
+        descriptionLabel.setForeground(Color.YELLOW);
         c.gridx = 0;
         c.gridy = 1;
         c.ipadx = 15;
         c.ipady = 80;
         panel.add(descriptionLabel, c);
         //Description area
-        JScrollPane descriptionPane = new JScrollPane();
+        JScrollPane descriptionPane = new JScrollPane(description);
         description.setFont(StyleGlobals.getFont(15));
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
-        descriptionPane.setBackground(Color.red);
+        description.setBackground(StyleGlobals.ACCENT);
+        description.setForeground(Color.white);
+        description.setCaretColor(Color.white);
+        description.setBorder(null);
+        description.setFont(StyleGlobals.getFont(15));
+        description.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+             //   SelectableObject.currentObject.setLabel(description.getText());
+                }
+        });
 
-        description.setBackground(Color.red);
-        descriptionPane.add(description);
+        description.setBackground(StyleGlobals.ACCENT);
+        descriptionPane.setBorder(null);
         c.gridx = 1;
         c.ipadx = 150;
-        c.ipady = 80;
+        c.ipady = 2;
         panel.add(descriptionPane, c);
         System.out.println(descriptionPane.getBackground());
-        add(panel);
+        JLabel location = new JLabel("Location");
+
+        location.setVerticalAlignment(JLabel.TOP);
+        location.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy = 2;
+        c.ipadx = 15;
+        c.ipady = 10;
+        panel.add(location, c);
+
+
+
+        Panel locationPanel = new Panel(new FlowLayout());
+        JLabel xLabel = new JLabel("X");
+        xLabel.setForeground(Color.WHITE);
+        JLabel yLabel = new JLabel("Y");
+        yLabel.setForeground(Color.white);
+        locationPanel.add(xLabel);
+        locationPanel.add(locationX);
+        locationPanel.add(yLabel);
+        locationPanel.add(locationY);
+        c.gridx = 1;
+        c.gridy=2;
+        c.anchor = GridBagConstraints.WEST;
+        c.ipadx = 150;
+        c.ipady = 10;
+        panel.add(locationPanel, c);
+
+
+
         panel.setBackground(StyleGlobals.BACKGROUND);
         setBackground(StyleGlobals.BACKGROUND);
+
+        JPanel newPanel = new JPanel(new BorderLayout());
+        newPanel.setBackground(StyleGlobals.BACKGROUND);
+        add(newPanel, BorderLayout.CENTER);
+
+        newPanel.add(panel, BorderLayout.NORTH);
+
+        JPanel Buttons = new JPanel(new FlowLayout());
+
+        PanelButton delete = new PanelButton("Delete");
+
+        Buttons.add(delete);
+
+        PanelButton d = new PanelButton("Delete");
+
+        Buttons.add(d);
+        PanelButton d1 = new PanelButton("Delete");
+        c.gridx = 0;
+        c.gridy = 4;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.gridwidth =2;
+        Buttons.add(d1);
+        Buttons.setBackground(StyleGlobals.BACKGROUND);
+        panel.add(Buttons, c);
+
+
     }
 }
