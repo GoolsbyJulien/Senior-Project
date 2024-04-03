@@ -16,6 +16,11 @@ public class SelectableObject extends MapObject {
     private static final int selectedBorderThickness = 10;
     private Color color = Util.RandomColor();
 
+
+
+    private String description;
+
+
     private Color borderColor;
 
     public String getLabel() {
@@ -100,4 +105,12 @@ public class SelectableObject extends MapObject {
         updateBorderColor();
         layer = 6;
     }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

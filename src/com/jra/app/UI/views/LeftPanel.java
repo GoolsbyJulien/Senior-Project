@@ -15,7 +15,7 @@ public class LeftPanel extends JPanel {
     public Hierarchy hierarchy = new Hierarchy();
 
     public LeftPanel() {
-        PanelButton button = new PanelButton("Left Panel");
+        PanelButton button = new PanelButton("Hierarchy");
         JScrollPane scrollPane = new JScrollPane(hierarchy);
         scrollPane.setBorder(null);
         scrollPane.getHorizontalScrollBar().setBackground(StyleGlobals.BACKGROUND);
