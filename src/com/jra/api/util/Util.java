@@ -4,6 +4,9 @@ import java.awt.*;
 
 public class Util {
 
+    public static double colorBrightness(Color color) {
+        return 0.2126 * color.getRed() + 0.7152 * color.getGreen() + 0.0722 * color.getBlue();
+    }
 
     public static float clamp(float min, float max, float value) {
         if (value > max)

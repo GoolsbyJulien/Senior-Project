@@ -55,6 +55,7 @@ public class Main {
             g.drawString("FPS: " + mapRenderer.getLastFPS(), 250, 40);
         };
 
+        /*
         mapRenderer.eachFrame = new Action() {
             @Override
             public void act() {
@@ -62,10 +63,11 @@ public class Main {
                 updateComponents(mapScene);
             }
         };
+         */
 
-
+        updateComponents(mapScene);
         mapScene.addGameobject(world);
-
+        updateComponents(mapScene);
     }
 
     public void addComponent(MapObject mapObject) {
