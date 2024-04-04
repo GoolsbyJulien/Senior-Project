@@ -24,7 +24,7 @@ public class BottomPanel extends JPanel {
         JPanel pButtons = new JPanel(new FlowLayout());
         pButtons.setBackground(StyleGlobals.BACKGROUND);
 
-        PanelButton addObjectButton = new PanelButton("Add Object");
+        PanelButton addObjectButton = new PanelButton("Add Location");
         PanelButton addRoadButton = new PanelButton("Add Road");
 
         pButtons.add(addObjectButton);
@@ -32,17 +32,36 @@ public class BottomPanel extends JPanel {
         addObjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
                 try {
+                    //UI
+                    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                    panel.setSize(250,250);
+                    panel.setPreferredSize(new Dimension(250,200));
+                    JTextField nameField = new JTextField(15);
+                    JTextArea descriptionField = new JTextArea(8, 20);
+                    descriptionField.setLineWrap(true);
+                    descriptionField.setWrapStyleWord(true);
 
-                    String name = JOptionPane.showInputDialog("Enter Name");
-                    if (name == null)
+                    JScrollPane textArea = new JScrollPane(descriptionField);
+
+                    panel.add(new Label("Name"));
+                    panel.add(nameField);
+                    panel.add(new Label("Description"));
+                    panel.add(textArea);
+
+                    int result = JOptionPane.showConfirmDialog(Main.instance.frame, panel, "Add Location",
+                            JOptionPane.OK_CANCEL_OPTION);
+
+                    if (nameField.getText() == null)
                         return;
-                    SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
-                    temp.setLabel(name);
-                    Main.instance.mapScene.addGameobject(temp);
-                    Main.instance.updateComponents(Main.instance.mapScene);
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
+                        temp.setLabel(nameField.getText());
+                        temp.setDescription(descriptionField.getText());
+                        Main.instance.mapScene.addGameobject(temp);
+                        Main.instance.updateComponents(Main.instance.mapScene);
+                    }
                 } catch (Exception e1) {
 
                 }

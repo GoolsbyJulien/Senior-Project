@@ -70,8 +70,8 @@ public class TopMenu extends JMenuBar {
                 //Create new project window
                 JFrame frame = new JFrame("Create new project");
                 frame.setSize(750, 750);
+                frame.setLocationRelativeTo(Main.instance.frame);
 
-                frame.setLocationRelativeTo(null);
                 //Content panes
                 ScrollPane scrollPane = new ScrollPane();
                 JPanel panel = new JPanel();
@@ -340,6 +340,7 @@ public class TopMenu extends JMenuBar {
         JFrame frame = new JFrame("Settings");
         frame.setSize(900, 750);
         frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(Main.instance.frame);
 
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
