@@ -27,6 +27,7 @@ public class RightPanel extends JPanel {
         panel.setVisible(true);
         currentObject = object;
         name.setText(object.getLabel());
+        description.setText(SelectableObject.currentObject.getDescription());
     }
 
     public RightPanel() {
@@ -86,7 +87,7 @@ public class RightPanel extends JPanel {
         description.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-             //   SelectableObject.currentObject.setLabel(description.getText());
+                    SelectableObject.currentObject.setDescription(description.getText());
                 }
         });
 
