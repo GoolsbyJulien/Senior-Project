@@ -67,7 +67,7 @@ public class RightPanel extends JPanel {
         panel.add(name, c);
 
         JLabel descriptionLabel = new JLabel("Description");
-        descriptionLabel.setForeground(Color.YELLOW);
+        descriptionLabel.setForeground(Color.WHITE);
         c.gridx = 0;
         c.gridy = 1;
         c.ipadx = 15;
@@ -138,13 +138,13 @@ public class RightPanel extends JPanel {
 
         JPanel Buttons = new JPanel(new FlowLayout());
 
-        PanelButton delete = new PanelButton("Delete");
+        PanelButton field = new PanelButton("Type Field");
 
-        Buttons.add(delete);
+        Buttons.add(field);
 
-        PanelButton d = new PanelButton("Delete");
+        PanelButton icon = new PanelButton("Change Icon");
 
-        Buttons.add(d);
+        Buttons.add(icon);
         PanelButton d1 = new PanelButton("Delete");
         c.gridx = 0;
         c.gridy = 4;
@@ -155,6 +155,28 @@ public class RightPanel extends JPanel {
         Buttons.setBackground(StyleGlobals.BACKGROUND);
         panel.add(Buttons, c);
 
+        JPanel SecondRowButtons = new JPanel(new FlowLayout());
+        PanelButton color = new PanelButton("Change Color");
+        c.gridx = 0;
+        c.gridy = 5;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.gridwidth =2;
+        SecondRowButtons.add(color);
+        SecondRowButtons.setBackground(StyleGlobals.BACKGROUND);
+        panel.add(SecondRowButtons, c);
 
+
+        JLabel Size = new JLabel("Size");
+        Size.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy= 6;
+        c.ipadx = 150;
+        c.ipady = 10;
+        panel.add(Size, c);
+
+        JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);
+        c.gridx = 1;
+        panel.add(sizeSlider, c);
     }
 }
