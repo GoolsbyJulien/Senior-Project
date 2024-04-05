@@ -26,9 +26,15 @@ public class BottomPanel extends JPanel {
 
         PanelButton addObjectButton = new PanelButton("Add Location");
         PanelButton addRoadButton = new PanelButton("Add Road");
+        PanelButton addRiverButton = new PanelButton("Add River");
+        PanelButton addLabelButton = new PanelButton("Add Label");
+        PanelButton addPolygonButton = new PanelButton("Draw Polygon");
 
         pButtons.add(addObjectButton);
         pButtons.add(addRoadButton);
+        pButtons.add(addRiverButton);
+        pButtons.add(addLabelButton);
+        pButtons.add(addPolygonButton);
         addObjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
