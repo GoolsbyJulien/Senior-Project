@@ -55,7 +55,6 @@ public class SelectableObject extends MapObject {
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
         g.setFont(StyleGlobals.getFont(fontSize));
         g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
-        Main.instance.rightPanel.setLocationText(pos.x, pos.y);
     }
 
     @Override
@@ -71,10 +70,11 @@ public class SelectableObject extends MapObject {
                 followMouse = false;
                 hasSelectedObject = false;
             }
+            if (currentObject == this)
+                Main.instance.rightPanel.setLocationText(pos.x, pos.y);
         }
 
         if (Mouse.LEFT_CLICK && !hasSelectedObject && rect.contains(mouseX, mouseY)) {
-
             if (Mouse.wasDragged()) {
                 followMouse = true;
                 hasSelectedObject = true;
