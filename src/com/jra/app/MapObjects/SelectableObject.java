@@ -18,11 +18,8 @@ public class SelectableObject extends MapObject {
     private Color color = Util.RandomColor();
     private int width = 50, height = 50;
     private int fontSize = 20;
-
-
+    private String label = "";
     private String description;
-
-
     private Color borderColor;
 
     public String getLabel() {
@@ -34,9 +31,6 @@ public class SelectableObject extends MapObject {
 
         this.label = label;
     }
-
-    private String label = "";
-
 
     public SelectableObject(Vector pos) {
         this.pos = pos;
@@ -120,5 +114,12 @@ public class SelectableObject extends MapObject {
         height = size;
         fontSize = (int) (size * 0.4);
         selectedBorderThickness = size / 5;
+    }
+
+    public void toggleLabel(boolean check){
+        if(!check)
+            label = "";
+        else
+            label = name;
     }
 }

@@ -13,19 +13,21 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class RightPanel extends JPanel {
 
     SelectableObject currentObject = null;
     public JPanel panel = new JPanel(new GridBagLayout());
-    JTextField name = new JTextField(10);
-    JTextArea description = new JTextArea(10, 2);
+    private JTextField name = new JTextField(10);
+    private JTextArea description = new JTextArea(10, 2);
     private String[] typeString = {"City/Town", "Geographic"};
-    JComboBox<String> type = new JComboBox<>(typeString);
+    private JComboBox<String> type = new JComboBox<>(typeString);
 
     private JTextField locationX = new JTextField(4);
     private JTextField locationY = new JTextField(4);
-
+    private JCheckBox showLabel = new JCheckBox("Show Label");
 
 
     public void update(SelectableObject object) {
@@ -52,8 +54,11 @@ public class RightPanel extends JPanel {
         c.gridy = 0;
         c.ipadx = 15;
         c.ipady = 10;
-        c.weighty = 2;
+        c.weighty = 1;
 
+        /**
+         * Name
+         */
         JLabel nameLabel = new JLabel("Name");
         nameLabel.setForeground(Color.WHITE);
         panel.add(nameLabel, c);
@@ -74,6 +79,9 @@ public class RightPanel extends JPanel {
         c.ipady = 10;
         panel.add(name, c);
 
+        /**
+         * Type
+         */
         JLabel typeLabel = new JLabel("Type");
         typeLabel.setForeground(Color.WHITE);
         c.gridx = 0;
@@ -87,6 +95,9 @@ public class RightPanel extends JPanel {
         type.setForeground(Color.WHITE);
         panel.add(type, c);
 
+        /**
+         * Description
+         */
         JLabel descriptionLabel = new JLabel("Description");
         descriptionLabel.setForeground(Color.WHITE);
         c.gridx = 0;
@@ -111,6 +122,9 @@ public class RightPanel extends JPanel {
                 }
         });
 
+        /**
+         * Object location
+         */
         description.setBackground(StyleGlobals.ACCENT);
         descriptionPane.setBorder(null);
         c.gridx = 1;
@@ -127,8 +141,6 @@ public class RightPanel extends JPanel {
         c.ipadx = 15;
         c.ipady = 10;
         panel.add(location, c);
-
-
 
         Panel locationPanel = new Panel(new FlowLayout());
         JLabel xLabel = new JLabel("X");
@@ -152,17 +164,9 @@ public class RightPanel extends JPanel {
         c.ipady = 10;
         panel.add(locationPanel, c);
 
-
-
-        panel.setBackground(StyleGlobals.BACKGROUND);
-        setBackground(StyleGlobals.BACKGROUND);
-
-        JPanel newPanel = new JPanel(new BorderLayout());
-        newPanel.setBackground(StyleGlobals.BACKGROUND);
-        add(newPanel, BorderLayout.CENTER);
-
-        newPanel.add(panel, BorderLayout.NORTH);
-
+        /**
+         * Button Panel
+         */
         JPanel Buttons = new JPanel(new FlowLayout());
 
         PanelButton delete = new PanelButton("Delete");
@@ -181,6 +185,9 @@ public class RightPanel extends JPanel {
         Buttons.setBackground(StyleGlobals.BACKGROUND);
         panel.add(Buttons, c);
 
+        /**
+         * Size Slider
+         */
         JLabel Size = new JLabel("Size");
         Size.setForeground(Color.WHITE);
         c.gridx = 0;
@@ -194,6 +201,27 @@ public class RightPanel extends JPanel {
         c.gridx = 1;
         panel.add(sizeSlider, c);
 
+        /**
+         * Show Label Checkbox
+         */
+        c.gridx = 0;
+        c.gridy= 6;
+        showLabel.setSelected(true);
+        showLabel.setBackground(StyleGlobals.BACKGROUND);
+        showLabel.setForeground(Color.WHITE);
+        panel.add(showLabel, c);
+
+        /**
+         * Outer panel
+         */
+        panel.setBackground(StyleGlobals.BACKGROUND);
+        setBackground(StyleGlobals.BACKGROUND);
+
+        JPanel newPanel = new JPanel(new BorderLayout());
+        newPanel.setBackground(StyleGlobals.BACKGROUND);
+        add(newPanel, BorderLayout.CENTER);
+
+        newPanel.add(panel, BorderLayout.NORTH);
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -217,6 +245,13 @@ public class RightPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Color newColor = JColorChooser.showDialog(panel, "Choose a color", Color.RED);
                 SelectableObject.currentObject.setColor(newColor);
+            }
+        });
+
+        showLabel.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                SelectableObject.currentObject.toggleLabel(showLabel.isSelected());
             }
         });
     }
