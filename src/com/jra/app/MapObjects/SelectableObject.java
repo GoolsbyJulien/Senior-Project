@@ -6,6 +6,7 @@ import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
+import com.jra.app.UI.views.RightPanel;
 
 import java.awt.*;
 
@@ -53,8 +54,8 @@ public class SelectableObject extends MapObject {
         g.setColor(color);
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
         g.setFont(StyleGlobals.getFont(fontSize));
-        g.drawString(label, pos.x - label.length() * 2, pos.y - 10);
-
+        g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
+        Main.instance.rightPanel.setLocationText(pos.x, pos.y);
     }
 
     @Override

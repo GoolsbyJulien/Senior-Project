@@ -21,8 +21,8 @@ public class RightPanel extends JPanel {
     JTextField name = new JTextField(10);
     JTextArea description = new JTextArea(10, 2);
 
-    JTextField locationX = new JTextField(4);
-    JTextField locationY = new JTextField(4);
+    private JTextField locationX = new JTextField(4);
+    private JTextField locationY = new JTextField(4);
 
 
 
@@ -123,6 +123,8 @@ public class RightPanel extends JPanel {
         locationY.setBackground(StyleGlobals.BACKGROUND);
         locationX.setForeground(Color.WHITE);
         locationY.setForeground(Color.WHITE);
+        locationX.setEditable(false);
+        locationY.setEditable(false);
         locationPanel.add(xLabel);
         locationPanel.add(locationX);
         locationPanel.add(yLabel);
@@ -204,5 +206,18 @@ public class RightPanel extends JPanel {
                 SelectableObject.currentObject.changeSize(sizeSlider.getValue());
             }
         });
+
+        color.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color newColor = JColorChooser.showDialog(panel, "Choose a color", Color.RED);
+                SelectableObject.currentObject.setColor(newColor);
+            }
+        });
+    }
+
+    public void setLocationText(int x, int y){
+        locationX.setText(String.valueOf(x));
+        locationY.setText(String.valueOf(y));
     }
 }
