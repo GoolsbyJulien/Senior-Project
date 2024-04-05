@@ -6,7 +6,6 @@ import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
-import com.jra.app.UI.views.RightPanel;
 
 import java.awt.*;
 
@@ -76,6 +75,7 @@ public class SelectableObject extends MapObject {
             if (currentObject != this) {
                 currentObject = this;
                 Main.instance.rightPanel.update(currentObject);
+                Main.instance.rightPanel.setLocationText(pos.x, pos.y);
 
             }
         }
@@ -101,6 +101,7 @@ public class SelectableObject extends MapObject {
         updateBorderColor();
         layer = 6;
     }
+
     public String getDescription() {
         return description;
     }
@@ -109,15 +110,15 @@ public class SelectableObject extends MapObject {
         this.description = description;
     }
 
-    public void changeSize(int size){
+    public void changeSize(int size) {
         width = size;
         height = size;
         fontSize = (int) (size * 0.4);
         selectedBorderThickness = size / 5;
     }
 
-    public void toggleLabel(boolean check){
-        if(!check)
+    public void toggleLabel(boolean check) {
+        if (!check)
             label = "";
         else
             label = name;
