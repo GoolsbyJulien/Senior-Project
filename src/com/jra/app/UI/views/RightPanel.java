@@ -150,12 +150,13 @@ public class RightPanel extends JPanel {
         JPanel Buttons = new JPanel(new FlowLayout());
 
         PanelButton delete = new PanelButton("Delete");
-
         Buttons.add(delete);
 
-        PanelButton icon = new PanelButton("Change Icon");
-
+        PanelButton icon = new PanelButton("Set Icon");
         Buttons.add(icon);
+
+        PanelButton color = new PanelButton("Set Color");
+        Buttons.add(color);
         c.gridx = 0;
         c.gridy = 4;
         c.ipadx = 5;
@@ -163,18 +164,6 @@ public class RightPanel extends JPanel {
         c.gridwidth =2;
         Buttons.setBackground(StyleGlobals.BACKGROUND);
         panel.add(Buttons, c);
-
-        JPanel SecondRowButtons = new JPanel(new FlowLayout());
-        PanelButton color = new PanelButton("Change Color");
-        c.gridx = 0;
-        c.gridy = 5;
-        c.ipadx = 5;
-        c.ipady = 2;
-        c.gridwidth =2;
-        SecondRowButtons.add(color);
-        SecondRowButtons.setBackground(StyleGlobals.BACKGROUND);
-        panel.add(SecondRowButtons, c);
-
 
         JLabel Size = new JLabel("Size");
         Size.setForeground(Color.WHITE);
