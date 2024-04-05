@@ -13,9 +13,10 @@ public class SelectableObject extends MapObject {
     private boolean followMouse;
     private static boolean hasSelectedObject = false;
     public static SelectableObject currentObject;
-    private static final int selectedBorderThickness = 10;
+    private static int selectedBorderThickness = 10;
     private Color color = Util.RandomColor();
-
+    private int width = 50, height = 50;
+    private int fontSize = 20;
 
 
     private String description;
@@ -42,7 +43,7 @@ public class SelectableObject extends MapObject {
 
     @Override
     public void render(Graphics g) {
-        Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
+        Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
 
         g.setColor(borderColor);
 
@@ -51,7 +52,7 @@ public class SelectableObject extends MapObject {
 
         g.setColor(color);
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
-        g.setFont(StyleGlobals.getFont(20));
+        g.setFont(StyleGlobals.getFont(fontSize));
         g.drawString(label, pos.x - label.length() * 2, pos.y - 10);
 
     }
@@ -113,4 +114,10 @@ public class SelectableObject extends MapObject {
         this.description = description;
     }
 
+    public void changeSize(int size){
+        width = size;
+        height = size;
+        fontSize = (int) (size * 0.4);
+        selectedBorderThickness = size / 5;
+    }
 }

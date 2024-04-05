@@ -8,7 +8,11 @@ import com.jra.app.UI.components.PanelButton;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RightPanel extends JPanel {
 
@@ -95,7 +99,7 @@ public class RightPanel extends JPanel {
         descriptionPane.setBorder(null);
         c.gridx = 1;
         c.ipadx = 150;
-        c.ipady = 2;
+        c.ipady = 50;
         panel.add(descriptionPane, c);
         System.out.println(descriptionPane.getBackground());
         JLabel location = new JLabel("Location");
@@ -115,6 +119,10 @@ public class RightPanel extends JPanel {
         xLabel.setForeground(Color.WHITE);
         JLabel yLabel = new JLabel("Y");
         yLabel.setForeground(Color.white);
+        locationX.setBackground(StyleGlobals.BACKGROUND);
+        locationY.setBackground(StyleGlobals.BACKGROUND);
+        locationX.setForeground(Color.WHITE);
+        locationY.setForeground(Color.WHITE);
         locationPanel.add(xLabel);
         locationPanel.add(locationX);
         locationPanel.add(yLabel);
@@ -139,20 +147,18 @@ public class RightPanel extends JPanel {
 
         JPanel Buttons = new JPanel(new FlowLayout());
 
-        PanelButton field = new PanelButton("Type Field");
+        PanelButton delete = new PanelButton("Delete");
 
-        Buttons.add(field);
+        Buttons.add(delete);
 
         PanelButton icon = new PanelButton("Change Icon");
 
         Buttons.add(icon);
-        PanelButton d1 = new PanelButton("Delete");
         c.gridx = 0;
         c.gridy = 4;
         c.ipadx = 5;
         c.ipady = 2;
         c.gridwidth =2;
-        Buttons.add(d1);
         Buttons.setBackground(StyleGlobals.BACKGROUND);
         panel.add(Buttons, c);
 
@@ -176,8 +182,27 @@ public class RightPanel extends JPanel {
         c.ipady = 10;
         panel.add(Size, c);
 
-        JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);
+        JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 50, 50);
+        sizeSlider.setBackground(StyleGlobals.BACKGROUND);
         c.gridx = 1;
         panel.add(sizeSlider, c);
+
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(panel, "Are you sure you want to delete this location?");
+
+                if(option == JOptionPane.OK_OPTION){
+                    Main.instance.mapScene.removeGameObject(SelectableObject.currentObject);
+                }
+            }
+        });
+
+        sizeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                SelectableObject.currentObject.changeSize(sizeSlider.getValue());
+            }
+        });
     }
 }
