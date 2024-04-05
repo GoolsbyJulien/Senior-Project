@@ -20,6 +20,8 @@ public class RightPanel extends JPanel {
     public JPanel panel = new JPanel(new GridBagLayout());
     JTextField name = new JTextField(10);
     JTextArea description = new JTextArea(10, 2);
+    private String[] typeString = {"City/Town", "Geographic"};
+    JComboBox<String> type = new JComboBox<>(typeString);
 
     private JTextField locationX = new JTextField(4);
     private JTextField locationY = new JTextField(4);
@@ -50,6 +52,7 @@ public class RightPanel extends JPanel {
         c.gridy = 0;
         c.ipadx = 15;
         c.ipady = 10;
+        c.weighty = 2;
 
         JLabel nameLabel = new JLabel("Name");
         nameLabel.setForeground(Color.WHITE);
@@ -71,10 +74,23 @@ public class RightPanel extends JPanel {
         c.ipady = 10;
         panel.add(name, c);
 
+        JLabel typeLabel = new JLabel("Type");
+        typeLabel.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 15;
+        panel.add(typeLabel, c);
+        c.gridx = 1;
+        c.ipadx = 100;
+        c.ipady = 5;
+        type.setBackground(StyleGlobals.BACKGROUND);
+        type.setForeground(Color.WHITE);
+        panel.add(type, c);
+
         JLabel descriptionLabel = new JLabel("Description");
         descriptionLabel.setForeground(Color.WHITE);
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
         c.ipadx = 15;
         c.ipady = 80;
         panel.add(descriptionLabel, c);
@@ -107,7 +123,7 @@ public class RightPanel extends JPanel {
         location.setVerticalAlignment(JLabel.TOP);
         location.setForeground(Color.WHITE);
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.ipadx = 15;
         c.ipady = 10;
         panel.add(location, c);
@@ -130,7 +146,7 @@ public class RightPanel extends JPanel {
         locationPanel.add(yLabel);
         locationPanel.add(locationY);
         c.gridx = 1;
-        c.gridy=2;
+        c.gridy= 3;
         c.anchor = GridBagConstraints.WEST;
         c.ipadx = 150;
         c.ipady = 10;
@@ -168,7 +184,7 @@ public class RightPanel extends JPanel {
         JLabel Size = new JLabel("Size");
         Size.setForeground(Color.WHITE);
         c.gridx = 0;
-        c.gridy= 6;
+        c.gridy= 5;
         c.ipadx = 150;
         c.ipady = 10;
         panel.add(Size, c);
