@@ -51,9 +51,16 @@ public class TopMenu extends JMenuBar {
         viewMapNoiseMap.addActionListener((a) -> {
             Main.instance.world.setMapView(1);
         });
+
+        JCheckBoxMenuItem viewTooltips = new JCheckBoxMenuItem("View Tooltips");
+        viewTooltips.addActionListener((a) -> {
+            Main.instance.mapRenderer.toggleTooltips();
+        });
+
         viewMapView.add(viewMapColorMap);
         viewMapView.add(viewMapNoiseMap);
         menuView.add(viewMapView);
+        menuView.add(viewTooltips);
 
 
         this.add(menuFile);

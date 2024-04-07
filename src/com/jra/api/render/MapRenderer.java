@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER;
+
 public class MapRenderer extends Canvas implements Runnable {
 
     public boolean disposeOnRender = true;
@@ -53,7 +56,15 @@ public class MapRenderer extends Canvas implements Runnable {
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
 
+        //Tooltips
+        tooltipFrame.setUndecorated(true);
+        tooltipFrame.setSize(50,25);
+        tooltipSP.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        tooltipSP.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
 
+        tooltipPanel.add(tooltipLabel);
+        tooltipFrame.add(tooltipSP);
+        tooltipFrame.setAlwaysOnTop(true);
     }
 
     public void startUpdateThread() {
@@ -127,6 +138,10 @@ public class MapRenderer extends Canvas implements Runnable {
                 ticks = 0;
                 timer += 1000;
             }
+
+            //Tooltip update
+            tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
+            ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
         }
         //System.exit(0);
     }
@@ -163,10 +178,29 @@ public class MapRenderer extends Canvas implements Runnable {
         bs.show();
         //if (disposeOnRender)
         // g.dispose();
-
     }
 
     public void setRunning(boolean run){
         isRunning = run;
+    }
+
+    /**
+     * Tooltips
+     */
+    private boolean tooltipsOn = false;
+    private JFrame tooltipFrame = new JFrame();
+    private JPanel tooltipPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JScrollPane tooltipSP = new JScrollPane(tooltipPanel);
+    private JLabel tooltipLabel = new JLabel("Default Tooltip");
+    public void toggleTooltips(){
+        if(!tooltipsOn){
+            //Turn tooltips on
+            tooltipFrame.setVisible(true);
+            tooltipsOn = true;
+        }else{
+            //Turn tooltips off
+            tooltipFrame.setVisible(false);
+            tooltipsOn = false;
+        }
     }
 }
