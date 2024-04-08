@@ -53,7 +53,7 @@ public class SelectableObject extends MapObject {
     @Override
     public void tick() {
 
-        Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
+        Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         if (followMouse) {
