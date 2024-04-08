@@ -20,6 +20,15 @@ public class SelectableObject extends MapObject {
     private String label = "";
     private String description;
     private Color borderColor;
+    private LocationType locationType = LocationType.SETTLEMENT;
+
+    public LocationType getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
+    }
 
     public String getLabel() {
         return label;

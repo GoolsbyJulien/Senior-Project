@@ -1,6 +1,7 @@
 package com.jra.app.UI.views;
 
 import com.jra.app.Main;
+import com.jra.app.MapObjects.LocationType;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.PanelButton;
@@ -22,20 +23,18 @@ public class RightPanel extends JPanel {
     public JPanel inspectorPanel = new JPanel(new GridBagLayout());
     private JTextField name = new JTextField(10);
     private JTextArea description = new JTextArea(10, 9);
-    private String[] typeString = {"City/Town", "Geographic"};
-    private JComboBox<String> type = new JComboBox<>(typeString);
-
+    private JComboBox<LocationType> type = new JComboBox<>(LocationType.values());
     private JTextField locationX = new JTextField(4);
     private JTextField locationY = new JTextField(4);
     private JCheckBox showLabel = new JCheckBox("Show Label");
 
 
     public void update(SelectableObject object) {
-
         inspectorPanel.setVisible(true);
         currentObject = object;
         name.setText(object.getLabel());
         description.setText(SelectableObject.currentObject.getDescription());
+        type.setSelectedItem(SelectableObject.currentObject.getLocationType());
     }
 
     public RightPanel() {
@@ -254,6 +253,13 @@ public class RightPanel extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 SelectableObject.currentObject.toggleLabel(showLabel.isSelected());
+            }
+        });
+
+        type.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SelectableObject.currentObject.setLocationType((LocationType) type.getSelectedItem());
             }
         });
 
