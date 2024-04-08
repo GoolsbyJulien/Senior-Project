@@ -1,10 +1,12 @@
 package com.jra.api.render;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
+import com.jra.app.MapObjects.SelectableObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +41,7 @@ public class MapRenderer extends Canvas implements Runnable {
     public Action eachFrame = null;
     public Action onClose = null;
     private Mouse mouse = new Mouse();
+    public SelectableObject hoveredObject = null;
 
 
     public Vector cameraPosition = new Vector(0, 0);
@@ -140,8 +143,14 @@ public class MapRenderer extends Canvas implements Runnable {
             }
 
             //Tooltip update
-            tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
-            ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
+            if(hoveredObject == null){
+                tooltipFrame.setVisible(false);
+            }else if(tooltipsOn){
+                tooltipFrame.setVisible(true);
+                tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
+                ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
+                tooltipLabel.setText(hoveredObject.getLabel());
+            }
         }
         //System.exit(0);
     }
@@ -195,7 +204,6 @@ public class MapRenderer extends Canvas implements Runnable {
     public void toggleTooltips(){
         if(!tooltipsOn){
             //Turn tooltips on
-            tooltipFrame.setVisible(true);
             tooltipsOn = true;
         }else{
             //Turn tooltips off

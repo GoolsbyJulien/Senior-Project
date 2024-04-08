@@ -15,12 +15,7 @@ public class SelectableObject extends MapObject {
     public static SelectableObject currentObject;
     private static final int selectedBorderThickness = 10;
     private Color color = Util.RandomColor();
-
-
-
     private String description;
-
-
     private Color borderColor;
 
     public String getLabel() {
@@ -84,7 +79,11 @@ public class SelectableObject extends MapObject {
             }
         }
 
-
+        if(rect.contains(mouseX, mouseY) && !hasSelectedObject){
+            Main.instance.mapRenderer.hoveredObject = this;
+        } else if (Main.instance.mapRenderer.hoveredObject == this) {
+            Main.instance.mapRenderer.hoveredObject = null;
+        }
     }
 
 
@@ -112,5 +111,4 @@ public class SelectableObject extends MapObject {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }
