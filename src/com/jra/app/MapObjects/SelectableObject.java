@@ -45,9 +45,9 @@ public class SelectableObject extends MapObject {
 
     @Override
     public String serialize() {
-        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}};
+        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}, {"Label", getLabel()}};
 
-        return Serializer.serialize(0, fields);
+        return Serializer.serialize("SO", fields);
     }
 
 

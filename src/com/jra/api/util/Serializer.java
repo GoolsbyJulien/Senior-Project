@@ -1,11 +1,15 @@
 package com.jra.api.util;
 
+import com.jra.api.core.MapObject;
+import com.jra.app.MapObjects.SelectableObject;
+
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Serializer {
 
-    public static String serialize(int objectID, String[][] fields) {
+    public static String serialize(String objectID, String[][] fields) {
 
 
         StringBuilder serializedObject = new StringBuilder();
@@ -25,14 +29,12 @@ public class Serializer {
         return serializedObject.toString();
     }
 
-    public static String[][] deserialize(String name, String object) {
+    public static MapObject deserialize(String objectID, String object) {
 
 
-        System.out.println(name);
         String[] fields = extractTextBetweenCurlyBraces(object).replaceAll("\n", "").split(",");
+        System.out.println(objectID + " " + Arrays.toString(fields));
 
-
-        System.out.println("number of fields " + fields.length);
         String[][] deserializedArray = new String[fields.length][2];
         for (int i = 0; i < fields.length; i++) {
 
@@ -45,7 +47,18 @@ public class Serializer {
             deserializedArray[i][1] = field[1];
 
         }
-        return deserializedArray;
+
+
+        if (objectID.equals("SO")) {
+            System.out.println(deserializedArray[0][1] + " " + deserializedArray[1][1]);
+            SelectableObject temp = new SelectableObject(new Vector(Integer.parseInt(deserializedArray[0][1]), Integer.parseInt(deserializedArray[1][1])));
+
+            return temp;
+        }
+
+
+        System.out.println("Returning null");
+        return null;
     }
 
     public static String extractTextBetweenCurlyBraces(String text) {

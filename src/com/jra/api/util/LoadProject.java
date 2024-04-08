@@ -1,5 +1,6 @@
 package com.jra.api.util;
 
+import com.jra.api.core.MapObject;
 import com.jra.app.Main;
 
 import javax.swing.*;
@@ -27,22 +28,41 @@ public class LoadProject {
         if (r == JFileChooser.APPROVE_OPTION) {
             Scanner scanner = new Scanner(chooser.getSelectedFile());
 
+            boolean deserializationMode = false;
+            StringBuilder currentObject = new StringBuilder();
             while (scanner.hasNextLine()) {
                 String currentLine = scanner.nextLine();
 
-                //Make this more efficient
-                if (currentLine.contains("P:")) {
-                    String newSeed = currentLine.replace("P:", "");
-                    Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
-                } else if (currentLine.contains("N:")) {
-                    String newName = currentLine.replace("N:", "");
-                    Main.instance.currentProject.setProjectName(newName);
-                } else if (currentLine.contains("Type:")) {
-                    String newType = currentLine.replace("Type:", "");
-                    Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
-                } else if (currentLine.contains("D:")) {
-                    String newDescription = currentLine.replace("D:", "");
-                    Main.instance.currentProject.setProjectDescription(newDescription);
+
+                if (!deserializationMode) {
+                    //Make this more efficient
+                    if (currentLine.contains("P:")) {
+                        String newSeed = currentLine.replace("P:", "");
+                        Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
+                    } else if (currentLine.contains("N:")) {
+                        String newName = currentLine.replace("N:", "");
+                        Main.instance.currentProject.setProjectName(newName);
+                    } else if (currentLine.contains("Type:")) {
+                        String newType = currentLine.replace("Type:", "");
+                        Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
+                    } else if (currentLine.contains("D:")) {
+                        String newDescription = currentLine.replace("D:", "");
+                        Main.instance.currentProject.setProjectDescription(newDescription);
+                        deserializationMode = true;
+                    }
+                } else {
+
+                    currentObject.append(currentLine);
+                    if (currentLine.trim().equals("}")) {
+
+
+                        MapObject temp = Serializer.deserialize(currentObject.toString().split("\\{")[0], currentObject.toString());
+                        if (temp != null)
+                            Main.instance.addComponent(temp);
+
+                        currentObject = new StringBuilder();
+                    }
+
                 }
             }
             scanner.close();

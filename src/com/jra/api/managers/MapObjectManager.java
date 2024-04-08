@@ -2,8 +2,6 @@ package com.jra.api.managers;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.util.Profiler;
-import com.jra.api.util.Serializer;
-import com.jra.api.util.Util;
 
 import java.awt.*;
 import java.util.Comparator;
@@ -20,8 +18,7 @@ public class MapObjectManager {
 
         sortLayer();
 
-        if (!e.name.equals("Camera"))
-            Util.print2dArray(Serializer.deserialize(e.name, e.serialize()));
+
     }
 
 

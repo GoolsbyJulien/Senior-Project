@@ -1,5 +1,6 @@
 package com.jra.api.util;
 
+import com.jra.api.core.MapObject;
 import com.jra.app.Main;
 import com.jra.app.Project;
 
@@ -42,7 +43,7 @@ public class SaveProject {
             }
 
             //Save image if applicable
-            if(currentProject.getProjectType() == 1){
+            if (currentProject.getProjectType() == 1) {
                 System.out.println("Saving Image");
                 File outputImage = new File("Saves\\" + chooser.getSelectedFile().getName() + "\\"
                         + chooser.getSelectedFile().getName() + ".jpg");
@@ -56,6 +57,12 @@ public class SaveProject {
             fw.write("N:" + currentProject.getProjectName() + "\n");
             fw.write("Type:" + currentProject.getProjectType() + "\n");
             fw.write("D:" + currentProject.getProjectDescription());
+
+            for (MapObject m : Main.instance.mapScene.goManager.gameObjects) {
+                String sObject = m.serialize();
+                if (sObject != null)
+                    fw.write(sObject + "\n");
+            }
             fw.close();
         }
     }
