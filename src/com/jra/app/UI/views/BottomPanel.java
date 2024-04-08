@@ -31,9 +31,9 @@ public class BottomPanel extends JPanel {
 
         PanelButton addObjectButton = new PanelButton("Add Location");
         PanelButton addRoadButton = new PanelButton("Add Road");
-        PanelButton addRiverButton = new PanelButton("Add River");
-        PanelButton addLabelButton = new PanelButton("Add Label");
-        PanelButton addPolygonButton = new PanelButton("Draw Polygon");
+        PanelButton addRiverButton = new PanelButton("Add River (X)");
+        PanelButton addLabelButton = new PanelButton("Add Label (X)");
+        PanelButton addPolygonButton = new PanelButton("Draw Polygon (X)");
 
         pButtons.add(addObjectButton);
         pButtons.add(addRoadButton);
@@ -110,7 +110,14 @@ public class BottomPanel extends JPanel {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(SelectableObject.currentObject != null){
-                                objects.add(SelectableObject.currentObject);
+                                if(objects.size() >= 2){
+                                    if(objects.get(0) != null){
+                                        objects.set(0, SelectableObject.currentObject);
+                                    }
+                                }
+                                else {
+                                    objects.add(SelectableObject.currentObject);
+                                }
                                 object1.setText(SelectableObject.currentObject.getLabel());
                             }else{
                                 JOptionPane.showMessageDialog(null, "Please select a location!");
@@ -122,7 +129,14 @@ public class BottomPanel extends JPanel {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(SelectableObject.currentObject != null){
-                                objects.add(SelectableObject.currentObject);
+                                if(objects.size() >= 2){
+                                    if(objects.get(1) != null){
+                                        objects.set(1, SelectableObject.currentObject);
+                                    }
+                                }
+                                else {
+                                    objects.add(SelectableObject.currentObject);
+                                }
                                 object2.setText(SelectableObject.currentObject.getLabel());
                             }else{
                                 JOptionPane.showMessageDialog(null, "Please select a location!");

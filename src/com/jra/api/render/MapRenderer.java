@@ -41,7 +41,7 @@ public class MapRenderer extends Canvas implements Runnable {
     public Action eachFrame = null;
     public Action onClose = null;
     private Mouse mouse = new Mouse();
-    public SelectableObject hoveredObject = null;
+    public MapObject hoveredObject = null;
 
 
     public Vector cameraPosition = new Vector(0, 0);
@@ -149,7 +149,7 @@ public class MapRenderer extends Canvas implements Runnable {
                 tooltipFrame.setVisible(true);
                 tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
                 ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
-                tooltipLabel.setText(hoveredObject.getLabel());
+                tooltipLabel.setText(hoveredObject.name);
             }
         }
         //System.exit(0);
