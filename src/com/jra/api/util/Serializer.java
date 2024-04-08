@@ -55,6 +55,7 @@ public class Serializer {
             SelectableObject temp = new SelectableObject(new Vector(Integer.parseInt(deserializedArray[0][1]), Integer.parseInt(deserializedArray[1][1])));
 
             temp.setColor(new Color(Integer.parseInt(deserializedArray[2][1])));
+            temp.setLabel(deserializedArray[3][1]);
             return temp;
         }
 

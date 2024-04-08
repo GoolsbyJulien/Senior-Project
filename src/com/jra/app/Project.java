@@ -1,11 +1,10 @@
 package com.jra.app;
 
 import com.jra.app.MapObjects.ImageWorld;
+import com.jra.app.MapObjects.SelectableObject;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 
 public class Project {
     private int perlinSeed = 0;
@@ -15,8 +14,13 @@ public class Project {
     private BufferedImage projectImage;
     private String projectDescription;
 
+    public static final String DEFAULT_NAME = "Untitled";
 
-    public Project() {projectName = "Untitled";}
+    public String filePath;
+
+    public Project() {
+        projectName = DEFAULT_NAME;
+    }
 
     public void setPerlinSeed(int perlinSeed) {
         this.perlinSeed = perlinSeed;
@@ -28,8 +32,13 @@ public class Project {
             if (n.getClass() == ImageWorld.class) {
                 Main.instance.mapScene.removeGameObject(n);
                 Main.instance.mapScene.addGameobject(Main.instance.world);
+
             }
+            if (n instanceof SelectableObject)
+                Main.instance.mapScene.removeGameObject(n);
+
         });
+
 
         //Check if seeds are different
         if (perlinSeed != this.perlinSeed) {
@@ -45,6 +54,9 @@ public class Project {
 
     public void setProjectName(String projectName) {
 
+
+        if (projectName.trim().isEmpty())
+            projectName = DEFAULT_NAME;
         this.projectName = projectName;
         Main.instance.updateTitle();
     }
@@ -53,25 +65,25 @@ public class Project {
         return projectName;
     }
 
-    public int getProjectType(){
+    public int getProjectType() {
         return projectType;
     }
 
-    public void setProjectType(int type){
+    public void setProjectType(int type) {
         //0 is perlin
         //1 is image
         projectType = type;
     }
 
-    public int getNewProjectType(){
+    public int getNewProjectType() {
         return newProjectType;
     }
 
-    public void setNewProjectType(int type){
+    public void setNewProjectType(int type) {
         newProjectType = type;
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage getImage() {
         return projectImage;
     }
 
@@ -79,11 +91,11 @@ public class Project {
         projectImage = path;
     }
 
-    public void setProjectDescription(String description){
+    public void setProjectDescription(String description) {
         projectDescription = description;
     }
 
-    public String getProjectDescription(){
+    public String getProjectDescription() {
         return projectDescription;
     }
 }

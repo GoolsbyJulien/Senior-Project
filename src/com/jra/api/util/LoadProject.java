@@ -86,30 +86,32 @@ public class LoadProject {
                         Main.instance.currentProject.setProjectDescription(newDescription);
                     }
 
-                    //Set image
-                    if (Main.instance.currentProject.getProjectType() == 1) {
-                        //Remove previous project
-                        Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
-                            if (n.getClass() == ImageWorld.class) {
-                                Main.instance.mapScene.removeGameObject(n);
-                            } else if (n.getClass() == World.class) {
-                                Main.instance.mapScene.removeGameObject(n);
-                            }
-                        });
-
-                        //Add image
-                        try {
-                            BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
-                            Main.instance.currentProject.setImage(img);
-                            Main.instance.addComponent(new ImageWorld());
-                        } catch (IIOException e) {
-                            JOptionPane.showMessageDialog(null, "Cannot find project Image!");
-                            Main.instance.currentProject.setProjectType(0);
-                            Main.instance.mapScene.addGameobject(Main.instance.world);
-                            Main.instance.world.generateMap();
+                }
+                //Set image
+                if (Main.instance.currentProject.getProjectType() == 1) {
+                    System.out.println("img");
+                    //Remove previous project
+                    Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
+                        if (n.getClass() == ImageWorld.class) {
+                            Main.instance.mapScene.removeGameObject(n);
+                        } else if (n.getClass() == World.class) {
+                            Main.instance.mapScene.removeGameObject(n);
                         }
+                    });
+
+                    //Add image
+                    try {
+                        BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
+                        Main.instance.currentProject.setImage(img);
+                        Main.instance.addComponent(new ImageWorld());
+                    } catch (IIOException e) {
+                        JOptionPane.showMessageDialog(null, "Cannot find project Image!");
+                        Main.instance.currentProject.setProjectType(0);
+                        Main.instance.mapScene.addGameobject(Main.instance.world);
+                        Main.instance.world.generateMap();
                     }
                 }
+
             }
             scanner.close();
 

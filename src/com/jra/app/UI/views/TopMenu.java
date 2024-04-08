@@ -9,7 +9,6 @@ import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
-import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -27,7 +25,10 @@ public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
     private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
-    private JMenuItem fileSave = new JMenuItem(new SaveMapAction());
+    private JMenuItem fileSaveAs = new JMenuItem(new SaveMapAction());
+
+    private JMenuItem fileSave = new JMenuItem("Save");
+
     private JMenuItem fileSaveImage = new JMenuItem(new SaveImageAction());
     private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
@@ -38,6 +39,7 @@ public class TopMenu extends JMenuBar {
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
+        menuFile.add(fileSaveAs);
         menuFile.add(fileSaveImage);
         menuFile.add(fileSettings);
 
@@ -51,6 +53,15 @@ public class TopMenu extends JMenuBar {
         viewMapNoiseMap.addActionListener((a) -> {
             Main.instance.world.setMapView(1);
         });
+
+        fileSave.addActionListener(e -> {
+            try {
+                SaveProject.quickSave("Saves");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         viewMapView.add(viewMapColorMap);
         viewMapView.add(viewMapNoiseMap);
         menuView.add(viewMapView);
@@ -226,8 +237,7 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                }
-                                else if(n.getClass() == World.class){
+                                } else if (n.getClass() == World.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -238,8 +248,7 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                }
-                                else if(n.getClass() == World.class){
+                                } else if (n.getClass() == World.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -330,7 +339,7 @@ public class TopMenu extends JMenuBar {
         });
     }
 
-    public void saveImage(){
+    public void saveImage() {
 
     }
 
@@ -400,13 +409,14 @@ public class TopMenu extends JMenuBar {
 
 class SaveMapAction extends AbstractAction {
     public SaveMapAction() {
-        super("Save Map");
+        super("Save as");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            new SaveProject();
+
+            SaveProject.saveAs();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
