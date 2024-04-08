@@ -12,11 +12,11 @@ public class Road extends MapObject {
 
     private static final float SHOW_POINT = 1.5f;
 
-    public Road(MapObject m1, MapObject m2) {
+    public Road(MapObject m1, MapObject m2, String rName) {
         mapObject = m1;
         mapObject2 = m2;
 
-        name = "road";
+        name = rName;
     }
 
     @Override
