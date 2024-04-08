@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class BottomPanel extends JPanel {
     public BottomPanel() {
-        PanelButton button = new PanelButton("Bottom Panel");
+        PanelButton button = new PanelButton("Tools");
 
         setLayout(new BorderLayout());
         add(button, BorderLayout.NORTH);
@@ -39,10 +39,10 @@ public class BottomPanel extends JPanel {
                     String name = JOptionPane.showInputDialog("Enter Name");
                     if (name == null)
                         return;
-                    SelectableObject temp = new SelectableObject(new Vector(0, 0));
+                    SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
                     temp.setLabel(name);
                     Main.instance.mapScene.addGameobject(temp);
-
+                    Main.instance.updateComponents(Main.instance.mapScene);
                 } catch (Exception e1) {
 
                 }

@@ -46,6 +46,8 @@ public class SaveProject {
             if (currentProject.getProjectType() == 1) {
                 System.out.println("Saving Image");
                 File outputImage = new File("Saves\\" + chooser.getSelectedFile().getName() + "\\"
+            if(currentProject.getProjectType() == 1){
+                File outputImage = new File(chooser.getSelectedFile() + "\\"
                         + chooser.getSelectedFile().getName() + ".jpg");
                 ImageIO.write(currentProject.getImage(), "jpg", outputImage);
             }
@@ -53,6 +55,7 @@ public class SaveProject {
             //Write information into file
             FileWriter fw = new FileWriter(saveFile);
 
+            fw.write("Type:" + currentProject.getProjectType() + "\n");
             fw.write("P:" + currentProject.getPerlinSeed() + "\n");
             fw.write("N:" + currentProject.getProjectName() + "\n");
             fw.write("Type:" + currentProject.getProjectType() + "\n");

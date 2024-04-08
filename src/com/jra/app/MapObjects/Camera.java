@@ -30,6 +30,13 @@ public class Camera extends MapObject {
     boolean isMovingTowards = false;
     Vector moveTowards = new Vector(0, 0);
 
+
+    public Vector screenPointToWorldPoint(Vector point) {
+
+
+        return new Vector((int) ((point.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom), (int) ((point.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom));
+    }
+
     @Override
     public void tick() {
 
@@ -77,8 +84,17 @@ public class Camera extends MapObject {
                 pos.y = (int) (1280 * window.cameraZoom);
         }
 
+        boolean zoomChanged = false;
+        if(window.cameraZoom != Mouse.wheel)
+            zoomChanged = true;
+
         window.cameraZoom = Mouse.wheel;
         window.cameraPosition = pos;
+
+        if(zoomChanged){
+            Main.instance.updateComponents(Main.instance.mapScene);
+            zoomChanged = false;
+        }
     }
 
 
@@ -86,7 +102,6 @@ public class Camera extends MapObject {
     public String toString() {
         return "Camera{" +
                 "Zoom='" + Math.round(window.cameraZoom * 100.0) / 100.0 + '\'' +
-                "pos=" + pos +
 
                 '}';
     }

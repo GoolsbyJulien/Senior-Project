@@ -16,9 +16,7 @@ public class Project {
     private String projectDescription;
 
 
-    public Project() {
-        projectName = "Untitled";
-    }
+    public Project() {projectName = "Untitled";}
 
     public void setPerlinSeed(int perlinSeed) {
         this.perlinSeed = perlinSeed;

@@ -44,7 +44,6 @@ public class World extends MapObject {
     @Override
     public void tick() {
 
-
         if (Keyboard.E)
             generateMap();
     }
