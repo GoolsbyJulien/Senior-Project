@@ -4,7 +4,6 @@ import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.render.MapRenderer;
-import com.jra.api.util.Action;
 import com.jra.app.MapObjects.Camera;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
@@ -71,6 +70,7 @@ public class Main {
     }
 
     public void addComponent(MapObject mapObject) {
+        updateComponents(mapScene);
         mapScene.addGameobject(mapObject);
     }
 

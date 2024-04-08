@@ -69,49 +69,50 @@ public class LoadProject {
                         currentObject = new StringBuilder();
                     }
 
-                //Make this more efficient
-                if (currentLine.contains("Type:")) {
-                    String newType = currentLine.replace("Type:", "");
-                    Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
-                } else if (currentLine.contains("P:")) {
-                    if(Main.instance.currentProject.getProjectType() == 0){
-                        String newSeed = currentLine.replace("P:", "");
-                        Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
+                    //Make this more efficient
+                    if (currentLine.contains("Type:")) {
+                        String newType = currentLine.replace("Type:", "");
+                        Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
+                    } else if (currentLine.contains("P:")) {
+                        if (Main.instance.currentProject.getProjectType() == 0) {
+                            String newSeed = currentLine.replace("P:", "");
+                            Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
+                        }
+                    } else if (currentLine.contains("N:")) {
+                        String newName = currentLine.replace("N:", "");
+                        Main.instance.currentProject.setProjectName(newName);
+                    } else if (currentLine.contains("D:")) {
+                        String newDescription = currentLine.replace("D:", "");
+                        Main.instance.currentProject.setProjectDescription(newDescription);
                     }
-                } else if (currentLine.contains("N:")) {
-                    String newName = currentLine.replace("N:", "");
-                    Main.instance.currentProject.setProjectName(newName);
-                } else if (currentLine.contains("D:")) {
-                    String newDescription = currentLine.replace("D:", "");
-                    Main.instance.currentProject.setProjectDescription(newDescription);
-                }
 
-                //Set image
-                if(Main.instance.currentProject.getProjectType() == 1){
-                    //Remove previous project
-                    Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
-                        if (n.getClass() == ImageWorld.class) {
-                            Main.instance.mapScene.removeGameObject(n);
-                        }
-                        else if(n.getClass() == World.class){
-                            Main.instance.mapScene.removeGameObject(n);
-                        }
-                    });
+                    //Set image
+                    if (Main.instance.currentProject.getProjectType() == 1) {
+                        //Remove previous project
+                        Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
+                            if (n.getClass() == ImageWorld.class) {
+                                Main.instance.mapScene.removeGameObject(n);
+                            } else if (n.getClass() == World.class) {
+                                Main.instance.mapScene.removeGameObject(n);
+                            }
+                        });
 
-                    //Add image
-                    try{
-                        BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
-                        Main.instance.currentProject.setImage(img);
-                        Main.instance.addComponent(new ImageWorld());
-                    }catch (IIOException e){
-                        JOptionPane.showMessageDialog(null, "Cannot find project Image!");
-                        Main.instance.currentProject.setProjectType(0);
-                        Main.instance.mapScene.addGameobject(Main.instance.world);
-                        Main.instance.world.generateMap();
+                        //Add image
+                        try {
+                            BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
+                            Main.instance.currentProject.setImage(img);
+                            Main.instance.addComponent(new ImageWorld());
+                        } catch (IIOException e) {
+                            JOptionPane.showMessageDialog(null, "Cannot find project Image!");
+                            Main.instance.currentProject.setProjectType(0);
+                            Main.instance.mapScene.addGameobject(Main.instance.world);
+                            Main.instance.world.generateMap();
+                        }
                     }
                 }
             }
             scanner.close();
+
         }
     }
 }

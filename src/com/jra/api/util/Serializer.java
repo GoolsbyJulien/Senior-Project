@@ -3,6 +3,7 @@ package com.jra.api.util;
 import com.jra.api.core.MapObject;
 import com.jra.app.MapObjects.SelectableObject;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,6 +54,7 @@ public class Serializer {
             System.out.println(deserializedArray[0][1] + " " + deserializedArray[1][1]);
             SelectableObject temp = new SelectableObject(new Vector(Integer.parseInt(deserializedArray[0][1]), Integer.parseInt(deserializedArray[1][1])));
 
+            temp.setColor(new Color(Integer.parseInt(deserializedArray[2][1])));
             return temp;
         }
 
