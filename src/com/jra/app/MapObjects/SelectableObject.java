@@ -13,10 +13,22 @@ public class SelectableObject extends MapObject {
     private boolean followMouse;
     private static boolean hasSelectedObject = false;
     public static SelectableObject currentObject;
-    private static final int selectedBorderThickness = 10;
+    private static int selectedBorderThickness = 10;
     private Color color = Util.RandomColor();
+    private int width = 50, height = 50;
+    private int fontSize = 20;
+    private String label = "";
     private String description;
     private Color borderColor;
+    private LocationType locationType = LocationType.SETTLEMENT;
+
+    public LocationType getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
+    }
 
     public String getLabel() {
         return label;
@@ -28,16 +40,13 @@ public class SelectableObject extends MapObject {
         this.label = label;
     }
 
-    private String label = "";
-
-
     public SelectableObject(Vector pos) {
         this.pos = pos;
     }
 
     @Override
     public void render(Graphics g) {
-        Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
+        Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
 
         g.setColor(borderColor);
 
@@ -46,15 +55,14 @@ public class SelectableObject extends MapObject {
 
         g.setColor(color);
         g.fillRect(rect.x, rect.y, rect.width, rect.height);
-        g.setFont(StyleGlobals.getFont(20));
-        g.drawString(label, pos.x - label.length() * 2, pos.y - 10);
-
+        g.setFont(StyleGlobals.getFont(fontSize));
+        g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
     }
 
     @Override
     public void tick() {
 
-        Rectangle rect = new Rectangle(pos.x, pos.y, 50, 50);
+        Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         if (followMouse) {
@@ -64,10 +72,11 @@ public class SelectableObject extends MapObject {
                 followMouse = false;
                 hasSelectedObject = false;
             }
+            if (currentObject == this)
+                Main.instance.rightPanel.setLocationText(pos.x, pos.y);
         }
 
         if (Mouse.LEFT_CLICK && !hasSelectedObject && rect.contains(mouseX, mouseY)) {
-
             if (Mouse.wasDragged()) {
                 followMouse = true;
                 hasSelectedObject = true;
@@ -75,9 +84,11 @@ public class SelectableObject extends MapObject {
             if (currentObject != this) {
                 currentObject = this;
                 Main.instance.rightPanel.update(currentObject);
+                Main.instance.rightPanel.setLocationText(pos.x, pos.y);
 
             }
         }
+
 
         if(rect.contains(mouseX, mouseY) && !hasSelectedObject){
             Main.instance.mapRenderer.hoveredObject = this;
@@ -104,11 +115,26 @@ public class SelectableObject extends MapObject {
         updateBorderColor();
         layer = 6;
     }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void changeSize(int size) {
+        width = size;
+        height = size;
+        fontSize = (int) (size * 0.4);
+        selectedBorderThickness = size / 5;
+    }
+
+    public void toggleLabel(boolean check) {
+        if (!check)
+            label = "";
+        else
+            label = name;
     }
 }

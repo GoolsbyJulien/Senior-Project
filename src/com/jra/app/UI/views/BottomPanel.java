@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class BottomPanel extends JPanel {
     private boolean isCreatingLine = false;
     public BottomPanel() {
-        PanelButton button = new PanelButton("Tools");
+        PanelButton button = new PanelButton("Bottom Panel");
 
         setLayout(new BorderLayout());
         add(button, BorderLayout.NORTH);
