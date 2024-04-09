@@ -13,13 +13,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class LoadProject {
     public LoadProject() throws IOException {
         //Create save folder if not already present
-        Files.createDirectories(Paths.get("Saves"));
+        Path savesFolder = Paths.get("Saves");
+        Files.createDirectories(savesFolder);
         JFileChooser chooser = new JFileChooser("Saves");
 
         //Add an extension filter
@@ -34,6 +36,12 @@ public class LoadProject {
         if (r == JFileChooser.APPROVE_OPTION) {
             Scanner scanner = new Scanner(chooser.getSelectedFile());
 
+
+            Main.instance.currentProject.filePath = null;
+            if (!chooser.getSelectedFile().getParent().equals(savesFolder.toString())) {
+                Main.instance.currentProject.filePath = chooser.getSelectedFile().getParent();
+
+            }
             boolean deserializationMode = false;
             StringBuilder currentObject = new StringBuilder();
             while (scanner.hasNextLine()) {

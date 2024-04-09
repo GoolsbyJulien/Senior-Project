@@ -16,7 +16,7 @@ public class Project {
 
     public static final String DEFAULT_NAME = "Untitled";
 
-    public String filePath;
+    public String filePath = null;
 
     public Project() {
         projectName = DEFAULT_NAME;
