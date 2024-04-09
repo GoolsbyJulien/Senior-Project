@@ -90,6 +90,11 @@ public class SelectableObject extends MapObject {
         }
 
 
+        if(rect.contains(mouseX, mouseY) && !hasSelectedObject){
+            Main.instance.mapRenderer.hoveredObject = this;
+        } else if (Main.instance.mapRenderer.hoveredObject == this) {
+            Main.instance.mapRenderer.hoveredObject = null;
+        }
     }
 
 

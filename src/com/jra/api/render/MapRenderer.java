@@ -1,15 +1,20 @@
 package com.jra.api.render;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
+import com.jra.app.MapObjects.SelectableObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
+
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER;
 
 public class MapRenderer extends Canvas implements Runnable {
 
@@ -36,6 +41,7 @@ public class MapRenderer extends Canvas implements Runnable {
     public Action eachFrame = null;
     public Action onClose = null;
     private Mouse mouse = new Mouse();
+    public MapObject hoveredObject = null;
 
 
     public Vector cameraPosition = new Vector(0, 0);
@@ -53,7 +59,15 @@ public class MapRenderer extends Canvas implements Runnable {
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
 
+        //Tooltips
+        tooltipFrame.setUndecorated(true);
+        tooltipFrame.setSize(50,25);
+        tooltipSP.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        tooltipSP.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
 
+        tooltipPanel.add(tooltipLabel);
+        tooltipFrame.add(tooltipSP);
+        tooltipFrame.setAlwaysOnTop(true);
     }
 
     public void startUpdateThread() {
@@ -127,6 +141,16 @@ public class MapRenderer extends Canvas implements Runnable {
                 ticks = 0;
                 timer += 1000;
             }
+
+            //Tooltip update
+            if(hoveredObject == null){
+                tooltipFrame.setVisible(false);
+            }else if(tooltipsOn){
+                tooltipFrame.setVisible(true);
+                tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
+                ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
+                tooltipLabel.setText(hoveredObject.name);
+            }
         }
         //System.exit(0);
     }
@@ -163,10 +187,28 @@ public class MapRenderer extends Canvas implements Runnable {
         bs.show();
         //if (disposeOnRender)
         // g.dispose();
-
     }
 
     public void setRunning(boolean run){
         isRunning = run;
+    }
+
+    /**
+     * Tooltips
+     */
+    private boolean tooltipsOn = false;
+    private JFrame tooltipFrame = new JFrame();
+    private JPanel tooltipPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JScrollPane tooltipSP = new JScrollPane(tooltipPanel);
+    private JLabel tooltipLabel = new JLabel("Default Tooltip");
+    public void toggleTooltips(){
+        if(!tooltipsOn){
+            //Turn tooltips on
+            tooltipsOn = true;
+        }else{
+            //Turn tooltips off
+            tooltipFrame.setVisible(false);
+            tooltipsOn = false;
+        }
     }
 }
