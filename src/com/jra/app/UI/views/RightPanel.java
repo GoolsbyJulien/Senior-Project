@@ -21,12 +21,15 @@ public class RightPanel extends JPanel {
 
     SelectableObject currentObject = null;
     public JPanel inspectorPanel = new JPanel(new GridBagLayout());
+
+    //Locations
     private JTextField name = new JTextField(10);
     private JTextArea description = new JTextArea(10, 9);
     private JComboBox<LocationType> type = new JComboBox<>(LocationType.values());
     private JTextField locationX = new JTextField(4);
     private JTextField locationY = new JTextField(4);
     private JCheckBox showLabel = new JCheckBox("Show Label");
+    private JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 50, 50);
 
 
     public void update(SelectableObject object) {
@@ -35,11 +38,10 @@ public class RightPanel extends JPanel {
         name.setText(object.getLabel());
         description.setText(SelectableObject.currentObject.getDescription());
         type.setSelectedItem(SelectableObject.currentObject.getLocationType());
+        sizeSlider.setValue(SelectableObject.currentObject.getWidth());
     }
 
     public RightPanel() {
-
-
         inspectorPanel.setVisible(false);
         PanelButton button = new PanelButton("Inspector");
         setLayout(new BorderLayout());
@@ -48,6 +50,11 @@ public class RightPanel extends JPanel {
         setLocation(0, 0);
         setPreferredSize(new Dimension(300, 800));
 
+        //Visibility of different layouts?
+        createLocationPanel();
+    }
+
+    public void createLocationPanel(){
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -197,7 +204,6 @@ public class RightPanel extends JPanel {
         c.ipady = 10;
         inspectorPanel.add(Size, c);
 
-        JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 50, 50);
         sizeSlider.setForeground(Color.red);
         sizeSlider.setBackground(StyleGlobals.BACKGROUND);
         c.gridx = 1;
@@ -268,6 +274,10 @@ public class RightPanel extends JPanel {
         add(panelWrapper, BorderLayout.CENTER);
 
         panelWrapper.add(inspectorPanel, BorderLayout.NORTH);
+    }
+
+    public void createRoadPanel(){
+
     }
 
     public void setLocationText(int x, int y) {

@@ -11,7 +11,6 @@ import java.awt.geom.Line2D;
 public class Road extends MapObject {
     MapObject mapObject, mapObject2;
     private boolean showRoad = false;
-
     private static final float SHOW_POINT = 1.5f;
 
     public Road(MapObject m1, MapObject m2, String rName) {

@@ -137,4 +137,8 @@ public class SelectableObject extends MapObject {
         else
             label = name;
     }
+
+    public int getWidth() {
+        return width;
+    }
 }
