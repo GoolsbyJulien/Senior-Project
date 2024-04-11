@@ -12,6 +12,7 @@ public class Road extends MapObject {
     MapObject mapObject, mapObject2;
     private boolean showRoad = false;
     private static final float SHOW_POINT = 1.5f;
+    public static Road currentObject;
 
     public Road(MapObject m1, MapObject m2, String rName) {
         mapObject = m1;
@@ -41,6 +42,10 @@ public class Road extends MapObject {
 
         if(distance < 3){
             Main.instance.mapRenderer.hoveredObject = this;
+            if(Mouse.LEFT_CLICK && currentObject != Main.instance.rightPanel.currentObject){
+                currentObject = this;
+                Main.instance.rightPanel.update(currentObject);
+            }
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;
         }

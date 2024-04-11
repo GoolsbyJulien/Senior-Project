@@ -83,9 +83,10 @@ public class SelectableObject extends MapObject {
             }
             if (currentObject != this) {
                 currentObject = this;
+            }
+            if(currentObject != Main.instance.rightPanel.currentObject){
                 Main.instance.rightPanel.update(currentObject);
                 Main.instance.rightPanel.setLocationText(pos.x, pos.y);
-
             }
         }
 
