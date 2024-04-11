@@ -147,7 +147,7 @@ public class MapRenderer extends Canvas implements Runnable {
                 tooltipFrame.setVisible(false);
             }else if(tooltipsOn){
                 tooltipFrame.setVisible(true);
-                tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
+                tooltipFrame.setLocation(MouseInfo.getPointerInfo().getLocation().x + 5, MouseInfo.getPointerInfo().getLocation().y - 25);
                 ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
                 tooltipLabel.setText(hoveredObject.name);
             }
@@ -196,7 +196,7 @@ public class MapRenderer extends Canvas implements Runnable {
     /**
      * Tooltips
      */
-    private boolean tooltipsOn = false;
+    private boolean tooltipsOn = true;
     private JFrame tooltipFrame = new JFrame();
     private JPanel tooltipPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     private JScrollPane tooltipSP = new JScrollPane(tooltipPanel);

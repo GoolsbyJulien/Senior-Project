@@ -54,6 +54,7 @@ public class TopMenu extends JMenuBar {
         });
 
         JCheckBoxMenuItem viewTooltips = new JCheckBoxMenuItem("View Tooltips");
+        viewTooltips.setState(true);
         viewTooltips.addActionListener((a) -> {
             Main.instance.mapRenderer.toggleTooltips();
         });
