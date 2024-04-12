@@ -76,7 +76,7 @@ public class SelectableObject extends MapObject {
                 Main.instance.rightPanel.setLocationText(pos.x, pos.y);
         }
 
-        if (Mouse.LEFT_CLICK && !hasSelectedObject && rect.contains(mouseX, mouseY)) {
+        if (Mouse.LEFT_CLICK && !hasSelectedObject && rect.contains(mouseX, mouseY) && !Road.isHasRoad()) {
             if (Mouse.wasDragged()) {
                 followMouse = true;
                 hasSelectedObject = true;
@@ -141,5 +141,8 @@ public class SelectableObject extends MapObject {
 
     public int getWidth() {
         return width;
+    }
+    public static boolean isHasSelectedObject() {
+        return hasSelectedObject;
     }
 }

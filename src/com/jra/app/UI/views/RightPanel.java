@@ -324,9 +324,33 @@ public class RightPanel extends JPanel {
         rName.setBorder(null);
         rName.setFont(StyleGlobals.getFont(15));
         c.gridx = 1;
-        c.ipadx = 150;
+        c.ipadx = 200;
         c.ipady = 10;
         roadInspectorPanel.add(rName, c);
+
+        /**
+         * Buttons
+         */
+        JPanel Buttons = new JPanel(new FlowLayout());
+
+        PanelButton delete = new PanelButton("Delete");
+        Buttons.add(delete);
+
+        PanelButton stroke = new PanelButton("Set Stroke");
+        Buttons.add(stroke);
+
+        PanelButton color = new PanelButton("Set Color");
+        Buttons.add(color);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.gridwidth = 2;
+        Buttons.setBackground(StyleGlobals.BACKGROUND);
+        roadInspectorPanel.add(Buttons, c);
+
+        roadInspectorPanel.setBackground(StyleGlobals.BACKGROUND);
         rName.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
@@ -334,8 +358,29 @@ public class RightPanel extends JPanel {
                 Main.instance.updateComponents(Main.instance.mapScene);
             }
         });
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(inspectorPanel, "Are you sure you want to delete this road?");
 
-        roadInspectorPanel.setBackground(StyleGlobals.BACKGROUND);
+                if (option == JOptionPane.OK_OPTION) {
+                    Main.instance.mapScene.removeGameObject(Road.currentObject);
+                }
+            }
+        });
+        color.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color newColor = JColorChooser.showDialog(roadInspectorPanel, "Choose a color", Color.RED);
+                Road.currentObject.setRoadColor(newColor);
+            }
+        });
+        stroke.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     public void setLocationText(int x, int y) {

@@ -45,11 +45,13 @@ public class TopMenu extends JMenuBar {
 
         JMenuItem viewMapColorMap = new JMenuItem("Color Map");
         viewMapColorMap.addActionListener((a) -> {
+            Main.instance.mapRenderer.setBackgroundColor(new Color(7, 0, 161));
             Main.instance.world.setMapView(0);
         });
 
         JMenuItem viewMapNoiseMap = new JMenuItem("Noise Map");
         viewMapNoiseMap.addActionListener((a) -> {
+            Main.instance.mapRenderer.setBackgroundColor(new Color(0, 0, 0));
             Main.instance.world.setMapView(1);
         });
 
