@@ -9,6 +9,7 @@ import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
+import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -32,7 +34,8 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSaveImage = new JMenuItem(new SaveImageAction());
     private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
-    private JMenu viewMapView = new JMenu("Map View");
+    private JMenu viewMapView = new JMenu("Perlin Map View");
+    private JMenu viewLocationView = new JMenu("Location View");
 
 
     public TopMenu() {
@@ -62,9 +65,24 @@ public class TopMenu extends JMenuBar {
             }
         });
 
+
+        JCheckBoxMenuItem viewTooltips = new JCheckBoxMenuItem("View Tooltips");
+        viewTooltips.addActionListener((a) -> {
+            Main.instance.mapRenderer.toggleTooltips();
+        });
+
+        JMenuItem viewPoliticalView = new JMenuItem("Political View");
+        JMenuItem viewGeographyView = new JMenuItem("Geography View");
+
         viewMapView.add(viewMapColorMap);
         viewMapView.add(viewMapNoiseMap);
         menuView.add(viewMapView);
+
+        viewLocationView.add(viewPoliticalView);
+        viewLocationView.add(viewGeographyView);
+        menuView.add(viewLocationView);
+
+        menuView.add(viewTooltips);
 
 
         this.add(menuFile);
@@ -81,8 +99,8 @@ public class TopMenu extends JMenuBar {
                 //Create new project window
                 JFrame frame = new JFrame("Create new project");
                 frame.setSize(750, 750);
+                frame.setLocationRelativeTo(Main.instance.frame);
 
-                frame.setLocationRelativeTo(null);
                 //Content panes
                 ScrollPane scrollPane = new ScrollPane();
                 JPanel panel = new JPanel();
@@ -237,7 +255,8 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                } else if (n.getClass() == World.class) {
+                                }
+                                else if(n.getClass() == World.class){
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -248,7 +267,8 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                } else if (n.getClass() == World.class) {
+                                }
+                                else if(n.getClass() == World.class){
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -348,7 +368,18 @@ public class TopMenu extends JMenuBar {
         //Create new project window
         JFrame frame = new JFrame("Settings");
         frame.setSize(900, 750);
-        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(Main.instance.frame);
+
+        //Settings Panels
+        JPanel generalPanel = new JPanel(new GridBagLayout());
+        JPanel colorPanel = new JPanel(new GridBagLayout());
+        JPanel hotkeys = new JPanel(new GridBagLayout());
+
+        //Tabbed pane
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("General", generalPanel);
+        tabbedPane.addTab("Color Pallet", colorPanel);
+        tabbedPane.addTab("Keybindings", hotkeys);
 
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
@@ -371,22 +402,22 @@ public class TopMenu extends JMenuBar {
 
 
         //Add components to frame
-        frame.add(titleLabel, c);
+        generalPanel.add(titleLabel, c);
         c.ipadx = 75;
         c.ipady = 8;
         c.gridx = 1;
-        frame.add(titleField, c);
+        generalPanel.add(titleField, c);
         c.gridx = 2;
-        frame.add(setTitleButton, c);
+        generalPanel.add(setTitleButton, c);
         c.gridx = 0;
         c.gridy = 1;
-        frame.add(descriptionLabel, c);
+        generalPanel.add(descriptionLabel, c);
         c.gridx = 1;
-        frame.add(descriptionArea, c);
+        generalPanel.add(descriptionArea, c);
         c.gridx = 2;
-        frame.add(setDescriptionButton, c);
+        generalPanel.add(setDescriptionButton, c);
 
-
+        frame.add(tabbedPane);
         frame.setVisible(true);
 
         setTitleButton.addActionListener(new ActionListener() {
