@@ -55,7 +55,7 @@ public class Project {
     public void setProjectName(String projectName) {
 
 
-        if (projectName.trim().isEmpty())
+        if (projectName == null || projectName.trim().isEmpty())
             projectName = DEFAULT_NAME;
         this.projectName = projectName;
         Main.instance.updateTitle();

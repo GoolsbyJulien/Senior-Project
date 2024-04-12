@@ -9,7 +9,6 @@ import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
 import com.jra.app.MapObjects.World;
-import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -255,8 +253,7 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                }
-                                else if(n.getClass() == World.class){
+                                } else if (n.getClass() == World.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -267,8 +264,7 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                }
-                                else if(n.getClass() == World.class){
+                                } else if (n.getClass() == World.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -360,6 +356,8 @@ public class TopMenu extends JMenuBar {
     }
 
     public void saveImage() {
+
+        Main.instance.world.saveToImg();
 
     }
 

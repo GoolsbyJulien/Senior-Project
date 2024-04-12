@@ -97,7 +97,6 @@ public class LoadProject {
                 }
                 //Set image
                 if (Main.instance.currentProject.getProjectType() == 1) {
-                    System.out.println("img");
                     //Remove previous project
                     Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                         if (n.getClass() == ImageWorld.class) {

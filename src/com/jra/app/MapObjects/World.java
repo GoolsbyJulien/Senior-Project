@@ -3,12 +3,14 @@ package com.jra.app.MapObjects;
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
 import com.jra.api.util.PerlinNoise;
-import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.app.Main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class World extends MapObject {
 
@@ -34,10 +36,7 @@ public class World extends MapObject {
 
     @Override
     public String serialize() {
-
-        String[][] fields = {{"Seed", "0"}};
-
-        return Serializer.serialize("World", fields);
+        return null;
     }
 
 
@@ -93,6 +92,17 @@ public class World extends MapObject {
         refreshNoiseMap();
     }
 
+
+    public void saveToImg() {
+
+        File outputfile = new File("image.png");
+
+        try {
+            ImageIO.write(bi, "png", outputfile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void onReady() {

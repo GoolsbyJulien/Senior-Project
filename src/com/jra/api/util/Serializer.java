@@ -52,7 +52,6 @@ public class Serializer {
 
         try {
             if (objectID.equals("SO")) {
-                System.out.println(deserializedArray[0][1] + " " + deserializedArray[1][1]);
                 SelectableObject temp = new SelectableObject(new Vector(Integer.parseInt(deserializedArray[0][1]), Integer.parseInt(deserializedArray[1][1])));
 
                 temp.setColor(new Color(Integer.parseInt(deserializedArray[2][1])));
@@ -68,7 +67,6 @@ public class Serializer {
             System.err.println("Corrupted Object  " + objectID);
         }
 
-        System.out.println("Returning null");
         return null;
     }
 
