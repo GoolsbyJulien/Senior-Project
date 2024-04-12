@@ -9,8 +9,9 @@ import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class SelectableObject extends MapObject {
+public class SelectableObject extends MapObject implements Serializable {
     private boolean followMouse;
     private static boolean hasSelectedObject = false;
     public static SelectableObject currentObject;
@@ -47,6 +48,7 @@ public class SelectableObject extends MapObject {
 
     @Override
     public void render(Graphics g) {
+
         Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
 
         g.setColor(borderColor);
@@ -62,7 +64,7 @@ public class SelectableObject extends MapObject {
 
     @Override
     public String serialize() {
-        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}, {"Label", getLabel()}};
+        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}, {"Label", getLabel()}, {"size", Integer.toString(width)}, {"Description", description}, {"type", Integer.toString(locationType.ordinal())}};
 
         return Serializer.serialize("SO", fields);
     }
@@ -101,7 +103,7 @@ public class SelectableObject extends MapObject {
         }
 
 
-        if(rect.contains(mouseX, mouseY) && !hasSelectedObject){
+        if (rect.contains(mouseX, mouseY) && !hasSelectedObject) {
             Main.instance.mapRenderer.hoveredObject = this;
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;

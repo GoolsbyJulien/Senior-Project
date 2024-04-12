@@ -50,15 +50,23 @@ public class Serializer {
         }
 
 
-        if (objectID.equals("SO")) {
-            System.out.println(deserializedArray[0][1] + " " + deserializedArray[1][1]);
-            SelectableObject temp = new SelectableObject(new Vector(Integer.parseInt(deserializedArray[0][1]), Integer.parseInt(deserializedArray[1][1])));
+        try {
+            if (objectID.equals("SO")) {
+                System.out.println(deserializedArray[0][1] + " " + deserializedArray[1][1]);
+                SelectableObject temp = new SelectableObject(new Vector(Integer.parseInt(deserializedArray[0][1]), Integer.parseInt(deserializedArray[1][1])));
 
-            temp.setColor(new Color(Integer.parseInt(deserializedArray[2][1])));
-            temp.setLabel(deserializedArray[3][1]);
-            return temp;
+                temp.setColor(new Color(Integer.parseInt(deserializedArray[2][1])));
+                temp.setLabel(deserializedArray[3][1]);
+                temp.changeSize(Integer.parseInt(deserializedArray[4][1]));
+                temp.setDescription(deserializedArray[5][1]);
+
+                return temp;
+            }
+
+        } catch (Exception e) {
+
+            System.err.println("Corrupted Object  " + objectID);
         }
-
 
         System.out.println("Returning null");
         return null;
