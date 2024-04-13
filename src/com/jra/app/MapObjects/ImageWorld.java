@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.app.Main;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -14,6 +15,11 @@ public class ImageWorld extends MapObject {
             return;
 
         g.drawImage(bi, 0, 0, null);
+    }
+
+    @Override
+    public String serialize() {
+        return null;
     }
 
     @Override
