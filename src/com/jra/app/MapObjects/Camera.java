@@ -21,6 +21,11 @@ public class Camera extends MapObject {
 
     }
 
+    @Override
+    public String serialize() {
+        return "-1";
+    }
+
     private float camSpeed = 10;
     boolean isMovingTowards = false;
     Vector moveTowards = new Vector(0, 0);

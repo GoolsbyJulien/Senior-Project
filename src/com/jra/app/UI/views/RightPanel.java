@@ -132,7 +132,6 @@ public class RightPanel extends JPanel {
         c.ipadx = 120;
         c.ipady = 50;
         inspectorPanel.add(descriptionPane, c);
-        System.out.println(descriptionPane.getBackground());
         JLabel location = new JLabel("Location");
 
         location.setVerticalAlignment(JLabel.TOP);

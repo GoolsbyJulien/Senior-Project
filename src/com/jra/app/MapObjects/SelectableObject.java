@@ -2,14 +2,16 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Mouse;
+import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class SelectableObject extends MapObject {
+public class SelectableObject extends MapObject implements Serializable {
     private boolean followMouse;
     private static boolean hasSelectedObject = false;
     public static SelectableObject currentObject;
@@ -46,6 +48,7 @@ public class SelectableObject extends MapObject {
 
     @Override
     public void render(Graphics g) {
+
         Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
 
         g.setColor(borderColor);
@@ -58,6 +61,16 @@ public class SelectableObject extends MapObject {
         g.setFont(StyleGlobals.getFont(fontSize));
         g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
     }
+
+    @Override
+    public String serialize() {
+        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}, {"Label", getLabel()}, {"size", Integer.toString(width)}, {"Description", description}, {"type", Integer.toString(locationType.ordinal())}};
+
+        return Serializer.serialize("SO", fields);
+    }
+
+
+    int frame = 0;
 
     @Override
     public void tick() {
@@ -90,7 +103,7 @@ public class SelectableObject extends MapObject {
         }
 
 
-        if(rect.contains(mouseX, mouseY) && !hasSelectedObject){
+        if (rect.contains(mouseX, mouseY) && !hasSelectedObject) {
             Main.instance.mapRenderer.hoveredObject = this;
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;

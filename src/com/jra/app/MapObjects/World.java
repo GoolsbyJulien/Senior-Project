@@ -6,8 +6,11 @@ import com.jra.api.util.PerlinNoise;
 import com.jra.api.util.Util;
 import com.jra.app.Main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class World extends MapObject {
 
@@ -29,6 +32,11 @@ public class World extends MapObject {
         g.drawImage(bi, 0, 0, null);
 
 
+    }
+
+    @Override
+    public String serialize() {
+        return null;
     }
 
 
@@ -85,6 +93,17 @@ public class World extends MapObject {
     }
 
 
+    public void saveToImg() {
+
+        File outputfile = new File("image.png");
+
+        try {
+            ImageIO.write(bi, "png", outputfile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void onReady() {
         name = "World";
@@ -106,5 +125,7 @@ public class World extends MapObject {
 
         return Color.white;
     }
+
+
 }
 

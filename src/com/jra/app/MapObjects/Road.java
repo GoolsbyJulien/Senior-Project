@@ -32,6 +32,11 @@ public class Road extends MapObject {
     }
 
     @Override
+    public String serialize() {
+        return null;
+    }
+
+    @Override
     public void tick() {
         showRoad = Main.instance.mapRenderer.cameraZoom > SHOW_POINT;
 

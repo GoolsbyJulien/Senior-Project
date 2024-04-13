@@ -11,6 +11,8 @@ public abstract class MapObject {
 
     public abstract void render(Graphics g);
 
+    public abstract String serialize();
+
     public abstract void tick();
 
     public abstract void onReady();
