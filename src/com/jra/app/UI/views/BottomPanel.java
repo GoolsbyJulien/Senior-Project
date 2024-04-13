@@ -84,7 +84,7 @@ public class BottomPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (!isCreatingLine) {
                     //Objects
-                    ArrayList<MapObject> objects = new ArrayList<>();
+                    ArrayList<SelectableObject> objects = new ArrayList<>();
 
                     //Create UI
                     JFrame frame = new JFrame("");

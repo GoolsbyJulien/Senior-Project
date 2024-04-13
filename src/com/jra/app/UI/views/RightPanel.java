@@ -37,6 +37,7 @@ public class RightPanel extends JPanel {
 
     //Roads
     private JTextField rName = new JTextField(10);
+    private JSlider roadWidthSlider = new JSlider(JSlider.HORIZONTAL, 3, 6, 5);
 
     public void update(SelectableObject object) {
         //Add panel
@@ -62,6 +63,7 @@ public class RightPanel extends JPanel {
         inspectorPanel.setVisible(false);
         currentObject = object;
         rName.setText(object.name);
+        roadWidthSlider.setValue(Road.currentObject.getRoadWidth());
 
         //Remove other panels
         panelWrapper.remove(inspectorPanel);
@@ -349,6 +351,19 @@ public class RightPanel extends JPanel {
         Buttons.setBackground(StyleGlobals.BACKGROUND);
         roadInspectorPanel.add(Buttons, c);
 
+        JLabel widthLabel = new JLabel("Width");
+        widthLabel.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy = 2;
+        c.ipadx = 15;
+        c.ipady = 10;
+        c.gridwidth = 1;
+        roadInspectorPanel.add(widthLabel,c);
+        c.gridx = 1;
+        c.ipadx = 150;
+        roadWidthSlider.setBackground(StyleGlobals.BACKGROUND);
+        roadInspectorPanel.add(roadWidthSlider,c);
+
         roadInspectorPanel.setBackground(StyleGlobals.BACKGROUND);
         rName.addCaretListener(new CaretListener() {
             @Override
@@ -377,7 +392,43 @@ public class RightPanel extends JPanel {
         stroke.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Create UI
+                JFrame frame = new JFrame("");
+                frame.setSize(250, 210);
+                frame.setLocationRelativeTo(Main.instance.rightPanel);
+                frame.setAlwaysOnTop(true);
+                JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                panel.setPreferredSize(new Dimension(250, 210));
 
+                JButton dashedButton = new JButton("Dashed");
+                JButton solidButton = new JButton("Solid");
+
+                panel.add(solidButton);
+                panel.add(dashedButton);
+                frame.add(panel);
+                frame.setVisible(true);
+
+                dashedButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Road.currentObject.setRoadStroke(new BasicStroke(Road.currentObject.getRoadWidth(), BasicStroke.CAP_BUTT,
+                                BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0), "Dashed");
+                    }
+                });
+
+                solidButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Road.currentObject.setRoadStroke(new BasicStroke(Road.currentObject.getRoadWidth()), "Solid");
+                    }
+                });
+            }
+        });
+
+        roadWidthSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Road.currentObject.setRoadWidth(roadWidthSlider.getValue());
             }
         });
     }
