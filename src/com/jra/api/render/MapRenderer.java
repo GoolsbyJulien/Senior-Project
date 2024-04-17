@@ -6,7 +6,6 @@ import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
-import com.jra.app.MapObjects.SelectableObject;
 
 import javax.swing.*;
 import java.awt.*;

@@ -53,7 +53,8 @@ public class Road extends MapObject {
         //Hovering
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
-        double distance = Line2D.ptSegDist(mapObject.pos.x + 25,mapObject.pos.y + 25,mapObject2.pos.x + 25,mapObject2.pos.y + 25,mouseX,mouseY);
+        double distance = Line2D.ptSegDist(mapObject.pos.x + mapObject.getWidth()/2,mapObject.pos.y + mapObject.getWidth()/2,
+                mapObject2.pos.x + mapObject2.getWidth()/2,mapObject2.pos.y + mapObject2.getWidth()/2,mouseX,mouseY);
 
         if(distance < 3){
             Main.instance.mapRenderer.hoveredObject = this;

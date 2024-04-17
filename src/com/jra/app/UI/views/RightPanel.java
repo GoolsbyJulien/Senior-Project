@@ -270,6 +270,9 @@ public class RightPanel extends JPanel {
 
                 if (option == JOptionPane.OK_OPTION) {
                     Main.instance.mapScene.removeGameObject(SelectableObject.currentObject);
+                    inspectorPanel.setVisible(false);
+                    roadInspectorPanel.setVisible(false);
+                    SelectableObject.currentObject = null;
                 }
             }
         });
@@ -379,6 +382,9 @@ public class RightPanel extends JPanel {
 
                 if (option == JOptionPane.OK_OPTION) {
                     Main.instance.mapScene.removeGameObject(Road.currentObject);
+                    inspectorPanel.setVisible(false);
+                    roadInspectorPanel.setVisible(false);
+                    Road.currentObject = null;
                 }
             }
         });
@@ -436,5 +442,10 @@ public class RightPanel extends JPanel {
     public void setLocationText(int x, int y) {
         locationX.setText(String.valueOf(x));
         locationY.setText(String.valueOf(y));
+    }
+
+    public void hidePanel(){
+        inspectorPanel.setVisible(false);
+        roadInspectorPanel.setVisible(false);
     }
 }
