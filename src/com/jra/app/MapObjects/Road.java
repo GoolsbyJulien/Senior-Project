@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Mouse;
+import com.jra.api.util.Profiler;
 import com.jra.api.util.Util;
 import com.jra.app.Main;
 
@@ -31,20 +32,32 @@ public class Road extends MapObject {
         g.drawLine(mapObject.pos.x + 25, mapObject.pos.y + 25, mapObject2.pos.x + 25, mapObject2.pos.y + 25);
     }
 
+
+    Profiler profiler = new Profiler();
+
     @Override
     public void tick() {
+
+
+        profiler.start();
         showRoad = Main.instance.mapRenderer.cameraZoom > SHOW_POINT;
 
         //Hovering
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
-        double distance = Line2D.ptSegDist(mapObject.pos.x + 25,mapObject.pos.y + 25,mapObject2.pos.x + 25,mapObject2.pos.y + 25,mouseX,mouseY);
+        double distance = Line2D.ptSegDist(mapObject.pos.x + 25, mapObject.pos.y + 25, mapObject2.pos.x + 25, mapObject2.pos.y + 25, mouseX, mouseY);
 
-        if(distance < 3){
+        if (distance < 3) {
             Main.instance.mapRenderer.hoveredObject = this;
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;
         }
+
+        profiler.end();
+
+        System.out.println(profiler.times[0]);
+
+
     }
 
     @Override
