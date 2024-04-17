@@ -17,6 +17,10 @@ import java.util.ArrayList;
 public class BottomPanel extends JPanel {
     private boolean isCreatingLine = false;
 
+    private boolean isShowingPanel = false;
+
+
+
     public BottomPanel() {
         PanelButton button = new PanelButton("Tools");
 
@@ -40,6 +44,7 @@ public class BottomPanel extends JPanel {
         pButtons.add(addRiverButton);
         pButtons.add(addLabelButton);
         pButtons.add(addPolygonButton);
+
         addObjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,6 +129,7 @@ public class BottomPanel extends JPanel {
                         }
                     });
 
+
                     object2.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -191,4 +197,75 @@ public class BottomPanel extends JPanel {
 
         add(pButtons, BorderLayout.CENTER);
     }
+
+    public void addLocation(){
+        try {
+            //UI
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            panel.setSize(250, 250);
+            panel.setPreferredSize(new Dimension(250, 200));
+            JTextField nameField = new JTextField(15);
+            JTextArea descriptionField = new JTextArea(8, 20);
+            descriptionField.setLineWrap(true);
+            descriptionField.setWrapStyleWord(true);
+
+            JScrollPane textArea = new JScrollPane(descriptionField);
+
+            panel.add(new Label("Name"));
+            panel.add(nameField);
+            panel.add(new Label("Description"));
+            panel.add(textArea);
+
+            int result = JOptionPane.showConfirmDialog(Main.instance.frame, panel, "Add Location",
+                    JOptionPane.OK_CANCEL_OPTION);
+
+            if (nameField.getText() == null)
+                return;
+
+            if (result == JOptionPane.OK_OPTION) {
+                SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
+                temp.setLabel(nameField.getText());
+                temp.setDescription(descriptionField.getText());
+                Main.instance.mapScene.addGameobject(temp);
+                Main.instance.updateComponents(Main.instance.mapScene);
+            }
+        } catch (Exception e1) {
+
+        }
+    }
+    public void addRoad()
+    {
+
+        if (!isCreatingLine || !isShowingPanel) {
+            //Objects
+            isShowingPanel = true;
+            ArrayList<MapObject> objects = new ArrayList<>();
+
+            //Create UI
+            JFrame frame = new JFrame("");
+            frame.setSize(250, 210);
+            frame.setLocationRelativeTo(Main.instance.bottomPanel);
+            frame.setAlwaysOnTop(true);
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            panel.setPreferredSize(new Dimension(250, 210));
+            panel.add(new Label("Select a location, then click a button"));
+            panel.add(new Label("below. Each must be a different location"));
+
+            JButton object1 = new JButton("Select location 1");
+            JButton object2 = new JButton("Select location 2");
+            JButton createRoad = new JButton("Create Road");
+
+            panel.add(object1);
+            panel.add(object2);
+            panel.add(createRoad);
+            frame.add(panel);
+            frame.setVisible(true);
+        }
+
+    }
 }
+
+
+
+
+

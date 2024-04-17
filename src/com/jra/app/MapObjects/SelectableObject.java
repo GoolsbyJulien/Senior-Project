@@ -1,11 +1,13 @@
 package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
+import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
+import com.jra.app.UI.views.BottomPanel;
 
 import java.awt.*;
 
@@ -95,6 +97,7 @@ public class SelectableObject extends MapObject {
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;
         }
+
     }
 
 
