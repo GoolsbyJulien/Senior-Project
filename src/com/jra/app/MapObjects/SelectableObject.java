@@ -9,6 +9,7 @@ import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
 
 public class SelectableObject extends MapObject implements Serializable {
@@ -23,6 +24,7 @@ public class SelectableObject extends MapObject implements Serializable {
     private String description;
     private Color borderColor;
     private LocationType locationType = LocationType.SETTLEMENT;
+    private int iconType = 0; //Rectangle by default
 
     public LocationType getLocationType() {
         return locationType;
@@ -48,18 +50,64 @@ public class SelectableObject extends MapObject implements Serializable {
 
     @Override
     public void render(Graphics g) {
+        Rectangle rect;
+        Ellipse2D.Double circle;
+        Polygon triangle;
 
-        Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
+        if (iconType == 1) {
+            //Set shapes
+            circle = new Ellipse2D.Double(pos.x, pos.y, width, height);
 
-        g.setColor(borderColor);
+            //Shape info
+            g.setColor(borderColor);
+            if (currentObject == this)
+                g.fillOval(pos.x - selectedBorderThickness / 2, pos.y - selectedBorderThickness / 2,
+                        (int) (circle.width + selectedBorderThickness), (int) (circle.height + selectedBorderThickness));
 
-        if (currentObject == this)
-            g.fillRect(pos.x - selectedBorderThickness / 2, pos.y - selectedBorderThickness / 2, rect.width + selectedBorderThickness, rect.height + selectedBorderThickness);
+            g.setColor(color);
+            g.fillOval((int)circle.x, (int)circle.y, (int)circle.width, (int)circle.height);
+        } else if (iconType == 2) {
+            //Inverse Triangle using polygons
+            //1 is top right
+            //2 is top left
+            //3 is bottom
+            triangle = new Polygon(new int[] {pos.x + width, pos.x, pos.x + (width / 2)},
+                    new int[] {pos.y, pos.y, pos.y + width}, 3);
 
-        g.setColor(color);
-        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+            g.setColor(borderColor);
+            if(currentObject == this)
+                g.fillPolygon(new int[]{pos.x + width + selectedBorderThickness, pos.x - selectedBorderThickness, pos.x + (width / 2)},
+                        new int[]{pos.y - (selectedBorderThickness/2), pos.y - (selectedBorderThickness/2), pos.y + width + selectedBorderThickness}, 3);
+
+            g.setColor(color);
+            g.fillPolygon(triangle);
+        } else if (iconType == 3) {
+            //Triangle using polygons
+            //1 is bottom right
+            //2 is bottom left
+            //3 is top
+            triangle = new Polygon(new int[] {pos.x + width, pos.x, pos.x + (width / 2)},
+                    new int[] {pos.y + width, pos.y + width, pos.y}, 3);
+
+            g.setColor(borderColor);
+            if(currentObject == this)
+                g.fillPolygon(new int[]{pos.x + width + selectedBorderThickness, pos.x - selectedBorderThickness, pos.x + (width / 2)},
+                        new int[]{pos.y + width + (selectedBorderThickness/2), pos.y + width + (selectedBorderThickness/2), pos.y - selectedBorderThickness}, 3);
+
+            g.setColor(color);
+            g.fillPolygon(triangle);
+        } else{
+            rect = new Rectangle(pos.x, pos.y, width, height);
+            g.setColor(borderColor);
+            if (currentObject == this)
+                g.fillRect(pos.x - selectedBorderThickness / 2, pos.y - selectedBorderThickness / 2,
+                        rect.width + selectedBorderThickness, rect.height + selectedBorderThickness);
+
+            g.setColor(color);
+            g.fillRect(rect.x, rect.y, rect.width, rect.height);
+        }
         g.setFont(StyleGlobals.getFont(fontSize));
-        g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
+        g.drawString(label, pos.x + (width - label.length()) / 4, (int) (pos.y - (height * 0.2)));
     }
 
     @Override
@@ -157,5 +205,9 @@ public class SelectableObject extends MapObject implements Serializable {
     }
     public static boolean isHasSelectedObject() {
         return hasSelectedObject;
+    }
+
+    public void changeIcon(int iconType){
+        this.iconType = iconType;
     }
 }

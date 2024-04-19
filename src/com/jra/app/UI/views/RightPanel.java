@@ -7,6 +7,7 @@ import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.PanelButton;
+import javafx.scene.layout.FlowPane;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -167,6 +168,7 @@ public class RightPanel extends JPanel {
             }
         });
 
+
         /**
          * Object location
          */
@@ -218,6 +220,7 @@ public class RightPanel extends JPanel {
 
         PanelButton icon = new PanelButton("Set Icon");
         Buttons.add(icon);
+
 
         PanelButton color = new PanelButton("Set Color");
         Buttons.add(color);
@@ -284,6 +287,8 @@ public class RightPanel extends JPanel {
             }
         });
 
+
+
         color.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -303,6 +308,59 @@ public class RightPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SelectableObject.currentObject.setLocationType((LocationType) type.getSelectedItem());
+            }
+        });
+
+        icon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame Icon = new JFrame("");
+                Icon.setSize(250, 210);
+                Icon.setLocationRelativeTo(inspectorPanel);
+                Panel icon = new Panel(new FlowLayout());
+                PanelButton Square = new PanelButton("Square");
+                Square.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(0);
+
+                    }
+                });
+
+                PanelButton Circle = new PanelButton("Circle");
+                Circle.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(1);
+                    }
+                });
+
+                PanelButton iTriangle = new PanelButton("Inverse Triangle");
+                iTriangle.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(2);
+                    }
+                });
+
+                PanelButton Triangle = new PanelButton("Triangle");
+                Triangle.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(3);}
+                });
+
+                //Add buttons to panes
+                Square.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(Square);
+                Circle.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(Circle);
+                iTriangle.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(iTriangle);
+                Triangle.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(Triangle);
+                Icon.add(icon);
+                Icon.setVisible(true);
             }
         });
     }
