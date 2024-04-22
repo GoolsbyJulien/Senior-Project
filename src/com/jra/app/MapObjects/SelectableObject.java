@@ -48,7 +48,6 @@ public class SelectableObject extends MapObject implements Serializable {
 
     @Override
     public void render(Graphics g) {
-
         Rectangle rect = new Rectangle(pos.x, pos.y, width, height);
 
         g.setColor(borderColor);
