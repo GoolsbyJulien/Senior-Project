@@ -25,10 +25,16 @@ public class Road extends MapObject {
     public void render(Graphics g) {
         if (!showRoad)
             return;
-        g.setColor(new Color(255, 255, 255, Util.clampedLerp(0, 255, Main.instance.mapRenderer.cameraZoom / 5)));
-        Graphics2D g2 = (Graphics2D) g;
-        ((Graphics2D) g).setStroke(new BasicStroke(5));
-        g.drawLine(mapObject.pos.x + 25, mapObject.pos.y + 25, mapObject2.pos.x + 25, mapObject2.pos.y + 25);
+
+        if(visibility){
+            g.setColor(new Color(255, 255, 255, Util.clampedLerp(0, 255, Main.instance.mapRenderer.cameraZoom / 5)));
+            Graphics2D g2 = (Graphics2D) g;
+            ((Graphics2D) g).setStroke(new BasicStroke(5));
+            g.drawLine(mapObject.pos.x + 25, mapObject.pos.y + 25, mapObject2.pos.x + 25, mapObject2.pos.y + 25);
+        }
+        else{
+
+        }
     }
 
     @Override

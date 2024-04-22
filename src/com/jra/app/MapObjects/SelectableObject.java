@@ -53,13 +53,18 @@ public class SelectableObject extends MapObject implements Serializable {
 
         g.setColor(borderColor);
 
-        if (currentObject == this)
-            g.fillRect(pos.x - selectedBorderThickness / 2, pos.y - selectedBorderThickness / 2, rect.width + selectedBorderThickness, rect.height + selectedBorderThickness);
+        if(visibility){
+            if (currentObject == this)
+                g.fillRect(pos.x - selectedBorderThickness / 2, pos.y - selectedBorderThickness / 2, rect.width + selectedBorderThickness, rect.height + selectedBorderThickness);
 
-        g.setColor(color);
-        g.fillRect(rect.x, rect.y, rect.width, rect.height);
-        g.setFont(StyleGlobals.getFont(fontSize));
-        g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
+            g.setColor(color);
+            g.fillRect(rect.x, rect.y, rect.width, rect.height);
+            g.setFont(StyleGlobals.getFont(fontSize));
+            g.drawString(label, pos.x + (width - label.length()) / 2, (int) (pos.y - (height * 0.2)));
+        }
+        else{
+
+        }
     }
 
     @Override
