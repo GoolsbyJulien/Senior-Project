@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.app.Main;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
+import com.jra.api.input.Mouse;
 import com.jra.api.util.PerlinNoise;
 import com.jra.api.util.Profiler;
 import com.jra.api.util.Util;
@@ -41,6 +42,11 @@ public class World extends MapObject {
     @Override
     public void tick() {
 
+        Vector mouse = Main.instance.cam.screenPointToWorldPoint(Mouse.mousePos);
+        if (pointInMap(mouse.x, mouse.y))
+            System.out.println(noise[mouse.x][mouse.y]);
+
+
         if (Keyboard.E)
             generateMap();
     }
@@ -63,43 +69,74 @@ public class World extends MapObject {
         PerlinNoise hMap = new PerlinNoise(seed);
         PerlinNoise tMap = new PerlinNoise(seed);
         tMap.SetNoiseType(PerlinNoise.NoiseType.OpenSimplex2);
-        tMap.SetFrequency(0.0008f);
-        hMap.SetFrequency(0.007f);
+        tMap.SetFrequency(0.0001f);
+        hMap.SetFrequency(0.0007f);
         tMap.SetFractalType(PerlinNoise.FractalType.FBm);
-        //  tMap.SetDomainWarpAmp(20);
+        tMap.SetDomainWarpAmp(20);
         tMap.SetFractalOctaves(7);
-        // hMap.SetDomainWarpAmp(20);
-        hMap.SetFractalOctaves(5);
+        hMap.SetDomainWarpAmp(20);
+        hMap.SetFractalOctaves(7);
 
         hMap.SetFractalType(PerlinNoise.FractalType.FBm);
 
+        int polePoint = 0;
 
-        Vector biomePoint = new Vector(r.nextInt(WORLD_SIZE), r.nextInt(WORLD_SIZE));
-        int biomeID = r.nextInt(3);
-        for (int x = 0; x < WORLD_SIZE - WORLD_SIZE / 15; x++) {
-            float c = Util.RandomRange(400, 4550);
-            for (int y = 15; y < WORLD_SIZE - WORLD_SIZE / 15; y++) {
-                double temp = tMap.GetNoise(x, y);
+        for (int x = 100; x < WORLD_SIZE - WORLD_SIZE / 15; x++) {
+            int c = r.nextInt(10);
+            for (int y = 0; y < 1300; y++) {
 
 
-                float humidity = hMap.GetNoise(x, y);
                 float e = noise[x][y] * 100;
 
                 //  temp = 10.0 * (e * e) + 100.0 + (10.0 - 10);
 
-//                if (y < WORLD_SIZE / 4 + (-1 * (Math.sin(0.0100 * x * x)) * 10) - 10)
-
-                if (temp < -0.4f && humidity < 0.7)
+                if (y < WORLD_SIZE / 5 + 100 + c + r.nextInt(100) - 200 + (-1 * (Math.sin(0.0100 * x * x)) * 10) - 10) {
                     biomeMap[x][y] = 2;
+                    continue;
 
-                else if (temp > 0.3 && humidity > 0.4)
-                    biomeMap[x][y] = 1;
-                else if (humidity < 0.4) {
-                    biomeMap[x][y] = 0;
-                } else {
-                    biomeMap[x][y] = 3;
                 }
 
+
+//                if (temp < -0.4f)
+//                    biomeMap[x][y] = 2;
+//
+//                else if (temp > 0.5 && humidity > 0.4)
+//                    biomeMap[x][y] = 1;
+//                else if (humidity < 0.4) {
+//                    biomeMap[x][y] = 0;
+//                } else {
+//                    biomeMap[x][y] = 3;
+//                }
+
+            }
+        }
+
+
+        for (int i = 0; i < 12; i++) {
+
+            Vector biomePoint = new Vector(Util.RandomRange(0, WORLD_SIZE), Util.RandomRange(500, WORLD_SIZE));
+            int biomeID = Util.RandomRange(0, 1);
+
+
+            fillBiome:
+            for (int x = 0; x < 100; x++) {
+                int c = r.nextInt(10);
+
+
+                for (int y = 0; y < 100; y++) {
+
+
+                    int xPoint = biomePoint.x + x;
+                    int yPoint = biomePoint.y + y;
+
+                    if (!(xPoint < WORLD_SIZE && xPoint > 0 && yPoint < WORLD_SIZE && yPoint > 0))
+                        continue;
+
+
+                    if (noise[xPoint][yPoint] < 0.13 || noise[xPoint][yPoint] >= 0.46)
+                        continue;
+                    biomeMap[xPoint][yPoint] = 1;
+                }
             }
         }
         profiler.end();
@@ -108,6 +145,7 @@ public class World extends MapObject {
     }
 
     private boolean pointInMap(int x, int y) {
+
 
         return x < WORLD_SIZE && x > 0 && y < WORLD_SIZE && y > 0;
     }
@@ -123,7 +161,7 @@ public class World extends MapObject {
 
                 else { // noise map
                     mapView = -1;
-                    color = Util.lerp(Color.black, Color.white, noise[x][y]);
+                    color = Util.lerp(Color.black, Color.white, tempV[x][y]);
                 }
                 bi.setRGB(x, y, color.getRGB());
             }
@@ -198,11 +236,10 @@ class Biomes {
     public static Color getDesert(float height) {
 
 
-        if (height < 0.4)
+        if (height < 0.5)
             return Util.RandomRange(0, 1) == 0 ? new Color(225, 180, 73) : new Color(225, 185, 80).darker();
 
-        else if (height < 0.45) return new Color(91, 71, 1);
-        return new Color(213, 116, 8);
+        return Color.white;
     }
 
     public static Color getWinter(float height) {
@@ -218,7 +255,7 @@ class Biomes {
 
 
         if (height < 0.17)
-            return new Color(225, 180, 73);
+            return new Color(255, 233, 185);
         if (height < 0.4) return new Color(50, 127, 53);
 
         else if (height < 0.45) return new Color(40, 86, 40);
