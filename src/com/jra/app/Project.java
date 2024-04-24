@@ -1,7 +1,6 @@
 package com.jra.app;
 
 import com.jra.app.MapObjects.ImageWorld;
-import com.jra.app.MapObjects.SelectableObject;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -34,8 +33,7 @@ public class Project {
                 Main.instance.mapScene.addGameobject(Main.instance.world);
 
             }
-            if (n instanceof SelectableObject)
-                Main.instance.mapScene.removeGameObject(n);
+
 
         });
 

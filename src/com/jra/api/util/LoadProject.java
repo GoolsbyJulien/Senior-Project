@@ -19,6 +19,8 @@ import java.util.Scanner;
 
 public class LoadProject {
     public LoadProject() throws IOException {
+
+        Main.instance.deleteAllSelectableObjects();
         //Create save folder if not already present
         Path savesFolder = Paths.get("Saves");
         Files.createDirectories(savesFolder);
