@@ -30,7 +30,7 @@ public class LoadProject {
         } catch (UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        
+
         //Create save folder if not already present
         Path savesFolder = Paths.get("Saves");
         Files.createDirectories(savesFolder);
@@ -134,6 +134,18 @@ public class LoadProject {
             }
             scanner.close();
 
+        }
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
         }
     }
 }

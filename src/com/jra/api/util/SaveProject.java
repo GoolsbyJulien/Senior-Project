@@ -15,8 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class SaveProject {
-
-
     public static void saveAs() throws IOException {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -54,6 +52,18 @@ public class SaveProject {
             String path = chooser.getSelectedFile().toString();
 
             quickSave(path);
+        }
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
         }
     }
 
