@@ -1,7 +1,10 @@
 package com.jra.api.util;
 
+import com.jra.api.core.MapObject;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
+import com.jra.app.MapObjects.Road;
+import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
 
 import javax.imageio.IIOException;
@@ -12,13 +15,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class LoadProject {
     public LoadProject() throws IOException {
+
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+
         //Create save folder if not already present
-        Files.createDirectories(Paths.get("Saves"));
+        Path savesFolder = Paths.get("Saves");
+        Files.createDirectories(savesFolder);
+
         JFileChooser chooser = new JFileChooser("Saves");
 
         //Add an extension filter
@@ -32,53 +52,118 @@ public class LoadProject {
         //Load Save file
         if (r == JFileChooser.APPROVE_OPTION) {
             Scanner scanner = new Scanner(chooser.getSelectedFile());
+            Main.instance.deleteAllSelectableObjects();
+
+
+            Main.instance.currentProject.filePath = null;
+            if (!chooser.getSelectedFile().getParent().equals(savesFolder.toString())) {
+                Main.instance.currentProject.filePath = chooser.getSelectedFile().getParent();
+
+            }
+            boolean deserializationMode = false;
+            StringBuilder currentObject = new StringBuilder();
+            Stack<MapObject> nonSelectableObject = new Stack<MapObject>();
+
 
             while (scanner.hasNextLine()) {
                 String currentLine = scanner.nextLine();
 
-                //Make this more efficient
-                if (currentLine.contains("Type:")) {
-                    String newType = currentLine.replace("Type:", "");
-                    Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
-                } else if (currentLine.contains("P:")) {
-                    if(Main.instance.currentProject.getProjectType() == 0){
+
+                if (!deserializationMode) {
+                    //Make this more efficient
+                    if (currentLine.contains("P:")) {
                         String newSeed = currentLine.replace("P:", "");
                         Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
+                    } else if (currentLine.contains("N:")) {
+                        String newName = currentLine.replace("N:", "");
+                        Main.instance.currentProject.setProjectName(newName);
+                    } else if (currentLine.contains("Type:")) {
+                        String newType = currentLine.replace("Type:", "");
+                        Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
+                    } else if (currentLine.contains("D:")) {
+                        String newDescription = currentLine.replace("D:", "");
+                        Main.instance.currentProject.setProjectDescription(newDescription);
+                        deserializationMode = true;
                     }
-                } else if (currentLine.contains("N:")) {
-                    String newName = currentLine.replace("N:", "");
-                    Main.instance.currentProject.setProjectName(newName);
-                } else if (currentLine.contains("D:")) {
-                    String newDescription = currentLine.replace("D:", "");
-                    Main.instance.currentProject.setProjectDescription(newDescription);
-                }
+                } else {
 
+                    currentObject.append(currentLine);
+                    if (currentLine.trim().equals("}")) {
+
+
+                        MapObject temp = Serializer.deserialize(currentObject.toString().split("\\{")[0], currentObject.toString());
+                        if (temp != null)
+                            if (temp instanceof SelectableObject)
+                                Main.instance.addComponent(temp);
+                            else
+                                nonSelectableObject.add(temp);
+                        currentObject = new StringBuilder();
+                    }
+
+                    //Make this more efficient
+                    if (currentLine.contains("Type:")) {
+                        String newType = currentLine.replace("Type:", "");
+                        Main.instance.currentProject.setProjectType(Integer.parseInt(newType));
+                    } else if (currentLine.contains("P:")) {
+                        if (Main.instance.currentProject.getProjectType() == 0) {
+                            String newSeed = currentLine.replace("P:", "");
+                            Main.instance.currentProject.setPerlinSeedLoad(Integer.parseInt(newSeed));
+                        }
+                    } else if (currentLine.contains("N:")) {
+                        String newName = currentLine.replace("N:", "");
+                        Main.instance.currentProject.setProjectName(newName);
+                    } else if (currentLine.contains("D:")) {
+                        String newDescription = currentLine.replace("D:", "");
+                        Main.instance.currentProject.setProjectDescription(newDescription);
+                    }
+
+                }
                 //Set image
-                if(Main.instance.currentProject.getProjectType() == 1){
+                if (Main.instance.currentProject.getProjectType() == 1) {
                     //Remove previous project
                     Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                         if (n.getClass() == ImageWorld.class) {
                             Main.instance.mapScene.removeGameObject(n);
-                        }
-                        else if(n.getClass() == World.class){
+                        } else if (n.getClass() == World.class) {
                             Main.instance.mapScene.removeGameObject(n);
                         }
                     });
 
                     //Add image
-                    try{
+                    try {
                         BufferedImage img = ImageIO.read(new File(chooser.getSelectedFile().toString().replaceFirst("[.][^.]+$", "") + ".jpg"));
                         Main.instance.currentProject.setImage(img);
                         Main.instance.addComponent(new ImageWorld());
-                    }catch (IIOException e){
+                    } catch (IIOException e) {
                         JOptionPane.showMessageDialog(null, "Cannot find project Image!");
                         Main.instance.currentProject.setProjectType(0);
                         Main.instance.mapScene.addGameobject(Main.instance.world);
                         Main.instance.world.generateMap();
                     }
                 }
+
             }
+            for (int i = 0; i < nonSelectableObject.size(); i++)
+
+                if (nonSelectableObject.peek() instanceof Road) {
+                    Road road = (Road) nonSelectableObject.pop();
+                    road.loadFromUUIDS();
+                    Main.instance.addComponent(road);
+                }
             scanner.close();
+
+        }
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
         }
     }
 }

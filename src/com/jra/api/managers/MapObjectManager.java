@@ -15,7 +15,10 @@ public class MapObjectManager {
 
         e.onReady();
         gameObjects.add(e);
+
         sortLayer();
+
+
     }
 
 
@@ -49,6 +52,15 @@ public class MapObjectManager {
     public void tick() {
         for (MapObject e : gameObjects) {
             e.tick();
+        }
+
+    }
+
+
+    public void removeObjectOfType(MapObject object) {
+        for (MapObject e : gameObjects) {
+
+
         }
 
     }

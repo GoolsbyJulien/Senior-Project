@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.LoadProject;
@@ -7,9 +8,7 @@ import com.jra.api.util.SaveProject;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
-import com.jra.app.MapObjects.ImageWorld;
-import com.jra.app.MapObjects.World;
-import javafx.scene.image.WritableImage;
+import com.jra.app.MapObjects.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -27,7 +25,10 @@ public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
     private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
     private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
-    private JMenuItem fileSave = new JMenuItem(new SaveMapAction());
+    private JMenuItem fileSaveAs = new JMenuItem(new SaveMapAction());
+
+    private JMenuItem fileSave = new JMenuItem("Save");
+
     private JMenuItem fileSaveImage = new JMenuItem(new SaveImageAction());
     private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
@@ -39,21 +40,34 @@ public class TopMenu extends JMenuBar {
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
+        menuFile.add(fileSaveAs);
         menuFile.add(fileSaveImage);
         menuFile.add(fileSettings);
 
 
         JMenuItem viewMapColorMap = new JMenuItem("Color Map");
         viewMapColorMap.addActionListener((a) -> {
+            Main.instance.mapRenderer.setBackgroundColor(new Color(7, 0, 161));
             Main.instance.world.setMapView(0);
         });
 
         JMenuItem viewMapNoiseMap = new JMenuItem("Noise Map");
         viewMapNoiseMap.addActionListener((a) -> {
+            Main.instance.mapRenderer.setBackgroundColor(new Color(0, 0, 0));
             Main.instance.world.setMapView(1);
         });
 
+        fileSave.addActionListener(e -> {
+            try {
+                SaveProject.quickSave("Saves");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+
         JCheckBoxMenuItem viewTooltips = new JCheckBoxMenuItem("View Tooltips");
+        viewTooltips.setState(true);
         viewTooltips.addActionListener((a) -> {
             Main.instance.mapRenderer.toggleTooltips();
         });
@@ -68,6 +82,13 @@ public class TopMenu extends JMenuBar {
         viewLocationView.add(viewPoliticalView);
         viewLocationView.add(viewGeographyView);
         menuView.add(viewLocationView);
+
+        viewPoliticalView.addActionListener((a) -> {
+            politicalView();
+        });
+        viewGeographyView.addActionListener((a) -> {
+            geographyView();
+        });
 
         menuView.add(viewTooltips);
 
@@ -234,16 +255,15 @@ public class TopMenu extends JMenuBar {
                     public void actionPerformed(ActionEvent e) {
                         Main.instance.currentProject.setProjectName(titleField.getText());
                         Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
+                        Main.instance.deleteAllSelectableObjects();
 
-                        frame.dispose();
                         //Create image project only if user has an image selected
                         if (Main.instance.currentProject.getNewProjectType() == 1) {
 
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                }
-                                else if(n.getClass() == World.class){
+                                } else if (n.getClass() == World.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -254,8 +274,7 @@ public class TopMenu extends JMenuBar {
                             Main.instance.mapScene.goManager.gameObjects.forEach((n) -> {
                                 if (n.getClass() == ImageWorld.class) {
                                     Main.instance.mapScene.removeGameObject(n);
-                                }
-                                else if(n.getClass() == World.class){
+                                } else if (n.getClass() == World.class) {
                                     Main.instance.mapScene.removeGameObject(n);
                                 }
                             });
@@ -266,6 +285,8 @@ public class TopMenu extends JMenuBar {
                         }
 
                         mapRenderer.setRunning(false);
+                        frame.dispose();
+
                     }
                 });
 
@@ -346,7 +367,9 @@ public class TopMenu extends JMenuBar {
         });
     }
 
-    public void saveImage(){
+    public void saveImage() {
+
+        Main.instance.world.saveToImg();
 
     }
 
@@ -423,17 +446,44 @@ public class TopMenu extends JMenuBar {
             }
         });
     }
+
+    public void politicalView(){
+        for(MapObject o : Main.instance.mapScene.goManager.gameObjects){
+            if(o.getClass() == SelectableObject.class){
+                if(((SelectableObject) o).getLocationType() == LocationType.SETTLEMENT ||
+                        ((SelectableObject) o).getLocationType() == LocationType.POINT_OF_INTEREST){
+                    o.visibility = true;
+                }
+            } else if (o.getClass() == Road.class) {
+                o.visibility = true;
+            }
+        }
+    }
+
+    public void geographyView(){
+        for(MapObject o : Main.instance.mapScene.goManager.gameObjects){
+            if(o.getClass() == SelectableObject.class){
+                if(((SelectableObject) o).getLocationType() == LocationType.SETTLEMENT ||
+                        ((SelectableObject) o).getLocationType() == LocationType.POINT_OF_INTEREST){
+                    o.visibility = false;
+                }
+            } else if (o.getClass() == Road.class) {
+                o.visibility = false;
+            }
+        }
+    }
 }
 
 class SaveMapAction extends AbstractAction {
     public SaveMapAction() {
-        super("Save Map");
+        super("Save as");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            new SaveProject();
+
+            SaveProject.saveAs();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

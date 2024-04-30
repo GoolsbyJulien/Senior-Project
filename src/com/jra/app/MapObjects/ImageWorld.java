@@ -18,6 +18,11 @@ public class ImageWorld extends MapObject {
     }
 
     @Override
+    public String serialize() {
+        return null;
+    }
+
+    @Override
     public void tick() {
     }
 

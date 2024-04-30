@@ -4,6 +4,7 @@ import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.render.MapRenderer;
+import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 
@@ -19,6 +20,11 @@ public class Camera extends MapObject {
     @Override
     public void render(Graphics g) {
 
+    }
+
+    @Override
+    public String serialize() {
+        return "-1";
     }
 
     private float camSpeed = 10;
@@ -45,6 +51,7 @@ public class Camera extends MapObject {
             pos.x += camSpeed;
         else if (Keyboard.A || Keyboard.LEFT)
             pos.x -= camSpeed;
+
 
 
         if (Mouse.RIGHT_CLICK) {
@@ -103,6 +110,22 @@ public class Camera extends MapObject {
 
     @Override
     public void onReady() {
+        Keyboard.rAction = new Action() {
+            @Override
+            public void act() {
+                Main.instance.bottomPanel.addRoad();
+
+            }
+        };
+
+        Keyboard.lAction = new Action() {
+            @Override
+            public void act() {
+                Main.instance.bottomPanel.addLocation();
+
+            }
+        };
+
         name = "Camera";
     }
 }

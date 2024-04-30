@@ -8,6 +8,15 @@ public class Util {
         return 0.2126 * color.getRed() + 0.7152 * color.getGreen() + 0.0722 * color.getBlue();
     }
 
+    public static void print2dArray(String[][] arry) {
+
+        for (int x = 0; x < arry.length; x++) {
+            for (int y = 0; y < arry[x].length; y++) {
+                System.out.println(arry[x][y]);
+            }
+        }
+    }
+
     public static float clamp(float min, float max, float value) {
         if (value > max)
             value = max;

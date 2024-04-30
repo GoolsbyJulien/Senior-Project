@@ -6,7 +6,6 @@ import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Action;
 import com.jra.api.util.Vector;
-import com.jra.app.MapObjects.SelectableObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -145,9 +144,9 @@ public class MapRenderer extends Canvas implements Runnable {
             //Tooltip update
             if(hoveredObject == null){
                 tooltipFrame.setVisible(false);
-            }else if(tooltipsOn){
+            }else if(tooltipsOn && hoveredObject.visibility){
                 tooltipFrame.setVisible(true);
-                tooltipFrame.setLocation(mouse.getMousePos().x + 300, mouse.getMousePos().y + 20);
+                tooltipFrame.setLocation(MouseInfo.getPointerInfo().getLocation().x + 5, MouseInfo.getPointerInfo().getLocation().y - 25);
                 ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();
                 tooltipLabel.setText(hoveredObject.name);
             }
@@ -196,7 +195,7 @@ public class MapRenderer extends Canvas implements Runnable {
     /**
      * Tooltips
      */
-    private boolean tooltipsOn = false;
+    private boolean tooltipsOn = true;
     private JFrame tooltipFrame = new JFrame();
     private JPanel tooltipPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     private JScrollPane tooltipSP = new JScrollPane(tooltipPanel);

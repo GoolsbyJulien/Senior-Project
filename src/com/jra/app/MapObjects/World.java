@@ -8,8 +8,11 @@ import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class World extends MapObject {
@@ -35,6 +38,11 @@ public class World extends MapObject {
         g.drawImage(bi, 0, 0, null);
 
 
+    }
+
+    @Override
+    public String serialize() {
+        return null;
     }
 
 
@@ -147,6 +155,7 @@ public class World extends MapObject {
 
     public void refreshNoiseMap() {
         noise = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
+
         for (int x = 0; x < WORLD_SIZE; x++) {
             for (int y = 0; y < WORLD_SIZE; y++) {
                 noise[x][y] += p.GetNoise(x, y);
@@ -156,7 +165,7 @@ public class World extends MapObject {
 
                 else { // noise map
                     mapView = -1;
-                    color = Util.lerp(Color.black, Color.white, tempV[x][y]);
+                    color = Util.lerp(Color.black, Color.white, noise[x][y]);
                 }
                 bi.setRGB(x, y, color.getRGB());
             }
@@ -192,6 +201,17 @@ public class World extends MapObject {
 
     }
 
+
+    public void saveToImg() {
+
+        File outputfile = new File("image.png");
+
+        try {
+            ImageIO.write(bi, "png", outputfile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void onReady() {
