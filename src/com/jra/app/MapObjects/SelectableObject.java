@@ -106,6 +106,7 @@ public class SelectableObject extends MapObject {
         updateBorderColor();
     }
 
+
     private void updateBorderColor() {
         if (!(Util.colorBrightness(color) > 245))
             borderColor = Color.white;
