@@ -1,6 +1,5 @@
 package com.jra.app.UI.views;
 
-import com.jra.api.core.MapObject;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.Road;
@@ -68,6 +67,7 @@ public class BottomPanel extends JPanel {
 
                     if (result == JOptionPane.OK_OPTION) {
                         SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
+                        temp.genID();
                         temp.setLabel(nameField.getText());
                         temp.setDescription(descriptionField.getText());
                         Main.instance.mapScene.addGameobject(temp);

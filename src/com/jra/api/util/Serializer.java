@@ -1,6 +1,7 @@
 package com.jra.api.util;
 
 import com.jra.api.core.MapObject;
+import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 
 import java.awt.*;
@@ -41,7 +42,7 @@ public class Serializer {
 
             String[] field = fields[i].split(":");
 
-            //System.out.println(field.length);
+            System.out.println(fields[i]);
 
 
             deserializedArray[i][0] = field[0];
@@ -58,8 +59,12 @@ public class Serializer {
                 temp.setLabel(deserializedArray[3][1]);
                 temp.changeSize(Integer.parseInt(deserializedArray[4][1]));
                 temp.setDescription(deserializedArray[5][1]);
-
+                temp.setUUID(deserializedArray[7][1]);
                 return temp;
+            } else if (objectID.equals("ROAD")) {
+                Road road = new Road(deserializedArray[0][1], deserializedArray[1][1], null);
+                return road;
+
             }
 
         } catch (Exception e) {
