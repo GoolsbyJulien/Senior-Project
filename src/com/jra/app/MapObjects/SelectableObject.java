@@ -1,12 +1,14 @@
 package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
+import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
+import com.jra.app.UI.views.BottomPanel;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -162,6 +164,7 @@ public class SelectableObject extends MapObject implements Serializable {
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;
         }
+
     }
 
 
@@ -169,6 +172,7 @@ public class SelectableObject extends MapObject implements Serializable {
         this.color = c;
         updateBorderColor();
     }
+
 
     private void updateBorderColor() {
         if (!(Util.colorBrightness(color) > 245))
