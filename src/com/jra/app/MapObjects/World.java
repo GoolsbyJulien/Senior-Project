@@ -2,7 +2,6 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Keyboard;
-import com.jra.api.input.Mouse;
 import com.jra.api.util.PerlinNoise;
 import com.jra.api.util.Profiler;
 import com.jra.api.util.Util;
@@ -41,10 +40,6 @@ public class World extends MapObject {
 
     @Override
     public void tick() {
-
-        Vector mouse = Main.instance.cam.screenPointToWorldPoint(Mouse.mousePos);
-        if (pointInMap(mouse.x, mouse.y))
-            System.out.println(noise[mouse.x][mouse.y]);
 
 
         if (Keyboard.E)
