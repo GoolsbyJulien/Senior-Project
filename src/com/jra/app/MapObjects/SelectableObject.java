@@ -54,7 +54,8 @@ public class SelectableObject extends MapObject implements Serializable {
         Ellipse2D.Double circle;
         Polygon triangle;
 
-        if (iconType == 1) {
+        if(visibility){
+            if (iconType == 1) {
             //Set shapes
             circle = new Ellipse2D.Double(pos.x, pos.y, width, height);
 
@@ -108,6 +109,10 @@ public class SelectableObject extends MapObject implements Serializable {
         }
         g.setFont(StyleGlobals.getFont(fontSize));
         g.drawString(label, pos.x + (width - label.length()) / 4, (int) (pos.y - (height * 0.2)));
+        }
+        else{
+
+        }
     }
 
     @Override

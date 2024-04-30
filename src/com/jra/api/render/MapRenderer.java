@@ -144,7 +144,7 @@ public class MapRenderer extends Canvas implements Runnable {
             //Tooltip update
             if(hoveredObject == null){
                 tooltipFrame.setVisible(false);
-            }else if(tooltipsOn){
+            }else if(tooltipsOn && hoveredObject.visibility){
                 tooltipFrame.setVisible(true);
                 tooltipFrame.setLocation(MouseInfo.getPointerInfo().getLocation().x + 5, MouseInfo.getPointerInfo().getLocation().y - 25);
                 ((JFrame)tooltipLabel.getTopLevelAncestor()).pack();

@@ -34,11 +34,18 @@ public class Road extends MapObject {
     public void render(Graphics g) {
         if (!showRoad)
             return;
-        g.setColor(roadColor);
-        Graphics2D g2 = (Graphics2D) g;
-        ((Graphics2D) g).setStroke(roadStroke);
-        g.drawLine(mapObject.pos.x + mapObject.getWidth()/2, mapObject.pos.y + mapObject.getWidth()/2,
+
+        if(visibility){
+            g.setColor(roadColor);
+            Graphics2D g2 = (Graphics2D) g;
+            ((Graphics2D) g).setStroke(roadStroke);
+            g.drawLine(mapObject.pos.x + mapObject.getWidth()/2, mapObject.pos.y + mapObject.getWidth()/2,
                 mapObject2.pos.x + mapObject2.getWidth()/2, mapObject2.pos.y + mapObject2.getWidth()/2);
+        }
+        else{
+            
+        }
+        
     }
 
     @Override
