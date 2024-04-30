@@ -255,8 +255,8 @@ public class TopMenu extends JMenuBar {
                     public void actionPerformed(ActionEvent e) {
                         Main.instance.currentProject.setProjectName(titleField.getText());
                         Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
+                        Main.instance.deleteAllSelectableObjects();
 
-                        frame.dispose();
                         //Create image project only if user has an image selected
                         if (Main.instance.currentProject.getNewProjectType() == 1) {
 
@@ -285,6 +285,8 @@ public class TopMenu extends JMenuBar {
                         }
 
                         mapRenderer.setRunning(false);
+                        frame.dispose();
+
                     }
                 });
 

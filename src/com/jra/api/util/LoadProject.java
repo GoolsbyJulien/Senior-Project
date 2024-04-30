@@ -3,6 +3,8 @@ package com.jra.api.util;
 import com.jra.api.core.MapObject;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.ImageWorld;
+import com.jra.app.MapObjects.Road;
+import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
 
 import javax.imageio.IIOException;
@@ -16,9 +18,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class LoadProject {
     public LoadProject() throws IOException {
+
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (ClassNotFoundException e) {
@@ -34,6 +38,7 @@ public class LoadProject {
         //Create save folder if not already present
         Path savesFolder = Paths.get("Saves");
         Files.createDirectories(savesFolder);
+
         JFileChooser chooser = new JFileChooser("Saves");
 
         //Add an extension filter
@@ -47,6 +52,7 @@ public class LoadProject {
         //Load Save file
         if (r == JFileChooser.APPROVE_OPTION) {
             Scanner scanner = new Scanner(chooser.getSelectedFile());
+            Main.instance.deleteAllSelectableObjects();
 
 
             Main.instance.currentProject.filePath = null;
@@ -56,6 +62,9 @@ public class LoadProject {
             }
             boolean deserializationMode = false;
             StringBuilder currentObject = new StringBuilder();
+            Stack<MapObject> nonSelectableObject = new Stack<MapObject>();
+
+
             while (scanner.hasNextLine()) {
                 String currentLine = scanner.nextLine();
 
@@ -84,8 +93,10 @@ public class LoadProject {
 
                         MapObject temp = Serializer.deserialize(currentObject.toString().split("\\{")[0], currentObject.toString());
                         if (temp != null)
-                            Main.instance.addComponent(temp);
-
+                            if (temp instanceof SelectableObject)
+                                Main.instance.addComponent(temp);
+                            else
+                                nonSelectableObject.add(temp);
                         currentObject = new StringBuilder();
                     }
 
@@ -132,6 +143,13 @@ public class LoadProject {
                 }
 
             }
+            for (int i = 0; i < nonSelectableObject.size(); i++)
+
+                if (nonSelectableObject.peek() instanceof Road) {
+                    Road road = (Road) nonSelectableObject.pop();
+                    road.loadFromUUIDS();
+                    Main.instance.addComponent(road);
+                }
             scanner.close();
 
         }

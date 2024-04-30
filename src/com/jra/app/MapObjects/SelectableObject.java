@@ -27,6 +27,7 @@ public class SelectableObject extends MapObject implements Serializable {
     private Color borderColor;
     private LocationType locationType = LocationType.SETTLEMENT;
     private int iconType = 0; //Rectangle by default
+    public String UUID;
 
     public LocationType getLocationType() {
         return locationType;
@@ -50,6 +51,18 @@ public class SelectableObject extends MapObject implements Serializable {
         this.pos = pos;
     }
 
+
+    public void genID() {
+        int id = Util.RandomRange(0, 1000000);
+
+
+        UUID = Integer.toString(id);
+    }
+
+    public void setUUID(String id) {
+        UUID = id;
+    }
+
     @Override
     public void render(Graphics g) {
         Rectangle rect;
@@ -68,19 +81,19 @@ public class SelectableObject extends MapObject implements Serializable {
                         (int) (circle.width + selectedBorderThickness), (int) (circle.height + selectedBorderThickness));
 
             g.setColor(color);
-            g.fillOval((int)circle.x, (int)circle.y, (int)circle.width, (int)circle.height);
+            g.fillOval((int) circle.x, (int) circle.y, (int) circle.width, (int) circle.height);
         } else if (iconType == 2) {
             //Inverse Triangle using polygons
             //1 is top right
             //2 is top left
             //3 is bottom
-            triangle = new Polygon(new int[] {pos.x + width, pos.x, pos.x + (width / 2)},
-                    new int[] {pos.y, pos.y, pos.y + width}, 3);
+            triangle = new Polygon(new int[]{pos.x + width, pos.x, pos.x + (width / 2)},
+                    new int[]{pos.y, pos.y, pos.y + width}, 3);
 
             g.setColor(borderColor);
-            if(currentObject == this)
+            if (currentObject == this)
                 g.fillPolygon(new int[]{pos.x + width + selectedBorderThickness, pos.x - selectedBorderThickness, pos.x + (width / 2)},
-                        new int[]{pos.y - (selectedBorderThickness/2), pos.y - (selectedBorderThickness/2), pos.y + width + selectedBorderThickness}, 3);
+                        new int[]{pos.y - (selectedBorderThickness / 2), pos.y - (selectedBorderThickness / 2), pos.y + width + selectedBorderThickness}, 3);
 
             g.setColor(color);
             g.fillPolygon(triangle);
@@ -89,17 +102,17 @@ public class SelectableObject extends MapObject implements Serializable {
             //1 is bottom right
             //2 is bottom left
             //3 is top
-            triangle = new Polygon(new int[] {pos.x + width, pos.x, pos.x + (width / 2)},
-                    new int[] {pos.y + width, pos.y + width, pos.y}, 3);
+            triangle = new Polygon(new int[]{pos.x + width, pos.x, pos.x + (width / 2)},
+                    new int[]{pos.y + width, pos.y + width, pos.y}, 3);
 
             g.setColor(borderColor);
-            if(currentObject == this)
+            if (currentObject == this)
                 g.fillPolygon(new int[]{pos.x + width + selectedBorderThickness, pos.x - selectedBorderThickness, pos.x + (width / 2)},
-                        new int[]{pos.y + width + (selectedBorderThickness/2), pos.y + width + (selectedBorderThickness/2), pos.y - selectedBorderThickness}, 3);
+                        new int[]{pos.y + width + (selectedBorderThickness / 2), pos.y + width + (selectedBorderThickness / 2), pos.y - selectedBorderThickness}, 3);
 
             g.setColor(color);
             g.fillPolygon(triangle);
-        } else{
+        } else {
             rect = new Rectangle(pos.x, pos.y, width, height);
             g.setColor(borderColor);
             if (currentObject == this)
@@ -119,13 +132,23 @@ public class SelectableObject extends MapObject implements Serializable {
 
     @Override
     public String serialize() {
-        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}, {"Label", getLabel()}, {"size", Integer.toString(width)}, {"Description", description}, {"type", Integer.toString(locationType.ordinal())}};
+        String[][] fields = {
+                {"X", Integer.toString(pos.x),},
+                {"Y", Integer.toString(pos.y),},
+                {"Color", Integer.toString(color.getRGB())},
+                {"Label", getLabel()},
+                {"size", Integer.toString(width)},
+                {"Description", description},
+                {"location", Integer.toString(locationType.ordinal())},
+                {"icon", Integer.toString(iconType)},
+                {"UUID", UUID}};
 
         return Serializer.serialize("SO", fields);
     }
 
 
     int frame = 0;
+
 
     @Override
     public void tick() {
@@ -152,7 +175,7 @@ public class SelectableObject extends MapObject implements Serializable {
             if (currentObject != this) {
                 currentObject = this;
             }
-            if(currentObject != Main.instance.rightPanel.currentObject){
+            if (currentObject != Main.instance.rightPanel.currentObject) {
                 Main.instance.rightPanel.update(currentObject);
                 Main.instance.rightPanel.setLocationText(pos.x, pos.y);
             }
@@ -212,11 +235,12 @@ public class SelectableObject extends MapObject implements Serializable {
     public int getWidth() {
         return width;
     }
+
     public static boolean isHasSelectedObject() {
         return hasSelectedObject;
     }
 
-    public void changeIcon(int iconType){
+    public void changeIcon(int iconType) {
         this.iconType = iconType;
     }
 }

@@ -20,7 +20,6 @@ public class BottomPanel extends JPanel {
     private boolean isShowingPanel = false;
 
 
-
     public BottomPanel() {
         PanelButton button = new PanelButton("Tools");
 
@@ -75,6 +74,7 @@ public class BottomPanel extends JPanel {
 
                     if (result == JOptionPane.OK_OPTION) {
                         SelectableObject temp = new SelectableObject(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
+                        temp.genID();
                         temp.setLabel(nameField.getText());
                         temp.setDescription(descriptionField.getText());
                         Main.instance.mapScene.addGameobject(temp);
@@ -200,7 +200,7 @@ public class BottomPanel extends JPanel {
         add(pButtons, BorderLayout.CENTER);
     }
 
-    public void addLocation(){
+    public void addLocation() {
         try {
             //UI
             JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -235,13 +235,13 @@ public class BottomPanel extends JPanel {
 
         }
     }
-    public void addRoad()
-    {
+
+    public void addRoad() {
 
         if (!isCreatingLine || !isShowingPanel) {
             //Objects
             isShowingPanel = true;
-            ArrayList<MapObject> objects = new ArrayList<>();
+            ArrayList<MapObject> objects = new ArrayList<MapObject>();
 
             //Create UI
             JFrame frame = new JFrame("");

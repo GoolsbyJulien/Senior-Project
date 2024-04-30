@@ -2,6 +2,7 @@ package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
 import com.jra.api.input.Mouse;
+import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.app.Main;
 
@@ -10,6 +11,8 @@ import java.awt.geom.Line2D;
 
 public class Road extends MapObject {
     SelectableObject mapObject, mapObject2;
+
+    String UUID1, UUID2;
     private boolean showRoad = false;
     private static final float SHOW_POINT = 1.5f;
     public static Road currentObject;
@@ -30,8 +33,18 @@ public class Road extends MapObject {
         name = rName;
     }
 
+    public Road(String m1, String m2, String rName) {
+        UUID1 = m1;
+        UUID2 = m2;
+
+        name = rName;
+    }
+
     @Override
     public void render(Graphics g) {
+
+        if (mapObject == null || mapObject2 == null)
+            return;
         if (!showRoad)
             return;
 
@@ -43,29 +56,34 @@ public class Road extends MapObject {
                 mapObject2.pos.x + mapObject2.getWidth()/2, mapObject2.pos.y + mapObject2.getWidth()/2);
         }
         else{
-            
+
         }
-        
+
     }
 
     @Override
     public String serialize() {
-        return null;
+        String[][] fields = {{"o1", mapObject.UUID}, {"o2", mapObject2.UUID}, {"Color", Integer.toString(roadColor.getRGB())}, {"Stroke", strokeType}, {"size", Integer.toString(roadWidth)}, {"name", name}};
+
+        return Serializer.serialize("ROAD", fields);
     }
 
     @Override
     public void tick() {
+
+        if (mapObject == null || mapObject2 == null)
+            return;
         showRoad = Main.instance.mapRenderer.cameraZoom > SHOW_POINT;
 
         //Hovering
         int mouseX = (int) ((Mouse.mousePos.x + Main.instance.mapRenderer.cameraPosition.x * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
         int mouseY = (int) ((Mouse.mousePos.y + Main.instance.mapRenderer.cameraPosition.y * Main.instance.mapRenderer.cameraZoom) / Main.instance.mapRenderer.cameraZoom);
-        double distance = Line2D.ptSegDist(mapObject.pos.x + mapObject.getWidth()/2,mapObject.pos.y + mapObject.getWidth()/2,
-                mapObject2.pos.x + mapObject2.getWidth()/2,mapObject2.pos.y + mapObject2.getWidth()/2,mouseX,mouseY);
+        double distance = Line2D.ptSegDist(mapObject.pos.x + mapObject.getWidth() / 2, mapObject.pos.y + mapObject.getWidth() / 2,
+                mapObject2.pos.x + mapObject2.getWidth() / 2, mapObject2.pos.y + mapObject2.getWidth() / 2, mouseX, mouseY);
 
-        if(distance < 3){
+        if (distance < 3) {
             Main.instance.mapRenderer.hoveredObject = this;
-            if(Mouse.LEFT_CLICK && !SelectableObject.isHasSelectedObject()){
+            if (Mouse.LEFT_CLICK && !SelectableObject.isHasSelectedObject()) {
                 hasRoad = true;
                 currentObject = this;
                 Main.instance.rightPanel.update(currentObject);
@@ -112,5 +130,11 @@ public class Road extends MapObject {
                     0, new float[]{9}, 0);
         else
             roadStroke = new BasicStroke(roadWidth);
+    }
+
+    public void loadFromUUIDS() {
+        mapObject = Main.instance.getSelectableObjectsFromUUID(UUID1);
+        mapObject2 = Main.instance.getSelectableObjectsFromUUID(UUID2);
+
     }
 }

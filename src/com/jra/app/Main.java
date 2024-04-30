@@ -5,6 +5,8 @@ import com.jra.api.core.Scene;
 import com.jra.api.input.Keyboard;
 import com.jra.api.render.MapRenderer;
 import com.jra.app.MapObjects.Camera;
+import com.jra.app.MapObjects.Road;
+import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
 import com.jra.app.UI.views.BottomPanel;
 import com.jra.app.UI.views.LeftPanel;
@@ -109,6 +111,24 @@ public class Main {
         mapRenderer.startUpdateThread();
     }
 
+
+    public void deleteAllSelectableObjects() {
+        for (MapObject n : mapScene.goManager.gameObjects)
+            if (n instanceof SelectableObject || n instanceof Road)
+                Main.instance.mapScene.removeGameObject(n);
+
+    }
+
+    public SelectableObject getSelectableObjectsFromUUID(String UUID) {
+        for (MapObject n : mapScene.goManager.gameObjects)
+            if (n instanceof SelectableObject) {
+                SelectableObject o = (SelectableObject) n;
+                if (o.UUID.equals(UUID))
+                    return (SelectableObject) n;
+            }
+        return null;
+
+    }
 
     public void updateTitle() {
         frame.setTitle("JRA Map Maker - " + currentProject.getProjectName());
