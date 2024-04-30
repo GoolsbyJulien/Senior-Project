@@ -1,10 +1,13 @@
 package com.jra.app.UI.views;
 
+import com.jra.api.core.MapObject;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.LocationType;
+import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.PanelButton;
+import javafx.scene.layout.FlowPane;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -19,27 +22,55 @@ import java.awt.event.ItemListener;
 
 public class RightPanel extends JPanel {
 
-    SelectableObject currentObject = null;
+    public MapObject currentObject = null;
     public JPanel inspectorPanel = new JPanel(new GridBagLayout());
+    public JPanel roadInspectorPanel = new JPanel(new GridBagLayout());
+    private JPanel panelWrapper = new JPanel(new BorderLayout());
+
+    //Locations
     private JTextField name = new JTextField(10);
     private JTextArea description = new JTextArea(10, 9);
     private JComboBox<LocationType> type = new JComboBox<>(LocationType.values());
     private JTextField locationX = new JTextField(4);
     private JTextField locationY = new JTextField(4);
     private JCheckBox showLabel = new JCheckBox("Show Label");
+    private JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 50, 50);
 
+    //Roads
+    private JTextField rName = new JTextField(10);
+    private JSlider roadWidthSlider = new JSlider(JSlider.HORIZONTAL, 3, 6, 5);
 
     public void update(SelectableObject object) {
+        //Add panel
+        panelWrapper.add(inspectorPanel, BorderLayout.NORTH);
+
         inspectorPanel.setVisible(true);
+        roadInspectorPanel.setVisible(false);
         currentObject = object;
         name.setText(object.getLabel());
         description.setText(SelectableObject.currentObject.getDescription());
         type.setSelectedItem(SelectableObject.currentObject.getLocationType());
+        sizeSlider.setValue(SelectableObject.currentObject.getWidth());
+
+        //Remove other panels
+        panelWrapper.remove(roadInspectorPanel);
+    }
+
+    public void update(Road object){
+        //Add panel
+        panelWrapper.add(roadInspectorPanel, BorderLayout.NORTH);
+
+        roadInspectorPanel.setVisible(true);
+        inspectorPanel.setVisible(false);
+        currentObject = object;
+        rName.setText(object.name);
+        roadWidthSlider.setValue(Road.currentObject.getRoadWidth());
+
+        //Remove other panels
+        panelWrapper.remove(inspectorPanel);
     }
 
     public RightPanel() {
-
-
         inspectorPanel.setVisible(false);
         PanelButton button = new PanelButton("Inspector");
         setLayout(new BorderLayout());
@@ -47,7 +78,21 @@ public class RightPanel extends JPanel {
         add(button, BorderLayout.NORTH);
         setLocation(0, 0);
         setPreferredSize(new Dimension(300, 800));
+        setBackground(StyleGlobals.BACKGROUND);
 
+        panelWrapper.setBackground(StyleGlobals.BACKGROUND);
+        add(panelWrapper, BorderLayout.CENTER);
+
+        //Visibility of different layouts?
+        createLocationPanel();
+        createRoadPanel();
+
+        //Initially false
+        inspectorPanel.setVisible(false);
+        roadInspectorPanel.setVisible(false);
+    }
+
+    public void createLocationPanel(){
         //Grid bag constraints
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -123,6 +168,7 @@ public class RightPanel extends JPanel {
             }
         });
 
+
         /**
          * Object location
          */
@@ -132,7 +178,6 @@ public class RightPanel extends JPanel {
         c.ipadx = 120;
         c.ipady = 50;
         inspectorPanel.add(descriptionPane, c);
-        System.out.println(descriptionPane.getBackground());
         JLabel location = new JLabel("Location");
 
         location.setVerticalAlignment(JLabel.TOP);
@@ -176,6 +221,7 @@ public class RightPanel extends JPanel {
         PanelButton icon = new PanelButton("Set Icon");
         Buttons.add(icon);
 
+
         PanelButton color = new PanelButton("Set Color");
         Buttons.add(color);
         c.gridx = 0;
@@ -197,7 +243,6 @@ public class RightPanel extends JPanel {
         c.ipady = 10;
         inspectorPanel.add(Size, c);
 
-        JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 50, 50);
         sizeSlider.setForeground(Color.red);
         sizeSlider.setBackground(StyleGlobals.BACKGROUND);
         c.gridx = 1;
@@ -220,8 +265,6 @@ public class RightPanel extends JPanel {
          * Outer panel
          */
         inspectorPanel.setBackground(StyleGlobals.BACKGROUND);
-        setBackground(StyleGlobals.BACKGROUND);
-
 
         delete.addActionListener(new ActionListener() {
             @Override
@@ -230,6 +273,9 @@ public class RightPanel extends JPanel {
 
                 if (option == JOptionPane.OK_OPTION) {
                     Main.instance.mapScene.removeGameObject(SelectableObject.currentObject);
+                    inspectorPanel.setVisible(false);
+                    roadInspectorPanel.setVisible(false);
+                    SelectableObject.currentObject = null;
                 }
             }
         });
@@ -240,6 +286,8 @@ public class RightPanel extends JPanel {
                 SelectableObject.currentObject.changeSize(sizeSlider.getValue());
             }
         });
+
+
 
         color.addActionListener(new ActionListener() {
             @Override
@@ -263,15 +311,199 @@ public class RightPanel extends JPanel {
             }
         });
 
-        JPanel panelWrapper = new JPanel(new BorderLayout());
-        panelWrapper.setBackground(StyleGlobals.BACKGROUND);
-        add(panelWrapper, BorderLayout.CENTER);
+        icon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame Icon = new JFrame("");
+                Icon.setSize(250, 210);
+                Icon.setLocationRelativeTo(inspectorPanel);
+                Panel icon = new Panel(new FlowLayout());
+                PanelButton Square = new PanelButton("Square");
+                Square.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(0);
 
-        panelWrapper.add(inspectorPanel, BorderLayout.NORTH);
+                    }
+                });
+
+                PanelButton Circle = new PanelButton("Circle");
+                Circle.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(1);
+                    }
+                });
+
+                PanelButton iTriangle = new PanelButton("Inverse Triangle");
+                iTriangle.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(2);
+                    }
+                });
+
+                PanelButton Triangle = new PanelButton("Triangle");
+                Triangle.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SelectableObject.currentObject.changeIcon(3);}
+                });
+
+                //Add buttons to panes
+                Square.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(Square);
+                Circle.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(Circle);
+                iTriangle.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(iTriangle);
+                Triangle.setBackground(StyleGlobals.BACKGROUND);
+                icon.add(Triangle);
+                Icon.add(icon);
+                Icon.setVisible(true);
+            }
+        });
+    }
+
+    public void createRoadPanel(){
+        //Grid bag constraints
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 15;
+        c.ipady = 10;
+        c.weighty = 1;
+
+        /**
+         * Name
+         */
+        JLabel nameLabel = new JLabel("Name");
+        nameLabel.setForeground(Color.WHITE);
+        roadInspectorPanel.add(nameLabel, c);
+        rName.setBackground(StyleGlobals.ACCENT);
+        rName.setForeground(Color.white);
+        rName.setCaretColor(Color.white);
+        rName.setBorder(null);
+        rName.setFont(StyleGlobals.getFont(15));
+        c.gridx = 1;
+        c.ipadx = 200;
+        c.ipady = 10;
+        roadInspectorPanel.add(rName, c);
+
+        /**
+         * Buttons
+         */
+        JPanel Buttons = new JPanel(new FlowLayout());
+
+        PanelButton delete = new PanelButton("Delete");
+        Buttons.add(delete);
+
+        PanelButton stroke = new PanelButton("Set Stroke");
+        Buttons.add(stroke);
+
+        PanelButton color = new PanelButton("Set Color");
+        Buttons.add(color);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.gridwidth = 2;
+        Buttons.setBackground(StyleGlobals.BACKGROUND);
+        roadInspectorPanel.add(Buttons, c);
+
+        JLabel widthLabel = new JLabel("Width");
+        widthLabel.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy = 2;
+        c.ipadx = 15;
+        c.ipady = 10;
+        c.gridwidth = 1;
+        roadInspectorPanel.add(widthLabel,c);
+        c.gridx = 1;
+        c.ipadx = 150;
+        roadWidthSlider.setBackground(StyleGlobals.BACKGROUND);
+        roadInspectorPanel.add(roadWidthSlider,c);
+
+        roadInspectorPanel.setBackground(StyleGlobals.BACKGROUND);
+        rName.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                Road.currentObject.name = rName.getText();
+                Main.instance.updateComponents(Main.instance.mapScene);
+            }
+        });
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(inspectorPanel, "Are you sure you want to delete this road?");
+
+                if (option == JOptionPane.OK_OPTION) {
+                    Main.instance.mapScene.removeGameObject(Road.currentObject);
+                    inspectorPanel.setVisible(false);
+                    roadInspectorPanel.setVisible(false);
+                    Road.currentObject = null;
+                }
+            }
+        });
+        color.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color newColor = JColorChooser.showDialog(roadInspectorPanel, "Choose a color", Color.RED);
+                Road.currentObject.setRoadColor(newColor);
+            }
+        });
+        stroke.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create UI
+                JFrame frame = new JFrame("");
+                frame.setSize(250, 210);
+                frame.setLocationRelativeTo(Main.instance.rightPanel);
+                frame.setAlwaysOnTop(true);
+                JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                panel.setPreferredSize(new Dimension(250, 210));
+
+                JButton dashedButton = new JButton("Dashed");
+                JButton solidButton = new JButton("Solid");
+
+                panel.add(solidButton);
+                panel.add(dashedButton);
+                frame.add(panel);
+                frame.setVisible(true);
+
+                dashedButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Road.currentObject.setRoadStroke(new BasicStroke(Road.currentObject.getRoadWidth(), BasicStroke.CAP_BUTT,
+                                BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0), "Dashed");
+                    }
+                });
+
+                solidButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Road.currentObject.setRoadStroke(new BasicStroke(Road.currentObject.getRoadWidth()), "Solid");
+                    }
+                });
+            }
+        });
+
+        roadWidthSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Road.currentObject.setRoadWidth(roadWidthSlider.getValue());
+            }
+        });
     }
 
     public void setLocationText(int x, int y) {
         locationX.setText(String.valueOf(x));
         locationY.setText(String.valueOf(y));
+    }
+
+    public void hidePanel(){
+        inspectorPanel.setVisible(false);
+        roadInspectorPanel.setVisible(false);
     }
 }

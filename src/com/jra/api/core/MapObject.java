@@ -8,8 +8,11 @@ public abstract class MapObject {
 
     public String name = "Map Object";
     public Vector pos = new Vector();
+    public boolean visibility = true;
 
     public abstract void render(Graphics g);
+
+    public abstract String serialize();
 
     public abstract void tick();
 
@@ -22,6 +25,7 @@ public abstract class MapObject {
     public void setPos(int x, int y) {
         this.pos = new Vector(x, y);
     }
+    public void setVisibility(boolean visibility){this.visibility = visibility;}
 
     @Override
     public String toString() {

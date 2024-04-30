@@ -35,16 +35,18 @@ public class BottomPanel extends JPanel {
 
         PanelButton addObjectButton = new PanelButton("Add Location");
         PanelButton addRoadButton = new PanelButton("Add Road");
-        PanelButton addRiverButton = new PanelButton("Add River (X)");
+/*        PanelButton addRiverButton = new PanelButton("Add River (X)");
         PanelButton addLabelButton = new PanelButton("Add Label (X)");
-        PanelButton addPolygonButton = new PanelButton("Draw Polygon (X)");
+        PanelButton addPolygonButton = new PanelButton("Draw Polygon (X)");*/
 
         pButtons.add(addObjectButton);
         pButtons.add(addRoadButton);
-        pButtons.add(addRiverButton);
+        /*pButtons.add(addRiverButton);
         pButtons.add(addLabelButton);
         pButtons.add(addPolygonButton);
 
+
+        pButtons.add(addPolygonButton);*/
         addObjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +91,7 @@ public class BottomPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (!isCreatingLine) {
                     //Objects
-                    ArrayList<MapObject> objects = new ArrayList<>();
+                    ArrayList<SelectableObject> objects = new ArrayList<>();
 
                     //Create UI
                     JFrame frame = new JFrame("");
@@ -175,7 +177,7 @@ public class BottomPanel extends JPanel {
             }
         });
 
-        addRiverButton.addActionListener(new ActionListener() {
+        /*addRiverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!isCreatingLine) {
@@ -193,7 +195,7 @@ public class BottomPanel extends JPanel {
                     }
                 }
             }
-        });
+        });*/
 
         add(pButtons, BorderLayout.CENTER);
     }
