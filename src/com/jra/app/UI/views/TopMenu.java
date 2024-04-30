@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
 import com.jra.api.util.LoadProject;
@@ -7,8 +8,7 @@ import com.jra.api.util.SaveProject;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
-import com.jra.app.MapObjects.ImageWorld;
-import com.jra.app.MapObjects.World;
+import com.jra.app.MapObjects.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -82,6 +82,13 @@ public class TopMenu extends JMenuBar {
         viewLocationView.add(viewPoliticalView);
         viewLocationView.add(viewGeographyView);
         menuView.add(viewLocationView);
+
+        viewPoliticalView.addActionListener((a) -> {
+            politicalView();
+        });
+        viewGeographyView.addActionListener((a) -> {
+            geographyView();
+        });
 
         menuView.add(viewTooltips);
 
@@ -438,6 +445,32 @@ public class TopMenu extends JMenuBar {
                 JOptionPane.showMessageDialog(null, "Description changed");
             }
         });
+    }
+
+    public void politicalView(){
+        for(MapObject o : Main.instance.mapScene.goManager.gameObjects){
+            if(o.getClass() == SelectableObject.class){
+                if(((SelectableObject) o).getLocationType() == LocationType.SETTLEMENT ||
+                        ((SelectableObject) o).getLocationType() == LocationType.POINT_OF_INTEREST){
+                    o.visibility = true;
+                }
+            } else if (o.getClass() == Road.class) {
+                o.visibility = true;
+            }
+        }
+    }
+
+    public void geographyView(){
+        for(MapObject o : Main.instance.mapScene.goManager.gameObjects){
+            if(o.getClass() == SelectableObject.class){
+                if(((SelectableObject) o).getLocationType() == LocationType.SETTLEMENT ||
+                        ((SelectableObject) o).getLocationType() == LocationType.POINT_OF_INTEREST){
+                    o.visibility = false;
+                }
+            } else if (o.getClass() == Road.class) {
+                o.visibility = false;
+            }
+        }
     }
 }
 

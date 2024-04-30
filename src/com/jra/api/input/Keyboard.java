@@ -1,5 +1,7 @@
 package com.jra.api.input;
 
+import com.jra.api.util.Action;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -21,12 +23,20 @@ public class Keyboard extends KeyAdapter {
 
     public static boolean LEFT = false;
 
+    public static boolean L = false;
+
+    public static boolean R = false;
+
+    public static Action lAction;
+    public static Action rAction;
+
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
 
 
         if (keyEvent.getKeyCode() == keyEvent.VK_W) {
+
             W = true;
         } else if (keyEvent.getKeyCode() == keyEvent.VK_ENTER) {
             ENTER = true;
@@ -48,12 +58,26 @@ public class Keyboard extends KeyAdapter {
         } else if (keyEvent.getKeyCode() == keyEvent.VK_A) {
             A = true;
 
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_F3)
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_F3) {
             F3 = true;
-        else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT)
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
             RIGHT = true;
-        else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT)
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
             LEFT = true;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_L) {
+
+            if(L == false)
+                lAction.act();
+            L = true;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_R){
+            if(R == false)
+                rAction.act();
+            R = true;
+        }
 
     }
 
@@ -90,6 +114,11 @@ public class Keyboard extends KeyAdapter {
         } else if (keyEvent.getKeyCode() == keyEvent.VK_F3) {
             F3 = false;
 
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_L) {
+            L = false;
+        }
+        else if (keyEvent.getKeyCode() == keyEvent.VK_R){
+            R = false;
         }
 
     }

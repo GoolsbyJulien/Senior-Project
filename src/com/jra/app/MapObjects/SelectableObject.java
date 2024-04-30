@@ -1,12 +1,14 @@
 package com.jra.app.MapObjects;
 
 import com.jra.api.core.MapObject;
+import com.jra.api.input.Keyboard;
 import com.jra.api.input.Mouse;
 import com.jra.api.util.Serializer;
 import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.UI.StyleGlobals;
+import com.jra.app.UI.views.BottomPanel;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -67,7 +69,8 @@ public class SelectableObject extends MapObject implements Serializable {
         Ellipse2D.Double circle;
         Polygon triangle;
 
-        if (iconType == 1) {
+        if(visibility){
+            if (iconType == 1) {
             //Set shapes
             circle = new Ellipse2D.Double(pos.x, pos.y, width, height);
 
@@ -121,6 +124,10 @@ public class SelectableObject extends MapObject implements Serializable {
         }
         g.setFont(StyleGlobals.getFont(fontSize));
         g.drawString(label, pos.x + (width - label.length()) / 4, (int) (pos.y - (height * 0.2)));
+        }
+        else{
+
+        }
     }
 
     @Override
@@ -180,6 +187,7 @@ public class SelectableObject extends MapObject implements Serializable {
         } else if (Main.instance.mapRenderer.hoveredObject == this) {
             Main.instance.mapRenderer.hoveredObject = null;
         }
+
     }
 
 
@@ -187,6 +195,7 @@ public class SelectableObject extends MapObject implements Serializable {
         this.color = c;
         updateBorderColor();
     }
+
 
     private void updateBorderColor() {
         if (!(Util.colorBrightness(color) > 245))
