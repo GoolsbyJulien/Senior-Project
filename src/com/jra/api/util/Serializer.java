@@ -44,7 +44,6 @@ public class Serializer {
 
                 String[] field = fields[i].split(":");
 
-                System.out.println(fields[i]);
                 if (field.length == 1) {
                     field = new String[]{field[0], ""};
                 }
@@ -75,7 +74,6 @@ public class Serializer {
         } catch (Exception e) {
 
             System.err.println("Corrupted Object  " + objectID);
-            e.printStackTrace();
         }
 
         return null;

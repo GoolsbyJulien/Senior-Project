@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.api.core.MapObject;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.Road;
@@ -17,7 +18,6 @@ public class BottomPanel extends JPanel {
     private boolean isCreatingLine = false;
 
     private boolean isShowingPanel = false;
-
 
 
     public BottomPanel() {
@@ -200,7 +200,7 @@ public class BottomPanel extends JPanel {
         add(pButtons, BorderLayout.CENTER);
     }
 
-    public void addLocation(){
+    public void addLocation() {
         try {
             //UI
             JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -235,13 +235,13 @@ public class BottomPanel extends JPanel {
 
         }
     }
-    public void addRoad()
-    {
+
+    public void addRoad() {
 
         if (!isCreatingLine || !isShowingPanel) {
             //Objects
             isShowingPanel = true;
-            ArrayList<MapObject> objects = new ArrayList<>();
+            ArrayList<MapObject> objects = new ArrayList<MapObject>();
 
             //Create UI
             JFrame frame = new JFrame("");
