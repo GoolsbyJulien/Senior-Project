@@ -20,7 +20,7 @@ public class World extends MapObject {
     private final int WORLD_SIZE = 1600;
     private int mapView = 0;
     float[][] noise = new float[WORLD_SIZE][WORLD_SIZE];
-    float[][] tempV = new float[WORLD_SIZE][WORLD_SIZE];
+
 
     int[][] biomeMap = new int[WORLD_SIZE][WORLD_SIZE];
     int biomeDensity = 200;
@@ -69,21 +69,6 @@ public class World extends MapObject {
         Random r = new Random(seed);
 
 
-        PerlinNoise hMap = new PerlinNoise(seed);
-        PerlinNoise tMap = new PerlinNoise(seed);
-        tMap.SetNoiseType(PerlinNoise.NoiseType.OpenSimplex2);
-        tMap.SetFrequency(0.0001f);
-        hMap.SetFrequency(0.0007f);
-        tMap.SetFractalType(PerlinNoise.FractalType.FBm);
-        tMap.SetDomainWarpAmp(20);
-        tMap.SetFractalOctaves(7);
-        hMap.SetDomainWarpAmp(20);
-        hMap.SetFractalOctaves(7);
-
-        hMap.SetFractalType(PerlinNoise.FractalType.FBm);
-
-        int polePoint = 0;
-
         for (int x = 100; x < WORLD_SIZE - WORLD_SIZE / 15; x++) {
             int c = r.nextInt(10);
             for (int y = 0; y < 1300; y++) {
@@ -120,8 +105,6 @@ public class World extends MapObject {
             Vector biomePoint = new Vector(Util.RandomRange(0, WORLD_SIZE), Util.RandomRange(500, WORLD_SIZE));
             int biomeID = Util.RandomRange(0, 1);
 
-
-            fillBiome:
             for (int x = 0; x < 100; x++) {
                 int c = r.nextInt(10);
 
@@ -147,11 +130,11 @@ public class World extends MapObject {
 
     }
 
-    private boolean pointInMap(int x, int y) {
-
-
-        return x < WORLD_SIZE && x > 0 && y < WORLD_SIZE && y > 0;
-    }
+//    private boolean pointInMap(int x, int y) {
+//
+//
+//        return x < WORLD_SIZE && x > 0 && y < WORLD_SIZE && y > 0;
+//    }
 
     public void refreshNoiseMap() {
         noise = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
