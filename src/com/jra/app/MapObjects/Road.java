@@ -56,7 +56,7 @@ public class Road extends MapObject {
 
     @Override
     public String serialize() {
-        String[][] fields = {{"o1", mapObject.UUID}, {"o2", mapObject2.UUID}, {"Color", Integer.toString(roadColor.getRGB())}, {"Stroke", strokeType}, {"size", Integer.toString(roadWidth)}};
+        String[][] fields = {{"o1", mapObject.UUID}, {"o2", mapObject2.UUID}, {"Color", Integer.toString(roadColor.getRGB())}, {"Stroke", strokeType}, {"size", Integer.toString(roadWidth)}, {"name", name}};
 
         return Serializer.serialize("ROAD", fields);
     }

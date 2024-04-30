@@ -125,7 +125,16 @@ public class SelectableObject extends MapObject implements Serializable {
 
     @Override
     public String serialize() {
-        String[][] fields = {{"X", Integer.toString(pos.x),}, {"Y", Integer.toString(pos.y),}, {"Color", Integer.toString(color.getRGB())}, {"Label", getLabel()}, {"size", Integer.toString(width)}, {"Description", description}, {"type", Integer.toString(locationType.ordinal())}, {"UUID", UUID}};
+        String[][] fields = {
+                {"X", Integer.toString(pos.x),},
+                {"Y", Integer.toString(pos.y),},
+                {"Color", Integer.toString(color.getRGB())},
+                {"Label", getLabel()},
+                {"size", Integer.toString(width)},
+                {"Description", description},
+                {"location", Integer.toString(locationType.ordinal())},
+                {"icon", Integer.toString(iconType)},
+                {"UUID", UUID}};
 
         return Serializer.serialize("SO", fields);
     }

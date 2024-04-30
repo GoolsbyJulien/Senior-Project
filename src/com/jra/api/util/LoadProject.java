@@ -23,21 +23,10 @@ import java.util.Stack;
 public class LoadProject {
     public LoadProject() throws IOException {
 
-        Main.instance.deleteAllSelectableObjects();
         //Create save folder if not already present
         Path savesFolder = Paths.get("Saves");
         Files.createDirectories(savesFolder);
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
+
         JFileChooser chooser = new JFileChooser("Saves");
 
         //Add an extension filter
@@ -51,6 +40,7 @@ public class LoadProject {
         //Load Save file
         if (r == JFileChooser.APPROVE_OPTION) {
             Scanner scanner = new Scanner(chooser.getSelectedFile());
+            Main.instance.deleteAllSelectableObjects();
 
 
             Main.instance.currentProject.filePath = null;
