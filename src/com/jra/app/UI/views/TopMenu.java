@@ -293,6 +293,18 @@ public class TopMenu extends JMenuBar {
                 chooseImage.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        try {
+                            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                        } catch (ClassNotFoundException er) {
+                            throw new RuntimeException(er);
+                        } catch (InstantiationException er) {
+                            throw new RuntimeException(er);
+                        } catch (IllegalAccessException er) {
+                            throw new RuntimeException(er);
+                        } catch (UnsupportedLookAndFeelException er) {
+                            throw new RuntimeException(er);
+                        }
+
                         JFileChooser chooser = new JFileChooser();
 
                         //Add extension filters
@@ -323,6 +335,18 @@ public class TopMenu extends JMenuBar {
                                 throw new RuntimeException(ex);
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
+                            }
+
+                            try {
+                                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                            } catch (ClassNotFoundException er) {
+                                throw new RuntimeException(er);
+                            } catch (InstantiationException er) {
+                                throw new RuntimeException(er);
+                            } catch (IllegalAccessException er) {
+                                throw new RuntimeException(er);
+                            } catch (UnsupportedLookAndFeelException er) {
+                                throw new RuntimeException(er);
                             }
 
                             //Resize window to fit contents
