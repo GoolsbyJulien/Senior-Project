@@ -51,6 +51,7 @@ public class RightPanel extends JPanel {
         description.setText(SelectableObject.currentObject.getDescription());
         type.setSelectedItem(SelectableObject.currentObject.getLocationType());
         sizeSlider.setValue(SelectableObject.currentObject.getWidth());
+        showLabel.setSelected(SelectableObject.currentObject.isLabelUp());
 
         //Remove other panels
         panelWrapper.remove(roadInspectorPanel);
@@ -286,8 +287,6 @@ public class RightPanel extends JPanel {
                 SelectableObject.currentObject.changeSize(sizeSlider.getValue());
             }
         });
-
-
 
         color.addActionListener(new ActionListener() {
             @Override

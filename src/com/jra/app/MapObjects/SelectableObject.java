@@ -23,6 +23,7 @@ public class SelectableObject extends MapObject implements Serializable {
     private int width = 50, height = 50;
     private int fontSize = 20;
     private String label = "";
+    private boolean isLabelUp = true;
     private String description;
     private Color borderColor;
     private LocationType locationType = LocationType.SETTLEMENT;
@@ -122,8 +123,10 @@ public class SelectableObject extends MapObject implements Serializable {
             g.setColor(color);
             g.fillRect(rect.x, rect.y, rect.width, rect.height);
         }
-        g.setFont(StyleGlobals.getFont(fontSize));
-        g.drawString(label, pos.x + (width - label.length()) / 4, (int) (pos.y - (height * 0.2)));
+            if(isLabelUp){
+                g.setFont(StyleGlobals.getFont(fontSize));
+                g.drawString(label, pos.x + (width - label.length()) / 4, (int) (pos.y - (height * 0.2)));
+            }
         }
         else{
 
@@ -226,10 +229,16 @@ public class SelectableObject extends MapObject implements Serializable {
     }
 
     public void toggleLabel(boolean check) {
-        if (!check)
-            label = "";
-        else
-            label = name;
+        if (!check){
+            isLabelUp = false;
+        }
+        else{
+            isLabelUp = true;
+        }
+    }
+
+    public boolean isLabelUp() {
+        return isLabelUp;
     }
 
     public int getWidth() {
