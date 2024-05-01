@@ -120,7 +120,7 @@ public class World extends MapObject {
 
                     if (noise[xPoint][yPoint] < 0.13 || noise[xPoint][yPoint] >= 0.46)
                         continue;
-                    //  biomeMap[xPoint][yPoint] = 1;
+                    biomeMap[xPoint][yPoint] = 1;
                 }
             }
         }
@@ -220,7 +220,7 @@ public class World extends MapObject {
 
         else if (e < 0.4) return new Color(50, 127, 53);
 
-        else if (e < 0.45) return new Color(40, 86, 40);
+        else if (e < 0.45) return new Color(72, 79, 72);
 
 
         return Color.white;
@@ -231,10 +231,10 @@ class Biomes {
 
 
     public static Color getDesert(float height) {
-
-
-        if (height < 0.5)
-            return Util.RandomRange(0, 1) == 0 ? new Color(225, 180, 73) : new Color(225, 185, 80).darker();
+        if (height < 0.35)
+            return new Color(255, 233, 185);
+        else if (height < 0.45)
+            return new Color(72, 79, 72);
 
         return Color.white;
     }
@@ -255,7 +255,7 @@ class Biomes {
             return new Color(255, 233, 185);
         if (height < 0.4) return new Color(50, 127, 53);
 
-        else if (height < 0.45) return new Color(40, 86, 40);
+        else if (height < 0.45) return new Color(72, 79, 72);
 
         return Color.white;
     }

@@ -1,0 +1,27 @@
+Original:
+   Deep water: 0700A1FF
+   Water: 5EA7FFFF
+   Coast: FFE9B9FF (in function Normal) -> 5EA7FFFF, FFE572FF (function biome)
+   Plains: 327F35FF
+   Hills: 285628FF
+   Mountains: FFFFFF (White)
+   Winter: FDFDFDFF
+   Winter mountains: 1082D2FF
+   Desert: E1B449FF, E1B950FF
+
+
+New:
+   Deep water: 0700A1FF
+   Water: 5EA7FFFF
+   Coast:
+   Plains:
+   Hills:
+   Mountains:
+   Winter:
+   Winter mountains:
+   Desert:
+   Desert mountains:
+
+   Forest:
+   Temperate Rainforest:
+   Tropical Rainforest:
