@@ -101,7 +101,6 @@ public class World extends MapObject {
 
 
         for (int i = 0; i < 12; i++) {
-
             Vector biomePoint = new Vector(Util.RandomRange(0, WORLD_SIZE), Util.RandomRange(500, WORLD_SIZE));
             int biomeID = Util.RandomRange(0, 1);
 
@@ -121,7 +120,7 @@ public class World extends MapObject {
 
                     if (noise[xPoint][yPoint] < 0.13 || noise[xPoint][yPoint] >= 0.46)
                         continue;
-                    biomeMap[xPoint][yPoint] = 1;
+                    //  biomeMap[xPoint][yPoint] = 1;
                 }
             }
         }
