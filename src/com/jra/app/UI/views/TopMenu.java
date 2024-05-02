@@ -33,10 +33,12 @@ public class TopMenu extends JMenuBar {
     private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
     private JMenu menuView = new JMenu("View");
     private JMenu viewMapView = new JMenu("Perlin Map View");
+    private JMenu viewMapOverlay = new JMenu("Map Overlay");
     private JMenu viewLocationView = new JMenu("Location View");
 
 
     public TopMenu() {
+        //File menu
         menuFile.add(fileNew);
         menuFile.add(fileOpen);
         menuFile.add(fileSave);
@@ -44,7 +46,16 @@ public class TopMenu extends JMenuBar {
         menuFile.add(fileSaveImage);
         menuFile.add(fileSettings);
 
+        fileSave.addActionListener(e -> {
+            try {
+                SaveProject.quickSave("Saves");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
+        //View Menu
+        //Perlin map view
         JMenuItem viewMapColorMap = new JMenuItem("Color Map");
         viewMapColorMap.addActionListener((a) -> {
             Main.instance.mapRenderer.setBackgroundColor(new Color(7, 0, 161));
@@ -57,27 +68,28 @@ public class TopMenu extends JMenuBar {
             Main.instance.world.setMapView(1);
         });
 
-        fileSave.addActionListener(e -> {
-            try {
-                SaveProject.quickSave("Saves");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-
-        JCheckBoxMenuItem viewTooltips = new JCheckBoxMenuItem("View Tooltips");
-        viewTooltips.setState(true);
-        viewTooltips.addActionListener((a) -> {
-            Main.instance.mapRenderer.toggleTooltips();
-        });
-
-        JMenuItem viewPoliticalView = new JMenuItem("Political View");
-        JMenuItem viewGeographyView = new JMenuItem("Geography View");
-
         viewMapView.add(viewMapColorMap);
         viewMapView.add(viewMapNoiseMap);
         menuView.add(viewMapView);
+
+        //Map Overlay
+        JCheckBoxMenuItem viewPrecipitation = new JCheckBoxMenuItem("View Precipitation");
+        JCheckBoxMenuItem viewTemperature = new JCheckBoxMenuItem("View Temperature");
+
+        viewPrecipitation.addActionListener((a) -> {
+
+        });
+        viewTemperature.addActionListener((a) -> {
+
+        });
+
+        viewMapOverlay.add(viewPrecipitation);
+        viewMapOverlay.add(viewTemperature);
+        menuView.add(viewMapOverlay);
+
+        //Location View
+        JMenuItem viewPoliticalView = new JMenuItem("Political View");
+        JMenuItem viewGeographyView = new JMenuItem("Geography View");
 
         viewLocationView.add(viewPoliticalView);
         viewLocationView.add(viewGeographyView);
@@ -90,8 +102,13 @@ public class TopMenu extends JMenuBar {
             geographyView();
         });
 
+        //Tooltips
+        JCheckBoxMenuItem viewTooltips = new JCheckBoxMenuItem("View Tooltips");
+        viewTooltips.setState(true);
+        viewTooltips.addActionListener((a) -> {
+            Main.instance.mapRenderer.toggleTooltips();
+        });
         menuView.add(viewTooltips);
-
 
         this.add(menuFile);
         this.add(menuView);
@@ -293,6 +310,18 @@ public class TopMenu extends JMenuBar {
                 chooseImage.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        try {
+                            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                        } catch (ClassNotFoundException er) {
+                            throw new RuntimeException(er);
+                        } catch (InstantiationException er) {
+                            throw new RuntimeException(er);
+                        } catch (IllegalAccessException er) {
+                            throw new RuntimeException(er);
+                        } catch (UnsupportedLookAndFeelException er) {
+                            throw new RuntimeException(er);
+                        }
+
                         JFileChooser chooser = new JFileChooser();
 
                         //Add extension filters
@@ -323,6 +352,18 @@ public class TopMenu extends JMenuBar {
                                 throw new RuntimeException(ex);
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
+                            }
+
+                            try {
+                                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                            } catch (ClassNotFoundException er) {
+                                throw new RuntimeException(er);
+                            } catch (InstantiationException er) {
+                                throw new RuntimeException(er);
+                            } catch (IllegalAccessException er) {
+                                throw new RuntimeException(er);
+                            } catch (UnsupportedLookAndFeelException er) {
+                                throw new RuntimeException(er);
                             }
 
                             //Resize window to fit contents
