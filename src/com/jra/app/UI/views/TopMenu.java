@@ -77,10 +77,12 @@ public class TopMenu extends JMenuBar {
         JCheckBoxMenuItem viewTemperature = new JCheckBoxMenuItem("View Temperature");
 
         viewPrecipitation.addActionListener((a) -> {
-
+            Main.instance.mapRenderer.setBackgroundColor(new Color(0, 0, 0));
+            Main.instance.world.setMapView(2);
         });
         viewTemperature.addActionListener((a) -> {
-
+            Main.instance.mapRenderer.setBackgroundColor(new Color(0, 0, 0));
+            Main.instance.world.setMapView(3);
         });
 
         viewMapOverlay.add(viewPrecipitation);
