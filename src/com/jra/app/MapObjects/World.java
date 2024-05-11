@@ -18,6 +18,7 @@ import java.util.Random;
 public class World extends MapObject {
     private final int WORLD_SIZE = 1600;
     private int mapView = 0;
+    private int overlayView = 0;
     float[][] noise = new float[WORLD_SIZE][WORLD_SIZE];
     float[][] tempMap = new float[WORLD_SIZE][WORLD_SIZE];
     float[][] precipMap = new float[WORLD_SIZE][WORLD_SIZE];
@@ -56,6 +57,11 @@ public class World extends MapObject {
         refreshNoiseMap();
     }
 
+    public void setOverlayView(int overlayView){
+        //0 = off; 1 = precipitation; 2 = temperature
+        this.overlayView = overlayView;
+        refreshNoiseMap();
+    }
 
     public void generateBiomeMaps(int seed) {
         Profiler profiler = new Profiler();
@@ -69,24 +75,35 @@ public class World extends MapObject {
         tMap = new PerlinNoise(seed);
 
         //Temperature config
-        tMap.SetNoiseType(PerlinNoise.NoiseType.OpenSimplex2);
-        tMap.SetFrequency(0.0008f);
+        tMap.SetNoiseType(PerlinNoise.NoiseType.OpenSimplex2S);
+        tMap.SetFrequency(0.008f);
         tMap.SetFractalType(PerlinNoise.FractalType.FBm);
         tMap.SetFractalOctaves(7);
 
         //Precipitation config
-        pMap.SetFrequency(0.007f);
-        pMap.SetFractalOctaves(5);
+        pMap.SetNoiseType(PerlinNoise.NoiseType.OpenSimplex2);
+        pMap.SetFrequency(0.003f);
         pMap.SetFractalType(PerlinNoise.FractalType.FBm);
+        pMap.SetFractalOctaves(5);
 
-        for (int x = 100; x < WORLD_SIZE - WORLD_SIZE / 15; x++) {
+        tempMap = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE, 1.75f, 0.5f, 2.75f);
+        precipMap = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
+
+        for (int x = 0; x < WORLD_SIZE; x++) {
             int c = r.nextInt(10);
-            for (int y = 0; y < 1300; y++) {
-                float e = noise[x][y] * 100;
-                float temp = tMap.GetNoise(x, y);
-                float humidity = pMap.GetNoise(x, y);
+            for (int y = 0; y < WORLD_SIZE; y++) {
+                //Calculate temperature
+                tempMap[x][y] += 1 - (tMap.GetNoise(x,y) / 2);
 
-                /*if (y < WORLD_SIZE / 5 + 100 + c + r.nextInt(100) - 200 + (-1 * (Math.sin(0.0100 * x * x)) * 10) - 10) {
+                //Calculate precipitation
+                precipMap[x][y] += pMap.GetNoise(x, y);
+
+                float e = noise[x][y] * 100;
+                float temp = tempMap[x][y];
+                float humidity = precipMap[x][y];
+
+                /*
+                if (y < WORLD_SIZE / 5 + 100 + c + r.nextInt(100) - 200 + (-1 * (Math.sin(0.0100 * x * x)) * 10) - 10) {
                     biomeMap[x][y] = 2;
                     continue;
                 }*/
@@ -102,7 +119,6 @@ public class World extends MapObject {
                 } else {
                     biomeMap[x][y] = 3;
                 }
-
             }
         }
 
@@ -133,14 +149,9 @@ public class World extends MapObject {
         }
         profiler.end();
         System.out.println("Biome Gen Time :" + profiler.times[0] + "ms");
-
     }
 
-    private boolean pointInMap(int x, int y) {
-
-
-        return x < WORLD_SIZE && x > 0 && y < WORLD_SIZE && y > 0;
-    }
+    private boolean pointInMap(int x, int y) {return x < WORLD_SIZE && x > 0 && y < WORLD_SIZE && y > 0;}
 
     public void refreshNoiseMap() {
         noise = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
@@ -148,24 +159,31 @@ public class World extends MapObject {
         for (int x = 0; x < WORLD_SIZE; x++) {
             for (int y = 0; y < WORLD_SIZE; y++) {
                 noise[x][y] += p.GetNoise(x, y);
-                tempMap[x][y] += tMap.GetNoise(x, y);
-                precipMap[x][y] += pMap.GetNoise(x, y);
                 Color color;
                 if (mapView == 0) // color map
-                    color = biome(biomeMap[x][y], noise[x][y]);
-                else if (mapView == 2) {
-                    color = Util.lerp(Color.black, Color.white, precipMap[x][y]);
-                } else if (mapView == 3) {
-                    color = Util.lerp(Color.black, Color.white, tempMap[x][y]);
+                {
+                    if(overlayView == 1){
+                        color = Util.lerp(biome(biomeMap[x][y], noise[x][y]), Color.MAGENTA, precipMap[x][y]);
+                    } else if (overlayView == 2) {
+                        color = Util.lerp(biome(biomeMap[x][y], noise[x][y]), Color.RED, tempMap[x][y]);
+                    }
+                    else
+                        color = biome(biomeMap[x][y], noise[x][y]);
                 } else { // noise map
                     mapView = -1;
-                    color = Util.lerp(Color.black, Color.white, noise[x][y]);
+
+                    if(overlayView == 1){
+                        color = Util.lerp(Util.lerp(Color.black, Color.white, noise[x][y]), Color.MAGENTA, precipMap[x][y]);
+                    } else if (overlayView == 2) {
+                        color = Util.lerp(Util.lerp(Color.black, Color.white, noise[x][y]), Color.RED, tempMap[x][y]);
+                    }
+                    else
+                        color = Util.lerp(Color.black, Color.white, noise[x][y]);
                 }
                 bi.setRGB(x, y, color.getRGB());
             }
         }
     }
-
 
     public void generateMap() {
 
@@ -193,7 +211,6 @@ public class World extends MapObject {
         worldProfiler.end();
         System.out.println("World Gen: " + worldProfiler.times[0] + "ms");
     }
-
 
     public void saveToImg() {
 
