@@ -27,6 +27,7 @@ public class World extends MapObject {
     private PerlinNoise p;
     private PerlinNoise pMap;
     private PerlinNoise tMap;
+    public int equatorLocation = 1200;
 
     float scale = 1;
     private BufferedImage bi;
@@ -86,14 +87,17 @@ public class World extends MapObject {
         pMap.SetFractalType(PerlinNoise.FractalType.FBm);
         pMap.SetFractalOctaves(5);
 
-        tempMap = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE, 1.75f, 0.5f, 2.75f);
+        tempMap = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE, 0.4f, 0.01f, 0.75f , 1.75f);
         precipMap = PerlinNoise.fallOff(WORLD_SIZE, WORLD_SIZE);
 
         for (int x = 0; x < WORLD_SIZE; x++) {
             int c = r.nextInt(10);
             for (int y = 0; y < WORLD_SIZE; y++) {
                 //Calculate temperature
-                tempMap[x][y] += 1 - (tMap.GetNoise(x,y) / 2);
+                if(y <= equatorLocation)
+                    tempMap[x][y] += Math.abs(Math.sqrt(Math.pow(y,2)) / equatorLocation) - (tMap.GetNoise(x,y) / 2);
+                else
+                    tempMap[x][y] += ((-Math.sqrt(Math.pow(y,2)) / Math.pow(equatorLocation,2)) + 1) - (tMap.GetNoise(x,y) / 2);
 
                 //Calculate precipitation
                 precipMap[x][y] += pMap.GetNoise(x, y);
@@ -108,14 +112,19 @@ public class World extends MapObject {
                     continue;
                 }*/
 
-                if (temp < -0.4f)
-                    biomeMap[x][y] = 2;
-                else if (temp > 0.5 && humidity < 0.4)
+                //Calculate biomes
+                if (temp < -0.4f){
+                    biomeMap[x][y] = 2;   
+                } else if (temp < 0.05 && humidity < 0.05) {
+                    biomeMap[x][y] = 6;
+                } else if (temp > 0.5 && humidity < 0.05)
                     biomeMap[x][y] = 1;
                 else if (humidity < 0.4) {
                     biomeMap[x][y] = 0;
-                } else if (humidity > 0.4 && temp > 0.5) {
+                } else if (humidity > 0.4 && temp < 0.7) {
                     biomeMap[x][y] = 4;
+                } else if (humidity > 0.4 && temp >= 0.7) {
+                    biomeMap[x][y] = 5;
                 } else {
                     biomeMap[x][y] = 3;
                 }
@@ -191,8 +200,9 @@ public class World extends MapObject {
     }
 
     public void generateMap(int seed) {
-
         Profiler worldProfiler = new Profiler();
+        worldProfiler.start();
+
         bi = new BufferedImage(WORLD_SIZE, WORLD_SIZE, BufferedImage.TYPE_INT_ARGB);
 
         generateBiomeMaps(seed);
@@ -205,7 +215,6 @@ public class World extends MapObject {
         p.SetFractalOctaves(7);
         p.SetNoiseType(PerlinNoise.NoiseType.Perlin);
         Main.instance.currentProject.setPerlinSeed(seed);
-        worldProfiler.start();
 
         refreshNoiseMap();
         worldProfiler.end();
@@ -243,6 +252,10 @@ public class World extends MapObject {
             return Biomes.getWinter(e);
         if(biomeValue == 4)
             return Biomes.getForest(e);
+        if(biomeValue == 5)
+            return Biomes.getTropicalForest(e);
+        if(biomeValue == 6)
+            return Biomes.getTaiga(e);
 
         //Land not fitting specialized biomes
         else if (e < 0.17) return Util.lerp(new Color(94, 167, 255), new Color(255, 229, 114), e);
@@ -284,6 +297,29 @@ class Biomes {
         if(height < 0.45) return new Color(40, 86, 40);
 
         else if (height < 7) return new Color(112, 122, 112);
+
+        return Color.white;
+    }
+
+    public static Color getTropicalForest(float height){
+        if (height < 0.17)
+            return new Color(255, 233, 185);
+
+        if(height < 0.45) return new Color(138, 224, 97);
+
+        else if (height < 7) return new Color(112, 122, 112);
+
+        return Color.white;
+    }
+
+    public static Color getTaiga(float height){
+        if (height < 0.17)
+            return new Color(255, 233, 185);
+
+        if (height < 0.5) return new Color(57, 48, 7);
+
+        else if (height < 7) return new Color(112, 122, 112);
+
 
         return Color.white;
     }

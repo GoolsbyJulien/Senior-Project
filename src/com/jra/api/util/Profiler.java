@@ -1,8 +1,6 @@
 package com.jra.api.util;
 
 public class Profiler {
-
-
     public long[] times = new long[100];
     private long startTime;
 
@@ -14,7 +12,6 @@ public class Profiler {
 
     public void start() {
         startTime = System.currentTimeMillis();
-
     }
 
     public void end() {
