@@ -9,18 +9,6 @@ import java.awt.event.ActionEvent;
 
 public class Settings extends JFrame{
     public Settings() {
-        try {
-            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarculaLaf");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-
         tabbedPane1 = new JTabbedPane();
         generalSP = new JScrollPane();
         generalPanel = new JPanel();
@@ -143,19 +131,6 @@ public class Settings extends JFrame{
         setSize(700, 450);
         setLocationRelativeTo(getOwner());
         setVisible(true);
-
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void setTitle(ActionEvent e) {

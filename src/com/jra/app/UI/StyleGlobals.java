@@ -11,6 +11,19 @@ public class StyleGlobals {
     private static Font customFont;
 
     public StyleGlobals(){
+        try {
+            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarculaLaf");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Customization
         UIManager.put( "TabbedPane.showTabSeparators", true );
     }
 
