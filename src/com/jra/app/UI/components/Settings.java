@@ -41,6 +41,7 @@ public class Settings extends JFrame{
         setIconImage(new ImageIcon("./assets/Icon.png").getImage());
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
+        contentPane.setBackground(new Color(60, 63, 65));
 
         //======== tabbedPane1 ========
         {
@@ -50,6 +51,7 @@ public class Settings extends JFrame{
 
             //======== generalSP ========
             {
+                generalSP.setBorder(null);
 
                 //======== generalPanel ========
                 {
