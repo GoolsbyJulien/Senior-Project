@@ -1,5 +1,6 @@
 package com.jra.app.UI.views;
 
+import com.jra.FormDesigner.SettingsForm;
 import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
@@ -9,6 +10,7 @@ import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.*;
+import com.jra.app.UI.components.Settings;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,14 +25,14 @@ import java.util.Scanner;
 
 public class TopMenu extends JMenuBar {
     private JMenu menuFile = new JMenu("File");
-    private JMenuItem fileNew = new JMenuItem(new NewProjectAction());
-    private JMenuItem fileOpen = new JMenuItem(new LoadMapAction());
-    private JMenuItem fileSaveAs = new JMenuItem(new SaveMapAction());
+    private JMenuItem fileNew = new JMenuItem("New Project");
+    private JMenuItem fileOpen = new JMenuItem("Open Project");
+    private JMenuItem fileSaveAs = new JMenuItem("Save as");
 
     private JMenuItem fileSave = new JMenuItem("Save");
 
-    private JMenuItem fileSaveImage = new JMenuItem(new SaveImageAction());
-    private JMenuItem fileSettings = new JMenuItem(new OpenSettingsAction());
+    private JMenuItem fileSaveImage = new JMenuItem("Save current view as Image");
+    private JMenuItem fileSettings = new JMenuItem("Settings");
     private JMenu menuView = new JMenu("View");
     private JMenu viewMapView = new JMenu("Perlin Map View");
     private JMenu viewMapOverlay = new JMenu("Map Overlay");
@@ -109,6 +111,24 @@ public class TopMenu extends JMenuBar {
             Main.instance.mapRenderer.toggleTooltips();
         });
         menuView.add(viewTooltips);
+
+        fileSettings.addActionListener((a) -> new Settings());
+        fileSaveAs.addActionListener((a) -> new TopMenu().saveImage());
+        fileNew.addActionListener((a) -> new TopMenu().newProject());
+        fileOpen.addActionListener((a) -> {
+            try {
+                new LoadProject();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        fileSaveAs.addActionListener((a) -> {
+            try {
+                SaveProject.saveAs();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         this.add(menuFile);
         this.add(menuView);
@@ -414,80 +434,6 @@ public class TopMenu extends JMenuBar {
 
     }
 
-    //Opens settings menu
-    public void openSettings() {
-        //Create new project window
-        JFrame frame = new JFrame("Settings");
-        frame.setSize(900, 750);
-        frame.setLocationRelativeTo(Main.instance.frame);
-
-        //Settings Panels
-        JPanel generalPanel = new JPanel(new GridBagLayout());
-        JPanel colorPanel = new JPanel(new GridBagLayout());
-        JPanel hotkeys = new JPanel(new GridBagLayout());
-
-        //Tabbed pane
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("General", generalPanel);
-        tabbedPane.addTab("Color Pallet", colorPanel);
-        tabbedPane.addTab("Keybindings", hotkeys);
-
-        //Grid bag constraints
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(2, 2, 2, 2);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.ipadx = 15;
-        c.ipady = 10;
-
-        //Components
-        Label titleLabel = new Label("Project Title:");
-        TextField titleField = new TextField(Main.instance.currentProject.getProjectName());
-        Button setTitleButton = new Button("Set New Title");
-        Label descriptionLabel = new Label("Description:");
-        TextArea descriptionArea = new TextArea(Main.instance.currentProject.getProjectDescription());
-        Button setDescriptionButton = new Button("Set New Description");
-        Label savePathLabel = new Label("Save Path:");
-        TextField savePathField = new TextField();
-
-
-        //Add components to frame
-        generalPanel.add(titleLabel, c);
-        c.ipadx = 75;
-        c.ipady = 8;
-        c.gridx = 1;
-        generalPanel.add(titleField, c);
-        c.gridx = 2;
-        generalPanel.add(setTitleButton, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        generalPanel.add(descriptionLabel, c);
-        c.gridx = 1;
-        generalPanel.add(descriptionArea, c);
-        c.gridx = 2;
-        generalPanel.add(setDescriptionButton, c);
-
-        frame.add(tabbedPane);
-        frame.setVisible(true);
-
-        setTitleButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Main.instance.currentProject.setProjectName(titleField.getText());
-                JOptionPane.showMessageDialog(null, "Title changed");
-            }
-        });
-
-        setDescriptionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Main.instance.currentProject.setProjectDescription(descriptionArea.getText());
-                JOptionPane.showMessageDialog(null, "Description changed");
-            }
-        });
-    }
-
     public void politicalView(){
         for(MapObject o : Main.instance.mapScene.goManager.gameObjects){
             if(o.getClass() == SelectableObject.class){
@@ -512,70 +458,5 @@ public class TopMenu extends JMenuBar {
                 o.visibility = false;
             }
         }
-    }
-}
-
-class SaveMapAction extends AbstractAction {
-    public SaveMapAction() {
-        super("Save as");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-
-            SaveProject.saveAs();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-}
-
-class LoadMapAction extends AbstractAction {
-
-    public LoadMapAction() {
-        super("Open Project");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            new LoadProject();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-}
-
-class NewProjectAction extends AbstractAction {
-    public NewProjectAction() {
-        super("New Project");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        new TopMenu().newProject();
-    }
-}
-
-class SaveImageAction extends AbstractAction {
-    public SaveImageAction() {
-        super("Save current view as Image");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        new TopMenu().saveImage();
-    }
-}
-
-class OpenSettingsAction extends AbstractAction {
-    public OpenSettingsAction() {
-        super("Settings");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        new TopMenu().openSettings();
     }
 }
