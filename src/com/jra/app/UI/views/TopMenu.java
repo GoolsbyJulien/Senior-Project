@@ -80,10 +80,20 @@ public class TopMenu extends JMenuBar {
         JCheckBoxMenuItem viewTemperature = new JCheckBoxMenuItem("View Temperature");
 
         viewPrecipitation.addActionListener((a) -> {
-
+            if(viewPrecipitation.isSelected()){
+                Main.instance.world.setOverlayView(1);
+            }
+            else{
+                Main.instance.world.setOverlayView(0);
+            }
         });
         viewTemperature.addActionListener((a) -> {
-
+            if(viewTemperature.isSelected()){
+                Main.instance.world.setOverlayView(2);
+            }
+            else{
+                Main.instance.world.setOverlayView(0);
+            }
         });
 
         viewMapOverlay.add(viewPrecipitation);
