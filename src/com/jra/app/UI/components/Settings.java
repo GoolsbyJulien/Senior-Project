@@ -29,7 +29,6 @@ public class Settings extends JFrame{
         //======== this ========
         setTitle("Settings");
         setIconImage(new ImageIcon("./assets/Icon.png").getImage());
-        setAlwaysOnTop(true);
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.setBackground(new Color(60, 63, 65));
