@@ -3,3 +3,4 @@ BudgetApp/src/main/resources/application.properties
 /out/
 /Saves/
 /.idea/
+/src/com/jra/FormDesigner

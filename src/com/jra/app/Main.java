@@ -8,6 +8,7 @@ import com.jra.app.MapObjects.Camera;
 import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.MapObjects.World;
+import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.views.BottomPanel;
 import com.jra.app.UI.views.LeftPanel;
 import com.jra.app.UI.views.RightPanel;
@@ -34,15 +35,14 @@ public class Main {
 
 
     public Main() {
-
         instance = this;
         mapScene = new Scene();
         currentProject = new Project();
         mapRenderer = new MapRenderer(mapScene);
+        new StyleGlobals();
 
         createWindow();
 
-        //       currentProject.setProjectName("D");
         mapRenderer.setBackgroundColor(new Color(7, 0, 161));
         mapScene.addGameobject(cam = new Camera(mapRenderer));
         mapScene.uiLayer = g -> {
@@ -55,16 +55,6 @@ public class Main {
             g.setFont(new Font("Verdana", 0, 50));
             g.drawString("FPS: " + mapRenderer.getLastFPS(), 250, 40);
         };
-
-        /*
-        mapRenderer.eachFrame = new Action() {
-            @Override
-            public void act() {
-
-                updateComponents(mapScene);
-            }
-        };
-         */
 
         updateComponents(mapScene);
         mapScene.addGameobject(world);
@@ -108,6 +98,7 @@ public class Main {
 //        frame.setResizable(false);
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         mapRenderer.startUpdateThread();
     }
 

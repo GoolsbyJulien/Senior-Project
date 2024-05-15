@@ -95,8 +95,8 @@ public class BottomPanel extends JPanel {
 
                     //Create UI
                     JFrame frame = new JFrame("");
-                    frame.setSize(250, 210);
-                    frame.setLocationRelativeTo(Main.instance.bottomPanel);
+                    frame.setSize(340, 210);
+                    frame.setLocationRelativeTo(Main.instance.mapRenderer);
                     frame.setAlwaysOnTop(true);
                     JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
                     panel.setPreferredSize(new Dimension(250, 210));
