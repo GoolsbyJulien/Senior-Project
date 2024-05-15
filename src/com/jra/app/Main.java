@@ -98,6 +98,7 @@ public class Main {
 //        frame.setResizable(false);
         frame.getContentPane().setBackground(new Color(43, 43, 43));
         frame.setVisible(true);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         mapRenderer.startUpdateThread();
     }
 

@@ -21,12 +21,15 @@ public class Settings extends JFrame{
         setDescriptionButton = new JButton();
         savePathLabel = new JLabel();
         savePathField = new JTextField();
+        seedLabel = new JLabel();
+        seedField = new JTextField();
         colorPanel = new JPanel();
         hotkeysPanel = new JPanel();
 
         //======== this ========
         setTitle("Settings");
         setIconImage(new ImageIcon("./assets/Icon.png").getImage());
+        setAlwaysOnTop(true);
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.setBackground(new Color(60, 63, 65));
@@ -61,7 +64,7 @@ public class Settings extends JFrame{
                     generalPanel.add(titleLabel, "cell 0 0");
 
                     //---- titleField ----
-                    titleField.setText("Untitled");
+                    titleField.setText(Main.instance.currentProject.getProjectName());
                     generalPanel.add(titleField, "cell 1 0");
 
                     //---- setTitleButton ----
@@ -79,6 +82,7 @@ public class Settings extends JFrame{
                         //---- descriptionArea ----
                         descriptionArea.setLineWrap(true);
                         descriptionSP.setViewportView(descriptionArea);
+                        descriptionArea.setText(Main.instance.currentProject.getProjectDescription());
                     }
                     generalPanel.add(descriptionSP, "cell 1 1,width :200:200,height 50:100:100");
 
@@ -90,7 +94,17 @@ public class Settings extends JFrame{
                     //---- savePathLabel ----
                     savePathLabel.setText("Save Path");
                     generalPanel.add(savePathLabel, "cell 0 2");
+                    savePathField.setEditable(false);
                     generalPanel.add(savePathField, "cell 1 2");
+
+                    //---- seedLabel ----
+                    seedLabel.setText("Seed");
+                    generalPanel.add(seedLabel, "cell 0 3,alignx right,growx 0");
+
+                    //---- seedField ----
+                    seedField.setEditable(false);
+                    seedField.setText(String.valueOf(Main.instance.currentProject.getPerlinSeed()));
+                    generalPanel.add(seedField, "cell 1 3,width 100:100:100");
                 }
                 generalSP.setViewportView(generalPanel);
             }
@@ -155,6 +169,8 @@ public class Settings extends JFrame{
     private JButton setDescriptionButton;
     private JLabel savePathLabel;
     private JTextField savePathField;
+    private JLabel seedLabel;
+    private JTextField seedField;
     private JPanel colorPanel;
     private JPanel hotkeysPanel;
 }

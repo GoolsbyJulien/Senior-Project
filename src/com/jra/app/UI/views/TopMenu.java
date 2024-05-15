@@ -1,6 +1,6 @@
 package com.jra.app.UI.views;
 
-import com.jra.FormDesigner.SettingsForm;
+import com.jra.FormDesigner.NewProjectForm;
 import com.jra.api.core.MapObject;
 import com.jra.api.core.Scene;
 import com.jra.api.render.MapRenderer;
@@ -10,6 +10,7 @@ import com.jra.api.util.Util;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.*;
+import com.jra.app.UI.components.NewProject;
 import com.jra.app.UI.components.Settings;
 
 import javax.imageio.ImageIO;
@@ -114,7 +115,7 @@ public class TopMenu extends JMenuBar {
 
         fileSettings.addActionListener((a) -> new Settings());
         fileSaveAs.addActionListener((a) -> new TopMenu().saveImage());
-        fileNew.addActionListener((a) -> new TopMenu().newProject());
+        fileNew.addActionListener((a) -> new NewProject().setVisible(true));
         fileOpen.addActionListener((a) -> {
             try {
                 new LoadProject();
@@ -429,9 +430,7 @@ public class TopMenu extends JMenuBar {
     }
 
     public void saveImage() {
-
         Main.instance.world.saveToImg();
-
     }
 
     public void politicalView(){
