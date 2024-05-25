@@ -49,6 +49,7 @@ public class NewProject extends JFrame{
         chooseImage = new JButton();
         imagePanel = new JPanel();
         createButton1 = new JButton();
+        imageLabel = new JLabel();
 
         //======== this ========
         setResizable(false);
@@ -144,7 +145,6 @@ public class NewProject extends JFrame{
                     //======== mapPanel ========
                     {
                         mapPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
-                        mapPanel.setLayout(null);
                         {
                             // compute preferred size
                             Dimension preferredSize = new Dimension();
@@ -189,8 +189,6 @@ public class NewProject extends JFrame{
                     //======== imagePanel ========
                     {
                         imagePanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
-                        imagePanel.setLayout(null);
-
                         {
                             // compute preferred size
                             Dimension preferredSize = new Dimension();
@@ -204,6 +202,7 @@ public class NewProject extends JFrame{
                             preferredSize.height += insets.bottom;
                             imagePanel.setMinimumSize(preferredSize);
                             imagePanel.setPreferredSize(preferredSize);
+                            imagePanel.add(imageLabel);
                         }
                     }
                     imagePanelParent.add(imagePanel, "cell 0 1,width 100:100:100,height 100:100:100");
@@ -231,9 +230,9 @@ public class NewProject extends JFrame{
         perlinPanel.setVisible(true);
 
         //Add map preview
-        mapRenderer.setBackgroundColor(Color.red);
-        mapRenderer.setSize(100, 100);
-        mapRenderer.cameraZoom = 0.1f;
+        mapRenderer.setBackgroundColor(Color.blue);
+        mapRenderer.setSize(120, 110);
+        mapRenderer.cameraZoom = 0.2f;
         mapRenderer.cameraPosition = new Vector(300, 600);
         mapRenderer.disposeOnRender = false;
         World world = new World();
@@ -311,8 +310,7 @@ public class NewProject extends JFrame{
                 scanner = new Scanner(chooser.getSelectedFile());
 
                 BufferedImage img = ImageIO.read(chooser.getSelectedFile());
-                JLabel imageLabel = new JLabel(new ImageIcon(img.getScaledInstance(-1, 50, Image.SCALE_SMOOTH)));
-                imagePanel.add(imageLabel);
+                imageLabel.setIcon(new ImageIcon(img.getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 
                 //Temp, set background as image instead of perlin
                 Main.instance.currentProject.setNewProjectType(1);
@@ -371,4 +369,5 @@ public class NewProject extends JFrame{
     private JButton chooseImage;
     private JPanel imagePanel;
     private JButton createButton1;
+    private JLabel imageLabel;
 }
