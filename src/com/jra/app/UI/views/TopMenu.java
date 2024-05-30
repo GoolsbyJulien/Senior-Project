@@ -37,6 +37,11 @@ public class TopMenu extends JMenuBar {
     private JMenuItem addRiver = new JMenuItem("Add River (X)");
     private JMenuItem addLabel = new JMenuItem("Add Label (X)");
     private JMenuItem addPolygon = new JMenuItem("Add Polygon (X)");
+    private JMenu menuWindow = new JMenu("Window");
+    private JCheckBoxMenuItem windowShowBaseMap = new JCheckBoxMenuItem("Show base map");
+    private JCheckBoxMenuItem windowShowBiomeMap = new JCheckBoxMenuItem("Show biome map");
+    private JCheckBoxMenuItem windowShowInspector = new JCheckBoxMenuItem("Show inspector");
+    private JCheckBoxMenuItem windowShowHierarchy = new JCheckBoxMenuItem("Show hierarchy");
 
     //
     public Settings settings = new Settings();
@@ -168,9 +173,49 @@ public class TopMenu extends JMenuBar {
         menuAdd.add(addLabel);
         menuAdd.add(addPolygon);
 
+        //Window menu
+        //menuWindow.add(windowShowBaseMap);
+        //menuWindow.add(windowShowBiomeMap);
+        //menuWindow.addSeparator();
+        menuWindow.add(windowShowInspector);
+        menuWindow.add(windowShowHierarchy);
+
+        windowShowBaseMap.setState(false);
+        windowShowBiomeMap.setState(true);
+        windowShowInspector.setState(true);
+        windowShowHierarchy.setState(false);
+
+        windowShowBaseMap.addActionListener((a) -> {
+
+        });
+        windowShowBiomeMap.addActionListener((a) -> {
+            if(windowShowBiomeMap.isSelected()){
+                Main.instance.mapTabbedPane.addTab("Biome Map", Main.instance.mapRenderer);
+            }else{
+                Main.instance.mapRenderer.setRunning(false);
+                Main.instance.mapTabbedPane.remove(Main.instance.mapRenderer);
+            }
+        });
+        windowShowInspector.addActionListener((a) -> {
+            if(windowShowInspector.isSelected()){
+                Main.instance.detailsTabbedPane.addTab("Inspector", Main.instance.rightPanel);
+            }else{
+                Main.instance.detailsTabbedPane.remove(Main.instance.rightPanel);
+            }
+        });
+        windowShowHierarchy.addActionListener((a) -> {
+            if(windowShowHierarchy.isSelected()){
+                Main.instance.detailsTabbedPane.addTab("Hierarchy", Main.instance.leftPanel);
+            }else{
+                Main.instance.detailsTabbedPane.remove(Main.instance.leftPanel);
+            }
+        });
+
+        //Add menus
         this.add(menuFile);
         this.add(menuView);
         this.add(menuAdd);
+        this.add(menuWindow);
 
         setBorderPainted(false);
         setOpaque(true);

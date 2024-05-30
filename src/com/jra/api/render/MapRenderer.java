@@ -49,7 +49,7 @@ public class MapRenderer extends Canvas implements Runnable {
     public MapRenderer(Scene scene) {
 
         setBackground(Color.black);
-        setLocation((1280 - 500) / 2, 0);
+        //setLocation((1280 - 500) / 2, 0);
         currentScene = scene;
         addKeyListener(new Keyboard());
         addMouseMotionListener(mouse);

@@ -19,14 +19,23 @@ import java.awt.*;
 
 public class Main {
 
-    public final String BUILD_NUMBER = "0.1.2";
+    public final String BUILD_NUMBER = "0.2 inDev";
+
+    /**
+     * Menu
+     */
+    public JTabbedPane mapTabbedPane;
+    public JTabbedPane detailsTabbedPane;
     public MapRenderer mapRenderer;
-    public RightPanel rightPanel;
-    public LeftPanel leftPanel;
+    public RightPanel rightPanel; //inspector
+    public LeftPanel leftPanel; //hierarchy
     public BottomPanel bottomPanel;
     public TopMenu menu;
-
     public JFrame frame;
+
+    /**
+     * Other
+     */
     private boolean showFPS = false;
     public Project currentProject;
     public World world = new World();
@@ -47,6 +56,8 @@ public class Main {
         bottomPanel = new BottomPanel();
         leftPanel = new LeftPanel();
         rightPanel = new RightPanel();
+        mapTabbedPane = new JTabbedPane();
+        detailsTabbedPane = new JTabbedPane();
 
         createWindow();
 
@@ -83,6 +94,9 @@ public class Main {
     }
 
     public void createWindow() {
+        /**
+         * Frame properties
+         */
         System.setProperty("awt.useSystemAAFontSettings", "true");
         System.setProperty("swing.aatext", "true");
         frame = new JFrame();
@@ -93,21 +107,49 @@ public class Main {
         frame.setJMenuBar(menu);
         frame.setSize(1280, 720);
         updateTitle();
-        frame.setLayout(new BorderLayout());
+        frame.getContentPane().setLayout(
+                new BoxLayout(frame.getContentPane(), BoxLayout.LINE_AXIS)
+        );
         frame.setLocationRelativeTo(null);
-        frame.add(mapRenderer, BorderLayout.CENTER);
+        frame.getContentPane().setBackground(new Color(43, 43, 43));
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
+        /**
+         * Application icon
+         */
         ImageIcon img = new ImageIcon("./assets/Icon.png");
-
-
         frame.setIconImage(img.getImage());
 
-        frame.add(leftPanel, BorderLayout.WEST);
-        frame.add(rightPanel, BorderLayout.EAST);
+        /**
+         * Tabbed pane properties
+         */
+        mapTabbedPane.addTab("Biome Map",mapRenderer);
+        mapTabbedPane.setToolTipTextAt(0, "Show the biomes of the landmass");
+        mapTabbedPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mapTabbedPane.setMinimumSize(new Dimension(50, 50));
+        mapTabbedPane.setPreferredSize(new Dimension(
+                (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()-detailsTabbedPane.getWidth()), Short.MAX_VALUE));
+        mapTabbedPane.setPreferredSize(new Dimension(
+                (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()-detailsTabbedPane.getWidth()), Short.MAX_VALUE));
 
-        frame.getContentPane().setBackground(new Color(43, 43, 43));
+        detailsTabbedPane.addTab("Inspector", rightPanel);
+        detailsTabbedPane.setToolTipTextAt(0, "Details of selected object");
+        detailsTabbedPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        detailsTabbedPane.setMinimumSize(new Dimension(50, 50));
+        detailsTabbedPane.setPreferredSize(new Dimension(350, Short.MAX_VALUE));
+        detailsTabbedPane.setMaximumSize(new Dimension(350, Short.MAX_VALUE));
+
+        /**
+         * GUI layout
+         */
+        frame.add(mapTabbedPane);
+        frame.add(Box.createRigidArea(new Dimension(5, 0)));
+        frame.add(detailsTabbedPane);
+
+        /**
+         * Set Visible
+         */
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         mapRenderer.startUpdateThread();
     }
 

@@ -25,6 +25,7 @@ public class StyleGlobals {
 
         //Customization
         UIManager.put( "TabbedPane.showTabSeparators", true );
+        UIManager.put( "Button.arc", 999 );
     }
 
     public static Font getFont(int size) {
