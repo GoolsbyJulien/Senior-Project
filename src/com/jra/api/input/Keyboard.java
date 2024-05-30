@@ -1,6 +1,7 @@
 package com.jra.api.input;
 
 import com.jra.api.util.Action;
+import com.jra.app.Main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -26,9 +27,11 @@ public class Keyboard extends KeyAdapter {
     public static boolean L = false;
 
     public static boolean R = false;
+    public static boolean CTRL = false;
 
-    public static Action lAction;
-    public static Action rAction;
+    public static Action lAction; //Location binding, default l
+    public static Action rAction; //Road binding, default r
+    public static Action addMenuAction;
 
 
     @Override
@@ -77,8 +80,12 @@ public class Keyboard extends KeyAdapter {
             if(R == false)
                 rAction.act();
             R = true;
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
+            if(!CTRL){
+                addMenuAction.act();
+            }
+            CTRL = true;
         }
-
     }
 
     @Override
@@ -119,9 +126,8 @@ public class Keyboard extends KeyAdapter {
         }
         else if (keyEvent.getKeyCode() == keyEvent.VK_R){
             R = false;
+        } else if (keyEvent.getKeyCode() == keyEvent.VK_CONTROL) {
+            CTRL = false;
         }
-
     }
-
-
 }

@@ -151,7 +151,6 @@ public class MapRenderer extends Canvas implements Runnable {
                 tooltipLabel.setText(hoveredObject.name);
             }
         }
-        //System.exit(0);
     }
 
 

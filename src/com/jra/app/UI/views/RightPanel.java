@@ -26,6 +26,7 @@ public class RightPanel extends JPanel {
     public JPanel inspectorPanel = new JPanel(new GridBagLayout());
     public JPanel roadInspectorPanel = new JPanel(new GridBagLayout());
     private JPanel panelWrapper = new JPanel(new BorderLayout());
+    private JScrollPane panelWrapperSP = new JScrollPane(panelWrapper);
 
     //Locations
     private JTextField name = new JTextField(10);
@@ -82,7 +83,8 @@ public class RightPanel extends JPanel {
         setBackground(StyleGlobals.BACKGROUND);
 
         panelWrapper.setBackground(StyleGlobals.BACKGROUND);
-        add(panelWrapper, BorderLayout.CENTER);
+        panelWrapperSP.setBorder(null);
+        add(panelWrapperSP, BorderLayout.CENTER);
 
         //Visibility of different layouts?
         createLocationPanel();
@@ -221,7 +223,6 @@ public class RightPanel extends JPanel {
 
         PanelButton icon = new PanelButton("Set Icon");
         Buttons.add(icon);
-
 
         PanelButton color = new PanelButton("Set Color");
         Buttons.add(color);

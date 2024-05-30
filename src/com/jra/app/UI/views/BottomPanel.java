@@ -176,27 +176,6 @@ public class BottomPanel extends JPanel {
                 }
             }
         });
-
-        addRiverButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isCreatingLine) {
-                    //Create UI
-                    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                    panel.setSize(250, 50);
-                    panel.setPreferredSize(new Dimension(250, 50));
-                    panel.add(new Label("Click two points to create a river between"));
-                    int result = JOptionPane.showConfirmDialog(Main.instance.frame, panel, "Add River",
-                            JOptionPane.OK_CANCEL_OPTION);
-
-                    //Create river
-                    if (result == JOptionPane.OK_OPTION) {
-
-                    }
-                }
-            }
-        });
-
         add(pButtons, BorderLayout.CENTER);
     }
 
@@ -237,16 +216,15 @@ public class BottomPanel extends JPanel {
     }
 
     public void addRoad() {
-
         if (!isCreatingLine || !isShowingPanel) {
             //Objects
             isShowingPanel = true;
-            ArrayList<MapObject> objects = new ArrayList<MapObject>();
+            ArrayList<SelectableObject> objects = new ArrayList<SelectableObject>();
 
             //Create UI
             JFrame frame = new JFrame("");
-            frame.setSize(250, 210);
-            frame.setLocationRelativeTo(Main.instance.bottomPanel);
+            frame.setSize(340, 210);
+            frame.setLocationRelativeTo(Main.instance.mapRenderer);
             frame.setAlwaysOnTop(true);
             JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             panel.setPreferredSize(new Dimension(250, 210));
@@ -262,7 +240,79 @@ public class BottomPanel extends JPanel {
             panel.add(createRoad);
             frame.add(panel);
             frame.setVisible(true);
+
+            object1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (SelectableObject.currentObject != null) {
+                        if (objects.size() >= 2) {
+                            if (objects.get(0) != null) {
+                                objects.set(0, SelectableObject.currentObject);
+                            }
+                        } else {
+                            objects.add(SelectableObject.currentObject);
+                        }
+                        object1.setText(SelectableObject.currentObject.getLabel());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please select a location!");
+                    }
+                }
+            });
+
+
+            object2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (SelectableObject.currentObject != null) {
+                        if (objects.size() >= 2) {
+                            if (objects.get(1) != null) {
+                                objects.set(1, SelectableObject.currentObject);
+                            }
+                        } else {
+                            objects.add(SelectableObject.currentObject);
+                        }
+                        object2.setText(SelectableObject.currentObject.getLabel());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please select a location!");
+                    }
+                }
+            });
+
+            createRoad.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (objects.size() >= 2) {
+                        if (objects.get(0) != objects.get(1)) {
+                            Road temp = new Road(objects.get(0), objects.get(1), (objects.get(0).name + "  -  " + objects.get(1).name
+                                    + " road"));
+                            Main.instance.mapScene.addGameobject(temp);
+                            Main.instance.updateComponents(Main.instance.mapScene);
+
+                            //Reset dialogue
+                            object1.setText("Select location 1");
+                            object2.setText("Select location 2");
+                            objects.clear();
+                            frame.setVisible(false);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Please select different locations!");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please select locations!");
+                    }
+                }
+            });
         }
+    }
+
+    public void addRiver(){
+
+    }
+
+    public void addLabel(){
+
+    }
+
+    public void addPolygon(){
 
     }
 }

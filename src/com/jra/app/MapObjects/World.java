@@ -28,7 +28,6 @@ public class World extends MapObject {
     private PerlinNoise pMap;
     private PerlinNoise tMap;
     public int equatorLocation = 1200;
-
     float scale = 1;
     private BufferedImage bi;
 
@@ -240,8 +239,8 @@ public class World extends MapObject {
 
     Color biome(int biomeValue, float e) {
         //Water
-        if (e < 0.1) return Util.lerp(new Color(7, 0, 161), Color.blue, e * 3);
-        else if (e < 0.13) return Util.lerp(Color.blue, new Color(94, 167, 255), e);
+        if (e < 0.1) return Util.lerp(Biomes.deepWater, Color.blue, e * 3);
+        else if (e < 0.13) return Util.lerp(Color.blue, Biomes.shallowWater, e);
 
         //Biomes
         if (biomeValue == 0)
@@ -257,80 +256,12 @@ public class World extends MapObject {
         if(biomeValue == 6)
             return Biomes.getTaiga(e);
 
-        //Land not fitting specialized biomes
+        //Error handling, could be removed
         else if (e < 0.17) return Util.lerp(new Color(94, 167, 255), new Color(255, 229, 114), e);
 
         else if (e < 0.4) return new Color(50, 127, 53);
 
         else if (e < 0.5) return new Color(112, 122, 112);
-
-        return Color.white;
-    }
-}
-
-class Biomes {
-    public static Color getDesert(float height) {
-        if (height < 0.35)
-            return new Color(255, 233, 185);
-        else if (height < 0.5)
-            return new Color(112, 122, 112);
-
-        return Color.white;
-    }
-
-    public static Color getWinter(float height) {
-        if (height < 0.17)
-            return new Color(255, 233, 185);
-
-        if (height < 0.4) return new Color(106, 161, 203);
-
-        else if (height < 7) return new Color(112, 122, 112);
-
-
-        return Color.white;
-    }
-
-    public static Color getForest(float height){
-        if (height < 0.17)
-            return new Color(255, 233, 185);
-
-        if(height < 0.45) return new Color(40, 86, 40);
-
-        else if (height < 7) return new Color(112, 122, 112);
-
-        return Color.white;
-    }
-
-    public static Color getTropicalForest(float height){
-        if (height < 0.17)
-            return new Color(255, 233, 185);
-
-        if(height < 0.45) return new Color(138, 224, 97);
-
-        else if (height < 7) return new Color(112, 122, 112);
-
-        return Color.white;
-    }
-
-    public static Color getTaiga(float height){
-        if (height < 0.17)
-            return new Color(255, 233, 185);
-
-        if (height < 0.5) return new Color(57, 48, 7);
-
-        else if (height < 7) return new Color(112, 122, 112);
-
-
-        return Color.white;
-    }
-
-    public static Color Normal(float height) {
-        if (height < 0.17)
-            return new Color(255, 233, 185);
-
-        if (height < 0.4) return new Color(50, 127, 53);
-
-        else if (height < 0.5) return new Color(112, 122, 112);
 
         return Color.white;
     }

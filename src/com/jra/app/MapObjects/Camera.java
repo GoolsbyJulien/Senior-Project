@@ -122,7 +122,13 @@ public class Camera extends MapObject {
             @Override
             public void act() {
                 Main.instance.bottomPanel.addLocation();
+            }
+        };
 
+        Keyboard.addMenuAction = new Action() {
+            @Override
+            public void act() {
+                Main.instance.menu.addMenuTooltip();
             }
         };
 
