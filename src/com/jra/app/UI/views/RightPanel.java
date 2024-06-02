@@ -2,12 +2,12 @@ package com.jra.app.UI.views;
 
 import com.jra.api.core.MapObject;
 import com.jra.app.Main;
+import com.jra.app.MapObjects.MapLabel;
 import com.jra.app.MapObjects.LocationType;
 import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
 import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.PanelButton;
-import javafx.scene.layout.FlowPane;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -25,6 +25,7 @@ public class RightPanel extends JPanel {
     public MapObject currentObject = null;
     public JPanel inspectorPanel = new JPanel(new GridBagLayout());
     public JPanel roadInspectorPanel = new JPanel(new GridBagLayout());
+    public JPanel labelInspectorPanel = new JPanel(new GridBagLayout());
     private JPanel panelWrapper = new JPanel(new BorderLayout());
     private JScrollPane panelWrapperSP = new JScrollPane(panelWrapper);
 
@@ -38,8 +39,12 @@ public class RightPanel extends JPanel {
     private JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 50, 50);
 
     //Roads
-    private JTextField rName = new JTextField(10);
+    private JTextField rName = new JTextField(7);
     private JSlider roadWidthSlider = new JSlider(JSlider.HORIZONTAL, 3, 6, 5);
+
+    //Labels
+    private JTextField lName = new JTextField(10);
+    private JSlider labelSizeSlider = new JSlider(JSlider.HORIZONTAL, 5, 75, 50);
 
     public void update(SelectableObject object) {
         //Add panel
@@ -47,6 +52,7 @@ public class RightPanel extends JPanel {
 
         inspectorPanel.setVisible(true);
         roadInspectorPanel.setVisible(false);
+        labelInspectorPanel.setVisible(false);
         currentObject = object;
         name.setText(object.getLabel());
         description.setText(SelectableObject.currentObject.getDescription());
@@ -56,6 +62,7 @@ public class RightPanel extends JPanel {
 
         //Remove other panels
         panelWrapper.remove(roadInspectorPanel);
+        panelWrapper.remove(labelInspectorPanel);
     }
 
     public void update(Road object){
@@ -64,12 +71,29 @@ public class RightPanel extends JPanel {
 
         roadInspectorPanel.setVisible(true);
         inspectorPanel.setVisible(false);
+        labelInspectorPanel.setVisible(false);
         currentObject = object;
         rName.setText(object.name);
         roadWidthSlider.setValue(Road.currentObject.getRoadWidth());
 
         //Remove other panels
         panelWrapper.remove(inspectorPanel);
+        panelWrapper.remove(labelInspectorPanel);
+    }
+
+    public void update(MapLabel object){
+        //Add panel
+        panelWrapper.add(labelInspectorPanel, BorderLayout.NORTH);
+
+        labelInspectorPanel.setVisible(true);
+        roadInspectorPanel.setVisible(false);
+        inspectorPanel.setVisible(false);
+        currentObject = object;
+        lName.setText(object.name);
+
+        //Remove other panels
+        panelWrapper.remove(inspectorPanel);
+        panelWrapper.remove(roadInspectorPanel);
     }
 
     public RightPanel() {
@@ -77,7 +101,6 @@ public class RightPanel extends JPanel {
         PanelButton button = new PanelButton("Inspector");
         setLayout(new BorderLayout());
 
-        add(button, BorderLayout.NORTH);
         setLocation(0, 0);
         setPreferredSize(new Dimension(300, 800));
         setBackground(StyleGlobals.BACKGROUND);
@@ -89,10 +112,12 @@ public class RightPanel extends JPanel {
         //Visibility of different layouts?
         createLocationPanel();
         createRoadPanel();
+        createLabelPanel();
 
         //Initially false
         inspectorPanel.setVisible(false);
         roadInspectorPanel.setVisible(false);
+        labelInspectorPanel.setVisible(false);
     }
 
     public void createLocationPanel(){
@@ -164,6 +189,12 @@ public class RightPanel extends JPanel {
         description.setCaretColor(Color.white);
         description.setBorder(null);
         description.setFont(StyleGlobals.getFont(15));
+        description.setBackground(StyleGlobals.ACCENT);
+        descriptionPane.setBorder(null);
+        c.gridx = 1;
+        c.ipadx = 120;
+        c.ipady = 50;
+        inspectorPanel.add(descriptionPane, c);
         description.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
@@ -175,12 +206,6 @@ public class RightPanel extends JPanel {
         /**
          * Object location
          */
-        description.setBackground(StyleGlobals.ACCENT);
-        descriptionPane.setBorder(null);
-        c.gridx = 1;
-        c.ipadx = 120;
-        c.ipady = 50;
-        inspectorPanel.add(descriptionPane, c);
         JLabel location = new JLabel("Location");
 
         location.setVerticalAlignment(JLabel.TOP);
@@ -493,6 +518,128 @@ public class RightPanel extends JPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 Road.currentObject.setRoadWidth(roadWidthSlider.getValue());
+            }
+        });
+    }
+
+    public void createLabelPanel(){
+        //Grid bag constraints
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 15;
+        c.ipady = 10;
+        c.weighty = 1;
+
+        /**
+         * Name
+         */
+        JLabel nameLabel = new JLabel("Name");
+        nameLabel.setForeground(Color.WHITE);
+        labelInspectorPanel.add(nameLabel, c);
+        lName.setBackground(StyleGlobals.ACCENT);
+        lName.setForeground(Color.white);
+        lName.setCaretColor(Color.white);
+        lName.setBorder(null);
+        lName.setFont(StyleGlobals.getFont(15));
+        c.gridx = 1;
+        c.ipadx = 100;
+        c.ipady = 10;
+        labelInspectorPanel.add(lName,c);
+
+        /**
+         * Buttons
+         */
+        JPanel Buttons = new JPanel(new FlowLayout());
+
+        PanelButton delete = new PanelButton("Delete");
+        Buttons.add(delete);
+
+        PanelButton color = new PanelButton("Set Color");
+        Buttons.add(color);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.gridwidth = 2;
+        Buttons.setBackground(StyleGlobals.BACKGROUND);
+        labelInspectorPanel.add(Buttons, c);
+
+        /**
+         * Location
+         */
+        JLabel location = new JLabel("Location");
+
+        location.setVerticalAlignment(JLabel.TOP);
+        location.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy = 2;
+        c.ipadx = 15;
+        c.ipady = 10;
+        labelInspectorPanel.add(location, c);
+
+        Panel locationPanel = new Panel(new FlowLayout());
+        JLabel xLabel = new JLabel("X");
+        xLabel.setForeground(Color.WHITE);
+        JLabel yLabel = new JLabel("Y");
+        yLabel.setForeground(Color.white);
+        locationX.setBackground(StyleGlobals.BACKGROUND);
+        locationY.setBackground(StyleGlobals.BACKGROUND);
+        locationX.setForeground(Color.WHITE);
+        locationY.setForeground(Color.WHITE);
+        locationX.setEditable(false);
+        locationY.setEditable(false);
+        locationPanel.add(xLabel);
+        locationPanel.add(locationX);
+        locationPanel.add(yLabel);
+        locationPanel.add(locationY);
+        c.gridx = 1;
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.WEST;
+        c.ipadx = 150;
+        c.ipady = 10;
+        labelInspectorPanel.add(locationPanel, c);
+
+        /**
+         * Size Slider
+         */
+        JLabel Size = new JLabel("Size");
+        Size.setForeground(Color.WHITE);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.ipadx = 25;
+        c.ipady = 10;
+        labelInspectorPanel.add(Size, c);
+
+        labelSizeSlider.setForeground(Color.red);
+        labelSizeSlider.setBackground(StyleGlobals.BACKGROUND);
+        labelSizeSlider.setSize(30,10);
+        c.gridx = 1;
+        c.ipadx = 100;
+        labelInspectorPanel.add(labelSizeSlider, c);
+
+
+        labelInspectorPanel.setBackground(StyleGlobals.BACKGROUND);
+
+        lName.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                MapLabel.currentObject.setLabel(lName.getText());
+                Main.instance.updateComponents(Main.instance.mapScene);
+            }
+        });
+
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(inspectorPanel, "Are you sure you want to delete this location?");
+
+                if (option == JOptionPane.OK_OPTION) {
+                    Main.instance.mapScene.removeGameObject(MapLabel.currentObject);
+                    labelInspectorPanel.setVisible(false);
+                    MapLabel.currentObject = null;
+                }
             }
         });
     }

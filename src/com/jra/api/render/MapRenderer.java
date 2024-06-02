@@ -122,8 +122,8 @@ public class MapRenderer extends Canvas implements Runnable {
 
 
             if (deltaF >= 1) {
-
-                render();
+                if(currentScene.getIsRunning())
+                    render();
 
                 if (eachFrame != null)
                     eachFrame.act();

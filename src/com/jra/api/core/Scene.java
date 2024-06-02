@@ -11,6 +11,8 @@ public class Scene {
     public UILayer uiLayer;
     public Action loadScene;
 
+    private boolean isRunning = true;
+
     public Scene() {
         goManager = new MapObjectManager();
     }
@@ -49,5 +51,11 @@ public class Scene {
         goManager.dispose();
     }
 
+    public boolean getIsRunning(){
+        return isRunning;
+    }
 
+    public void setRunning(boolean isRunning){
+        this.isRunning = isRunning;
+    }
 }

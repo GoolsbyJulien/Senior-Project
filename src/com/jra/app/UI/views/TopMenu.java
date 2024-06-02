@@ -1,6 +1,7 @@
 package com.jra.app.UI.views;
 
 import com.jra.api.core.MapObject;
+import com.jra.api.render.MapRenderer;
 import com.jra.api.util.LoadProject;
 import com.jra.api.util.SaveProject;
 import com.jra.app.Main;
@@ -35,7 +36,7 @@ public class TopMenu extends JMenuBar {
     private JMenuItem addLocation = new JMenuItem("Add location");
     private JMenuItem addRoad = new JMenuItem("Add road");
     private JMenuItem addRiver = new JMenuItem("Add River (X)");
-    private JMenuItem addLabel = new JMenuItem("Add Label (X)");
+    private JMenuItem addLabel = new JMenuItem("Add Label");
     private JMenuItem addPolygon = new JMenuItem("Add Polygon (X)");
     private JMenu menuWindow = new JMenu("Window");
     private JCheckBoxMenuItem windowShowBaseMap = new JCheckBoxMenuItem("Show base map");
@@ -43,8 +44,9 @@ public class TopMenu extends JMenuBar {
     private JCheckBoxMenuItem windowShowInspector = new JCheckBoxMenuItem("Show inspector");
     private JCheckBoxMenuItem windowShowHierarchy = new JCheckBoxMenuItem("Show hierarchy");
 
-    //
+    //Other
     public Settings settings = new Settings();
+    public MapRenderer baseMapRenderer = new MapRenderer(Main.instance.mapScene);
 
 
     public TopMenu() {
@@ -160,6 +162,10 @@ public class TopMenu extends JMenuBar {
         //Add menu
         menuAdd.add(addLocation);
         menuAdd.add(addRoad);
+        menuAdd.add(addLabel);
+        menuAdd.addSeparator();
+        menuAdd.add(addRiver);
+        menuAdd.add(addPolygon);
 
         addLocation.addActionListener((a) -> {
             Main.instance.bottomPanel.addLocation();
@@ -167,16 +173,20 @@ public class TopMenu extends JMenuBar {
         addRoad.addActionListener((a) -> {
             Main.instance.bottomPanel.addRoad();
         });
-
-        menuAdd.addSeparator();
-        menuAdd.add(addRiver);
-        menuAdd.add(addLabel);
-        menuAdd.add(addPolygon);
+        addLabel.addActionListener((a) -> {
+            Main.instance.bottomPanel.addLabel();
+        });
+        addRiver.addActionListener((a) -> {
+            Main.instance.bottomPanel.addRiver();
+        });
+        addPolygon.addActionListener((a) -> {
+            Main.instance.bottomPanel.addPolygon();
+        });
 
         //Window menu
         //menuWindow.add(windowShowBaseMap);
-        //menuWindow.add(windowShowBiomeMap);
-        //menuWindow.addSeparator();
+        menuWindow.add(windowShowBiomeMap);
+        menuWindow.addSeparator();
         menuWindow.add(windowShowInspector);
         menuWindow.add(windowShowHierarchy);
 
@@ -186,13 +196,20 @@ public class TopMenu extends JMenuBar {
         windowShowHierarchy.setState(false);
 
         windowShowBaseMap.addActionListener((a) -> {
-
+            if(windowShowBaseMap.isSelected()){
+                Main.instance.mapTabbedPane.addTab("Base Map", baseMapRenderer);
+                baseMapRenderer.setRunning(true);
+            }else{
+                baseMapRenderer.setRunning(false);
+                Main.instance.mapTabbedPane.remove(baseMapRenderer);
+            }
         });
         windowShowBiomeMap.addActionListener((a) -> {
             if(windowShowBiomeMap.isSelected()){
                 Main.instance.mapTabbedPane.addTab("Biome Map", Main.instance.mapRenderer);
+                Main.instance.mapScene.setRunning(true);
             }else{
-                Main.instance.mapRenderer.setRunning(false);
+                Main.instance.mapScene.setRunning(false);
                 Main.instance.mapTabbedPane.remove(Main.instance.mapRenderer);
             }
         });
@@ -232,9 +249,11 @@ public class TopMenu extends JMenuBar {
         //Panel buttons
         JButton locationButton = new JButton("Add location");
         JButton roadButton = new JButton("Add road");
+        JButton labelButton = new JButton("Add label");
 
         tooltipPanel.add(locationButton);
         tooltipPanel.add(roadButton);
+        tooltipPanel.add(labelButton);
 
         //Frame
         tooltipFrame.add(tooltipSP);
@@ -248,6 +267,10 @@ public class TopMenu extends JMenuBar {
         roadButton.addActionListener(e -> {
             tooltipFrame.setVisible(false);
             Main.instance.bottomPanel.addRoad();
+        });
+        labelButton.addActionListener(e -> {
+            tooltipFrame.setVisible(false);
+            Main.instance.bottomPanel.addLabel();
         });
     }
 

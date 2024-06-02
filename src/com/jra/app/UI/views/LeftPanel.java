@@ -23,7 +23,6 @@ public class LeftPanel extends JPanel {
         scrollPane.getVerticalScrollBar().setUnitIncrement(13);
 
         setLayout(new BorderLayout());
-        add(button, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
         setLocation(0, 0);

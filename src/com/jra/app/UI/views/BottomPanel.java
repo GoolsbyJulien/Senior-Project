@@ -1,10 +1,10 @@
 package com.jra.app.UI.views;
 
-import com.jra.api.core.MapObject;
 import com.jra.api.util.Vector;
 import com.jra.app.Main;
 import com.jra.app.MapObjects.Road;
 import com.jra.app.MapObjects.SelectableObject;
+import com.jra.app.MapObjects.MapLabel;
 import com.jra.app.UI.StyleGlobals;
 import com.jra.app.UI.components.PanelButton;
 
@@ -309,7 +309,31 @@ public class BottomPanel extends JPanel {
     }
 
     public void addLabel(){
+        try {
+            //UI
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            panel.setSize(250, 100);
+            panel.setPreferredSize(new Dimension(250, 100));
+            JTextField nameField = new JTextField(15);
 
+            panel.add(new Label("Name"));
+            panel.add(nameField);
+
+            int result = JOptionPane.showConfirmDialog(Main.instance.frame, panel, "Add Location",
+                    JOptionPane.OK_CANCEL_OPTION);
+
+            if (nameField.getText() == null)
+                return;
+
+            if (result == JOptionPane.OK_OPTION) {
+                MapLabel temp = new MapLabel(Main.instance.cam.screenPointToWorldPoint(new Vector(400, 300)));
+                temp.setLabel(nameField.getText());
+                Main.instance.mapScene.addGameobject(temp);
+                Main.instance.updateComponents(Main.instance.mapScene);
+            }
+        } catch (Exception e1) {
+
+        }
     }
 
     public void addPolygon(){
